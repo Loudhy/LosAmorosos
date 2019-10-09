@@ -41,7 +41,7 @@ public class EduktSoft {
         }*/
         
         //PROBANDO EMPLEADOS
-        /*Area area1 = new Area("ADMINISTRADOR",1);
+        Area area1 = new Area("ADMINISTRADOR",1);
         DBController.insertarArea(area1);
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         Empleado empleado1 = new Empleado("76272879","Juan Diego","Villegas",
@@ -51,9 +51,8 @@ public class EduktSoft {
         DBController.insertarEmpleado(empleado1);
         
         Usuario usuario1 = new Usuario("caricato","abcd1234",empleado1);
-        DBController.insertarUsuario(usuario1);*/
+        DBController.insertarUsuario(usuario1);
         
-        Area area1 = new Area("ADMINISTRADOR",1);
         area1.setId(1);
         ArrayList<Empleado> empleados;
         empleados = DBController.listarEmpleadosPorArea(area1);
