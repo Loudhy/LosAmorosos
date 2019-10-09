@@ -103,5 +103,22 @@ public class UsuarioMySQL implements UsuarioDAO {
         }
         return usuarios;
     }
+
+    @Override
+    public String buscarArea(Usuario usuario) {
+        String nombreArea = new String();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_AREA_POR_USUARIO(?,?)}");
+            cs.setString("_NOMBRE_USUARIO", usuario.getNombre());
+            cs.executeQuery();
+            nombreArea = cs.getString("_NOMBRE_AREA");
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return nombreArea;
+    }
     
 }

@@ -71,7 +71,7 @@ public class EduktSoft {
                 formatoFecha.parse("1999-01-29"),"2852878","a20160731@pucp.edu.pe",Soltero,2500,area1,
                 formatoFecha.parse("2016-09-16"));
         DBController.insertarEmpleado(empleado);        
-        
+        //ENVIAR CORREO CON NUEVA CONTRASEÑA
         PasswordService password = new PasswordService();
         password.enviarCorreo("a20160731@pucp.edu.pe");
         */

@@ -102,6 +102,5 @@ public class Usuario {
     private String nombre;
     private String contraseña;
     private Empleado empleado;
-    private boolean active;
-    private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private boolean active;    
 }

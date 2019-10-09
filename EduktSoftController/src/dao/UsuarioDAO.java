@@ -17,4 +17,5 @@ public interface UsuarioDAO {
     int actualizar(Usuario usuario);
     int eliminar(int id_usuario);
     ArrayList<Usuario> listar();
+    String buscarArea(Usuario usuario);
 }

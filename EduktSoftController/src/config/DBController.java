@@ -14,11 +14,13 @@ import model.DatosGenerales;
 import model.Departamento;
 import model.Empleado;
 import model.LineaPedido;
+import model.LineaSolicitud;
 import model.MetaMensual;
 import model.ObjetivoVendedor;
 import model.Pedido;
 import model.Producto;
 import model.Provincia;
+import model.Solicitud;
 import model.Usuario;
 import model.Vendedor;
 
@@ -44,6 +46,10 @@ public abstract class DBController {
     
     public static ArrayList<Area> listarAreas(){
         return daoFactory.getAreaDAO().listar();
+    }
+    
+    public static String buscarAreaPorUsuario(Usuario usuario){
+        return daoFactory.getUsuarioDAO().buscarArea(usuario);
     }
     
     public static int insertarUsuario(Usuario usuario){
@@ -216,6 +222,22 @@ public abstract class DBController {
     
     public static ArrayList<LineaPedido> listarLineasPedidoEnRangoDeFechas(Date fechaIni, Date fechaFin){
         return daoFactory.getPedidoDAO().listarLineasPedidoEnRangoFechas(fechaIni, fechaFin);
+    }
+    
+    public static int insertarSolicitud(Solicitud solicitud){
+        return daoFactory.getSolicitudDAO().insertar(solicitud);
+    }
+    
+    public static int actualizarSolicitud(Solicitud solicitud){
+        return daoFactory.getSolicitudDAO().actualizar(solicitud);
+    }
+    
+    public static int eliminarSolicitud(int id_solicitud){
+        return daoFactory.getSolicitudDAO().eliminar(id_solicitud);
+    }
+    
+    public static ArrayList<LineaSolicitud> listarLineasDeSolicitud(Solicitud solicitud){
+        return daoFactory.getSolicitudDAO().listarLineasSolicitud(solicitud);
     }
 }
 

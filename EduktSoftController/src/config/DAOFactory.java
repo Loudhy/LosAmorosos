@@ -18,7 +18,7 @@ import dao.ProductoDAO;
 import dao.ProvinciaDAO;
 import dao.UsuarioDAO;
 import dao.VendedorDAO;
-
+import dao.SolicitudDAO;
 /**
  *
  * @author UsuarioA
@@ -37,6 +37,7 @@ public abstract class DAOFactory {
     public abstract ClienteDAO getClienteDAO();
     public abstract PedidoDAO getPedidoDAO();
     public abstract ClienteVendedorDAO getClienteVendedorDAO();
+    public abstract SolicitudDAO getSolicitudDAO();
     
     public static DAOFactory getDAOFactory(){
         if (DBManager.url.contains("mysql"))

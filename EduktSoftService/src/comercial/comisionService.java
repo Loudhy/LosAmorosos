@@ -7,6 +7,6 @@ public class comisionService {
     public int actualizarObjetivos(ObjetivoVendedor objetivo){
         int resultado = 0;
         resultado = DBController.actualizarObjetivoVendedor(objetivo);
-        return resultado;        
+        return resultado;                
     }
 }

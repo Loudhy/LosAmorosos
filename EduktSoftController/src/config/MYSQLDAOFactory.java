@@ -16,6 +16,7 @@ import dao.ObjetivoVendedorDAO;
 import dao.PedidoDAO;
 import dao.ProductoDAO;
 import dao.ProvinciaDAO;
+import dao.SolicitudDAO;
 import dao.UsuarioDAO;
 import dao.VendedorDAO;
 import mysql.AreaMySQL;
@@ -29,6 +30,7 @@ import mysql.ObjetivoVendedorMySQL;
 import mysql.PedidoMySQL;
 import mysql.ProductoMySQL;
 import mysql.ProvinciaMySQL;
+import mysql.SolicitudMySQL;
 import mysql.UsuarioMySQL;
 import mysql.VendedorMySQL;
 
@@ -104,5 +106,10 @@ public class MYSQLDAOFactory extends DAOFactory {
     @Override
     public ClienteVendedorDAO getClienteVendedorDAO() {
         return new ClienteVendedorMySQL();
+    }
+
+    @Override
+    public SolicitudDAO getSolicitudDAO() {
+        return new SolicitudMySQL();
     }
 }
