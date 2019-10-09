@@ -189,7 +189,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             if (rs.next()){
                 empleado = new Empleado();
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
-                empleado.setNombre(rs.getString("NOMBRES_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
@@ -227,7 +227,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             if (rs.next()){
                 empleado = new Empleado();
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
-                empleado.setNombre(rs.getString("NOMBRES_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
@@ -265,7 +265,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             if (rs.next()){
                 empleado = new Empleado();
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
-                empleado.setNombre(rs.getString("NOMBRES_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));

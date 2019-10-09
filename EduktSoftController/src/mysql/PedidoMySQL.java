@@ -24,6 +24,7 @@ import model.EstadoLineaPedido;
 import model.EstadoPedido;
 import model.LineaPedido;
 import model.Pedido;
+import model.Producto;
 import model.Vendedor;
 
 /**
@@ -226,7 +227,7 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -265,12 +266,39 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         
         return lineasPedido;
+    }
+
+    @Override
+    public ArrayList<LineaPedido> listarLineasPedidoPorProducto(Producto producto) {
+        ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_LINEAS_PEDIDO_POR_PRODUCTO(?)}");
+            cs.setInt("_ID_PRODUCTO", producto.getId());
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                LineaPedido linea = new LineaPedido();
+                linea.setCantidad(rs.getInt("CANTIDAD"));
+                SimpleDateFormat formatoFecha = new SimpleDateFormat();
+                java.util.Date fechaAtencion = new java.util.Date(rs.getDate("FECHA_ATENCION").getTime());
+                String fechaAux = formatoFecha.format(fechaAtencion);
+                linea.setFechaAtencion(formatoFecha.parse(fechaAux));
+                lineas.add(linea);
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return lineas;
     }
     
 }

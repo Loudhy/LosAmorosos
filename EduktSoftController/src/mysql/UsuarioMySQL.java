@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import model.Empleado;
 import model.Usuario;
 
 /**
@@ -120,6 +121,28 @@ public class UsuarioMySQL implements UsuarioDAO {
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return nombreArea;
+    }
+
+    @Override
+    public Usuario buscarPorEmpleado(Empleado empleado) {
+        Usuario usuario = new Usuario();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_USUARIO_POR_EMPLEADO(?)}");
+            cs.setString("_DNI_EMPLEADO", empleado.getDni());
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()){
+                usuario.setId(rs.getInt("ID_USUARIO"));
+                usuario.setContraseña(rs.getString("CONTRASEÑA"));
+                usuario.setEmpleado(empleado);
+                usuario.setActive(true);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return usuario;
     }
     
 }

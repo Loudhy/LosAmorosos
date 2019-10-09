@@ -13,9 +13,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.EstadoLineaPedido;
+import model.EstadoSolicitud;
 import model.LineaSolicitud;
 import model.Solicitud;
 
@@ -128,5 +132,62 @@ public class SolicitudMySQL implements SolicitudDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return lineas;
+    }
+
+    @Override
+    public ArrayList<Solicitud> listarSolicitudes() {
+        ArrayList<Solicitud> solicitudes = new ArrayList<Solicitud>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_SOLICITUD()}");
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Solicitud solicitud = new Solicitud();
+                solicitud.setId(rs.getInt("ID_SOLICITUD"));
+                solicitud.setEstadoSolicitud(EstadoSolicitud.valueOf(rs.getString("ESTADO_SOLICITUD")));
+                java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaRegistro);
+                solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
+                solicitud.setLineasSolicitud(listarLineasSolicitud(solicitud));
+                solicitudes.add(solicitud);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return solicitudes;
+    }
+
+    @Override
+    public ArrayList<Solicitud> listarSolicitudesPorEstado(EstadoSolicitud estado) {
+        ArrayList<Solicitud> solicitudes = new ArrayList<Solicitud>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_SOLICITUD(?)}");
+            cs.setString("_ESTADO_SOLICITUD", estado.toString());
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Solicitud solicitud = new Solicitud();
+                solicitud.setId(rs.getInt("ID_SOLICITUD"));
+                solicitud.setEstadoSolicitud(EstadoSolicitud.valueOf(rs.getString("ESTADO_SOLICITUD")));
+                java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaRegistro);
+                solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
+                solicitud.setLineasSolicitud(listarLineasSolicitud(solicitud));
+                solicitudes.add(solicitud);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return solicitudes;
     }
 }

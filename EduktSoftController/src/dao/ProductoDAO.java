@@ -17,4 +17,5 @@ public interface ProductoDAO {
     int actualizar(Producto producto);
     int eliminar(int id_producto);
     ArrayList<Producto> listarDisponibles();
+    Producto buscarProductoPorNombre(String nombre);
 }

@@ -13,6 +13,7 @@ import model.Cliente_Vendedor;
 import model.DatosGenerales;
 import model.Departamento;
 import model.Empleado;
+import model.EstadoSolicitud;
 import model.LineaPedido;
 import model.LineaSolicitud;
 import model.MetaMensual;
@@ -68,6 +69,9 @@ public abstract class DBController {
         return daoFactory.getUsuarioDAO().listar();
     }
     
+    public static Usuario buscarUsuarioPorEmpleado(Empleado empleado){
+        return daoFactory.getUsuarioDAO().buscarPorEmpleado(empleado);
+    }
     public static int insertarEmpleado(Empleado empleado){
         return daoFactory.getEmpleadoDAO().insertar(empleado);
     }
@@ -172,6 +176,10 @@ public abstract class DBController {
         return daoFactory.getProductoDAO().listarDisponibles();
     }
     
+    public static Producto buscarProductoPorNombre(String nombre){
+        return daoFactory.getProductoDAO().buscarProductoPorNombre(nombre);
+    }
+    
     public static int insertarObjetivoVendedor(ObjetivoVendedor objetivoVendedor){
         return daoFactory.getObjetivoVendedorDAO().insertar(objetivoVendedor);
     }
@@ -224,6 +232,7 @@ public abstract class DBController {
         return daoFactory.getPedidoDAO().listarLineasPedidoEnRangoFechas(fechaIni, fechaFin);
     }
     
+    
     public static int insertarSolicitud(Solicitud solicitud){
         return daoFactory.getSolicitudDAO().insertar(solicitud);
     }
@@ -238,6 +247,14 @@ public abstract class DBController {
     
     public static ArrayList<LineaSolicitud> listarLineasDeSolicitud(Solicitud solicitud){
         return daoFactory.getSolicitudDAO().listarLineasSolicitud(solicitud);
+    }
+    
+    public static ArrayList<Solicitud> listarSolicitudes(){
+        return daoFactory.getSolicitudDAO().listarSolicitudes();
+    }
+    
+    public static ArrayList<Solicitud> listarSolicitudesPorEstadoDeSolicitud(EstadoSolicitud estadoSolicitud){
+        return daoFactory.getSolicitudDAO().listarSolicitudesPorEstado(estadoSolicitud);
     }
 }
 

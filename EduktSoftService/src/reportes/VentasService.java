@@ -1,4 +1,5 @@
 package reportes;
+import config.DBController;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JFrame;
@@ -13,7 +14,7 @@ public class VentasService {
         JFreeChart grafico = null;
         DefaultCategoryDataset datos = new DefaultCategoryDataset();
         ArrayList<Pedido> pedidos = new ArrayList<>();
-        // pedidos = DBController.listarPedidos(fechaInicio,fechaFin,nombreVendedor);
+        //pedidos = DBController.listarPedidos(fechaInicio,fechaFin,nombreVendedor);
         for(Pedido aux : pedidos){
             //int dato = (int)aux.getTotal();
             

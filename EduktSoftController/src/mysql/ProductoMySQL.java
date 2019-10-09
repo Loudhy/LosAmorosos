@@ -108,5 +108,30 @@ public class ProductoMySQL implements ProductoDAO{
         
         return productos;
     }
+
+    @Override
+    public Producto buscarProductoPorNombre(String nombre) {
+        Producto producto = new Producto();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("BUSCAR_PRODUCTO_POR_NOMBRE(?)");
+            cs.setString("_NOMBRE_PRODUCTO", nombre);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()){
+                producto.setId(rs.getInt("ID_PRODUCTO"));
+                producto.setNombre(nombre);
+                producto.setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
+                producto.setStockEmpresa(rs.getInt("STOCK_EMPRESA"));
+                producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
+                producto.setDescripcion(rs.getString("DESCRIPCION"));
+                producto.setActive(true);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return producto;
+    }
     
 }

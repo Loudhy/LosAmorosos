@@ -6,6 +6,7 @@
 package dao;
 
 import java.util.ArrayList;
+import model.Empleado;
 import model.Usuario;
 
 /**
@@ -18,4 +19,5 @@ public interface UsuarioDAO {
     int eliminar(int id_usuario);
     ArrayList<Usuario> listar();
     String buscarArea(Usuario usuario);
+    Usuario buscarPorEmpleado(Empleado empleado);
 }

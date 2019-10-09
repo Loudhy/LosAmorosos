@@ -6,6 +6,7 @@
 package dao;
 
 import java.util.ArrayList;
+import model.EstadoSolicitud;
 import model.LineaSolicitud;
 import model.Solicitud;
 
@@ -18,5 +19,6 @@ public interface SolicitudDAO {
     int actualizar(Solicitud solicitud);
     int eliminar(int id_solicitud);
     ArrayList<LineaSolicitud> listarLineasSolicitud(Solicitud solicitud);
-    
+    ArrayList<Solicitud> listarSolicitudes();
+    ArrayList<Solicitud> listarSolicitudesPorEstado(EstadoSolicitud estado);
 }

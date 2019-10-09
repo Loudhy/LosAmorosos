@@ -10,6 +10,7 @@ import java.util.Date;
 import model.Cliente;
 import model.LineaPedido;
 import model.Pedido;
+import model.Producto;
 import model.Vendedor;
 
 /**
@@ -24,4 +25,5 @@ public interface PedidoDAO {
     ArrayList<Pedido> listarPorCliente(Cliente cliente);
     ArrayList<LineaPedido> listarLineasPedido(Pedido pedido);
     ArrayList<LineaPedido> listarLineasPedidoEnRangoFechas(Date fechaIni,Date fechaFin);
+    ArrayList<LineaPedido> listarLineasPedidoPorProducto(Producto producto);
 }
