@@ -109,10 +109,11 @@ public class UsuarioMySQL implements UsuarioDAO {
         String nombreArea = new String();
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call BUSCAR_AREA_POR_USUARIO(?,?)}");
+            cs = con.prepareCall("{call BUSCAR_AREA_POR_USUARIO(?)}");
             cs.setString("_NOMBRE_USUARIO", usuario.getNombre());
-            cs.executeQuery();
-            nombreArea = cs.getString("_NOMBRE_AREA");
+            ResultSet rs = cs.executeQuery();
+            if (rs.next())
+                nombreArea = rs.getString("NOMBRE_AREA");
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }finally{
