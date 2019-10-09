@@ -177,5 +177,119 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         }
         return empleados;
     }
+
+    @Override
+    public Empleado buscarEmpleadoPorApellidos(String apellidos) {
+        Empleado empleado = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_APELLIDOS(?)}");
+            cs.setString("_APELIDOS", apellidos);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()){
+                empleado = new Empleado();
+                empleado.setId(rs.getInt("ID_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
+                empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                empleado.setDni(rs.getString("DNI_EMPLEADO"));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.getArea().setId(rs.getInt("ID_AREA"));
+                empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                empleado.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
+                empleado.setActive(rs.getBoolean("ACTIVE"));
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return empleado;
+    }
+
+    @Override
+    public Empleado buscarEmpleadoPorCorreo(String correo) {
+        Empleado empleado = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_CORREO(?)}");
+            cs.setString("_CORREO", correo);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()){
+                empleado = new Empleado();
+                empleado.setId(rs.getInt("ID_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
+                empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                empleado.setDni(rs.getString("DNI_EMPLEADO"));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.getArea().setId(rs.getInt("ID_AREA"));
+                empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                empleado.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
+                empleado.setActive(true);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return empleado;    
+    }
+
+    @Override
+    public Empleado buscarEmpleadoPorDni(String dni) {
+        Empleado empleado = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_DNI(?)}");
+            cs.setString("_DNI", dni);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()){
+                empleado = new Empleado();
+                empleado.setId(rs.getInt("ID_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
+                empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                empleado.setDni(rs.getString("DNI_EMPLEADO"));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.getArea().setId(rs.getInt("ID_AREA"));
+                empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                empleado.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
+                empleado.setActive(rs.getBoolean("ACTIVE"));
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return empleado;
+    }
     
 }

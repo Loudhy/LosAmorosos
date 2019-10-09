@@ -16,5 +16,5 @@ import model.Vendedor;
 public interface ClienteDAO {
     int insertar(Cliente cliente);
     int actualizar(Cliente cliente);
-    ArrayList<Cliente> listarPorVendedor(Vendedor vendedor);
+    ArrayList<Cliente> listarClientesPorVendedor(Vendedor vendedor);
 }

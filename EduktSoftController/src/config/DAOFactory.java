@@ -6,11 +6,14 @@
 package config;
 
 import dao.AreaDAO;
+import dao.ClienteDAO;
+import dao.ClienteVendedorDAO;
 import dao.DatosGeneralesDAO;
 import dao.DepartamentoDAO;
 import dao.EmpleadoDAO;
 import dao.MetaMensualDAO;
 import dao.ObjetivoVendedorDAO;
+import dao.PedidoDAO;
 import dao.ProductoDAO;
 import dao.ProvinciaDAO;
 import dao.UsuarioDAO;
@@ -31,6 +34,9 @@ public abstract class DAOFactory {
     public abstract ProductoDAO getProductoDAO();
     public abstract ObjetivoVendedorDAO getObjetivoVendedorDAO();
     public abstract VendedorDAO getVendedorDAO();
+    public abstract ClienteDAO getClienteDAO();
+    public abstract PedidoDAO getPedidoDAO();
+    public abstract ClienteVendedorDAO getClienteVendedorDAO();
     
     public static DAOFactory getDAOFactory(){
         if (DBManager.url.contains("mysql"))

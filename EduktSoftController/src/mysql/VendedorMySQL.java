@@ -10,10 +10,18 @@ import dao.VendedorDAO;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Area;
+import model.EstadoPedido;
+import model.Pedido;
 import model.Vendedor;
 
 /**
@@ -70,6 +78,39 @@ public class VendedorMySQL implements VendedorDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return resultado;
+    }
+
+    @Override
+    public ArrayList<Pedido> listarPedidosEnRangoDeFechas(Date fechaIni, Date fechaFin, Vendedor vendedor) {
+        ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_PEDIDOS_DE_VENDEDOR_POR_RANGO_DE_FECHAS(?,?,?)}");
+            cs.setDate("_FECHA_INI", new java.sql.Date(fechaIni.getTime()));
+            cs.setDate("_FECHA_FIN",new java.sql.Date(fechaFin.getTime()));
+            cs.setInt("_ID_VENDEDOR", vendedor.getId());
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Pedido pedido = new Pedido();
+                pedido.setId(rs.getInt("ID_PEDIDO"));
+                pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
+                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
+                pedido.getCliente_vendedor().getCliente().setId(rs.getInt("ID_CLIENTE"));
+                pedido.getCliente_vendedor().getCliente().setRazonSocial(rs.getString("NOMBRE_CLIENTE"));
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                String fechaAux = formatoFecha.format(fechaIngreso);
+                pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(VendedorMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return pedidos;
     }
 
 }

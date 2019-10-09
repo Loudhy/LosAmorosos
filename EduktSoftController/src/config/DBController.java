@@ -8,11 +8,15 @@ package config;
 import java.util.ArrayList;
 import java.util.Date;
 import model.Area;
+import model.Cliente;
+import model.Cliente_Vendedor;
 import model.DatosGenerales;
 import model.Departamento;
 import model.Empleado;
+import model.LineaPedido;
 import model.MetaMensual;
 import model.ObjetivoVendedor;
+import model.Pedido;
 import model.Producto;
 import model.Provincia;
 import model.Usuario;
@@ -76,6 +80,18 @@ public abstract class DBController {
     
     public static ArrayList<Empleado> listarEmpleadosPorArea(Area area){
         return daoFactory.getEmpleadoDAO().listarPorArea(area);
+    }
+    
+    public static Empleado buscarEmpleadoPorCorreo(String correo){
+        return daoFactory.getEmpleadoDAO().buscarEmpleadoPorCorreo(correo);
+    }
+    
+    public static Empleado buscarEmpleadoPorDni(String dni){
+        return daoFactory.getEmpleadoDAO().buscarEmpleadoPorDni(dni);
+    }
+    
+    public static Empleado buscarEmpleadoPorNombre(String nombre){
+        return daoFactory.getEmpleadoDAO().buscarEmpleadoPorApellidos(nombre);
     }
     
     public static int insertarDatosGenerales(DatosGenerales datosGenerales){
@@ -166,5 +182,40 @@ public abstract class DBController {
         return daoFactory.getVendedorDAO().eliminar(id_vendedor);
     }
   
+    public static int insertarCliente(Cliente cliente){
+        return daoFactory.getClienteDAO().insertar(cliente);
+    }
+    
+    public static int actualizarCliente(Cliente cliente){
+        return daoFactory.getClienteDAO().actualizar(cliente);
+    }
+    
+    public static int insertarClienteVendedor(Cliente_Vendedor cliente_vendedor){
+        return daoFactory.getClienteVendedorDAO().insertar(cliente_vendedor);
+    }
+    
+    public static int eliminarClienteVendedor(int id_cliente_vendedor){
+        return daoFactory.getClienteVendedorDAO().eliminar(id_cliente_vendedor);
+    }
+    
+    public static int insertarPedido(Pedido pedido){
+        return daoFactory.getPedidoDAO().insertar(pedido);
+    }
+    
+    public static int actualizarPedido(Pedido pedido){
+        return daoFactory.getPedidoDAO().actualizar(pedido);
+    }
+    
+    public static ArrayList<Pedido> listarPedidosPorCliente(Cliente cliente){
+        return daoFactory.getPedidoDAO().listarPorCliente(cliente);
+    }
+    
+    public static ArrayList<Pedido> listarPedidosPorVendedor(Vendedor vendedor){
+        return daoFactory.getPedidoDAO().listarPorVendedor(vendedor);
+    }
+    
+    public static ArrayList<LineaPedido> listarLineasPedidoEnRangoDeFechas(Date fechaIni, Date fechaFin){
+        return daoFactory.getPedidoDAO().listarLineasPedidoEnRangoFechas(fechaIni, fechaFin);
+    }
 }
 

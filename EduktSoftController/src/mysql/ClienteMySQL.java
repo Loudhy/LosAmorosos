@@ -10,6 +10,7 @@ import dao.ClienteDAO;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -34,10 +35,10 @@ public class ClienteMySQL implements ClienteDAO{
             cs = con.prepareCall("{call INSERTAR_CLIENTE(?,?,?,?,?,?,?,?)} ");
             cs.setString("_RUC",cliente.getRuc());
             cs.setString("_RAZON_SOCIAL", cliente.getRazonSocial());
-            cs.setString("_CORREO",cliente.getCorreo());
+            cs.setString("_CORREO_CLIENTE",cliente.getCorreo());
             cs.setInt("_ID_PROVINCIA", cliente.getProvincia().getId());
-            cs.setString("_TELEFONO_CLIENTE", cliente.getTelefono());
             cs.setString("_DIRECCION", cliente.getDireccion());
+            cs.setString("_TELEFONO_CLIENTE", cliente.getTelefono());
             cs.setBoolean("_ACTIVE", cliente.getActive());
             resultado = cs.executeUpdate();
             cliente.setId(cs.getInt("_ID_CLIENTE"));
@@ -58,7 +59,7 @@ public class ClienteMySQL implements ClienteDAO{
             cs.setInt("_ID_CLIENTE", cliente.getId());
             cs.setString("_RUC",cliente.getRuc());
             cs.setString("_RAZON_SOCIAL",cliente.getRazonSocial());
-            cs.setString("_CORREO", cliente.getCorreo());
+            cs.setString("_CORREO_CLIENTE", cliente.getCorreo());
             cs.setInt("_ID_PROVINCIA", cliente.getProvincia().getId());
             cs.setString("_TELEFONO_CLIENTE", cliente.getTelefono());
             cs.setString("_DIRECCION", cliente.getDireccion());
@@ -72,8 +73,35 @@ public class ClienteMySQL implements ClienteDAO{
     }
 
     @Override
-    public ArrayList<Cliente> listarPorVendedor(Vendedor vendedor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Cliente> listarClientesPorVendedor(Vendedor vendedor) {
+        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            con.prepareCall("LISTAR_CLIENTES_POR_VENDEDOR(?)");
+            cs.setInt("_ID_VENDEDOR", vendedor.getId());
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("ID_CLIENTE"));
+                cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                cliente.setRuc(rs.getString("RUC"));
+                cliente.setDireccion(rs.getString("DIRECCION"));
+                cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
+                cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
+                cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
+                cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
+                cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                clientes.add(cliente);
+            }
+
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return clientes;
     }
+
 
 }

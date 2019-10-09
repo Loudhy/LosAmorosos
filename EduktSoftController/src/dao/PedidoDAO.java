@@ -6,6 +6,7 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import model.Cliente;
 import model.LineaPedido;
 import model.Pedido;
@@ -22,4 +23,5 @@ public interface PedidoDAO {
     ArrayList<Pedido> listarPorVendedor(Vendedor vendedor);
     ArrayList<Pedido> listarPorCliente(Cliente cliente);
     ArrayList<LineaPedido> listarLineasPedido(Pedido pedido);
+    ArrayList<LineaPedido> listarLineasPedidoEnRangoFechas(Date fechaIni,Date fechaFin);
 }

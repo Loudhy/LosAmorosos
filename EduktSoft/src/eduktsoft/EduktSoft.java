@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package eduktsoft;
+
+import administracion.PasswordService;
 import config.DBController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,7 +43,7 @@ public class EduktSoft {
         }*/
         
         //PROBANDO EMPLEADOS
-        Area area1 = new Area("ADMINISTRADOR",1);
+        /*Area area1 = new Area("ADMINISTRADOR",1);
         DBController.insertarArea(area1);
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         Empleado empleado1 = new Empleado("76272879","Juan Diego","Villegas",
@@ -61,7 +63,17 @@ public class EduktSoft {
             System.out.println(aux.getEstadoCivil().toString());
             System.out.println(aux.getFechaIngreso().toString());
             System.out.println(aux.getArea().getNombre());
-        }
-    }
-    
+        }*/
+        /*Area area1 = new Area("ADMINISTRADOR",1);
+        DBController.insertarArea(area1);
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+        Empleado empleado = new Empleado("76272879","Juan Diego","Villegas",
+                formatoFecha.parse("1999-01-29"),"2852878","a20160731@pucp.edu.pe",Soltero,2500,area1,
+                formatoFecha.parse("2016-09-16"));
+        DBController.insertarEmpleado(empleado);        
+        
+        PasswordService password = new PasswordService();
+        password.enviarCorreo("a20160731@pucp.edu.pe");
+        */
+    }    
 }

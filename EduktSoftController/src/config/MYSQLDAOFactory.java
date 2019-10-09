@@ -6,21 +6,27 @@
 package config;
 
 import dao.AreaDAO;
+import dao.ClienteDAO;
+import dao.ClienteVendedorDAO;
 import dao.DatosGeneralesDAO;
 import dao.DepartamentoDAO;
 import dao.EmpleadoDAO;
 import dao.MetaMensualDAO;
 import dao.ObjetivoVendedorDAO;
+import dao.PedidoDAO;
 import dao.ProductoDAO;
 import dao.ProvinciaDAO;
 import dao.UsuarioDAO;
 import dao.VendedorDAO;
 import mysql.AreaMySQL;
+import mysql.ClienteMySQL;
+import mysql.ClienteVendedorMySQL;
 import mysql.DatosGeneralesMySQL;
 import mysql.DepartamentoMySQL;
 import mysql.EmpleadoMySQL;
 import mysql.MetaMensualMySQL;
 import mysql.ObjetivoVendedorMySQL;
+import mysql.PedidoMySQL;
 import mysql.ProductoMySQL;
 import mysql.ProvinciaMySQL;
 import mysql.UsuarioMySQL;
@@ -83,5 +89,20 @@ public class MYSQLDAOFactory extends DAOFactory {
     @Override
     public VendedorDAO getVendedorDAO() {
         return new VendedorMySQL();
+    }
+
+    @Override
+    public ClienteDAO getClienteDAO() {
+        return new ClienteMySQL();
+    }
+
+    @Override
+    public PedidoDAO getPedidoDAO() {
+        return new PedidoMySQL();
+    }
+
+    @Override
+    public ClienteVendedorDAO getClienteVendedorDAO() {
+        return new ClienteVendedorMySQL();
     }
 }

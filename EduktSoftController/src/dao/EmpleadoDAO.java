@@ -19,4 +19,7 @@ public interface EmpleadoDAO {
     int eliminar(int id_empleado);
     ArrayList<Empleado> listar();
     ArrayList<Empleado> listarPorArea(Area area);
+    Empleado buscarEmpleadoPorDni(String dni);
+    Empleado buscarEmpleadoPorApellidos(String apellidos);
+    Empleado buscarEmpleadoPorCorreo(String correo);
 }
