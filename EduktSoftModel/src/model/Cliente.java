@@ -112,14 +112,14 @@ public class Cliente {
     /**
      * @return the active
      */
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
     /**
      * @param active the active to set
      */
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
     
@@ -135,6 +135,7 @@ public class Cliente {
         this.direccion = direccion;
         this.correo = correo;
         this.provincia = provincia;
+        this.active = true;
     }
     
     private int id;
@@ -144,5 +145,5 @@ public class Cliente {
     private String direccion;
     private String correo;
     private Provincia provincia;
-    private Boolean active;
+    private boolean active;
 }

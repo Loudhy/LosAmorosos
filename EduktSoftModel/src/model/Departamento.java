@@ -59,6 +59,7 @@ public class Departamento {
     
     public Departamento(String nombre){
         this.nombre = nombre;
+        this.active = true;
     }
     
     private int id;

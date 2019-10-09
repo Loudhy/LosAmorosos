@@ -129,14 +129,14 @@ public class LineaPedido {
         this.producto = new Producto();
     }
     
-    public LineaPedido(Producto producto, int cantidad, float subtotal,EstadoLineaPedido estadoLineaPedido,
-            Date fechaAtencion, int cantidadPorAtender){
+    public LineaPedido(Producto producto, int cantidad,EstadoLineaPedido estadoLineaPedido,
+            Date fechaAtencion){
         this.producto = producto;
         this.cantidad = cantidad;
-        this.subtotal = subtotal;
+        this.subtotal = cantidad*producto.getPrecioUnitario();
         this.estadoLineaPedido = estadoLineaPedido;
         this.fechaAtencion = fechaAtencion;
-        this.cantidadPorAtender = cantidadPorAtender;
+        this.cantidadPorAtender = cantidad;
         this.active = true;
     }
     

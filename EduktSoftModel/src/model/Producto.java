@@ -113,9 +113,9 @@ public class Producto {
         
     }
     
-    public Producto(int stockEmpresa, int stockVendedor, float precioUnitario, String nombre, String descripcion){
+    public Producto(int stockEmpresa, float precioUnitario, String nombre, String descripcion){
         this.stockEmpresa = stockEmpresa;
-        this.stockVendedor = stockVendedor;
+        this.stockVendedor = stockEmpresa;
         this.precioUnitario = precioUnitario;
         this.nombre = nombre;
         this.descripcion = descripcion;

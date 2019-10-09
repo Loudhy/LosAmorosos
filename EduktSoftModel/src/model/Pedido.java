@@ -55,6 +55,10 @@ public class Pedido {
     public void setLineasPedido(ArrayList<LineaPedido> lineasPedido) {
         this.lineasPedido = lineasPedido;
     }
+    
+    public void insertarLineaPedido(LineaPedido lineaPedido){
+        this.lineasPedido.add(lineaPedido);
+    }
 
     /**
      * @return the estadoPedido
@@ -111,6 +115,12 @@ public class Pedido {
     public void setActive(boolean active) {
         this.active = active;
     }
+    
+    public Pedido(){
+        lineasPedido = new ArrayList<LineaPedido>();
+        cliente_vendedor = new Cliente_Vendedor();
+    }
+    
     private int id;
     private float total;
     private ArrayList<LineaPedido> lineasPedido;

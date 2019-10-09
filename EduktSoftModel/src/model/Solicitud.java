@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -12,6 +13,22 @@ import java.util.Date;
  * @author alulab14
  */
 public class Solicitud {
+
+    /**
+     * @return the lineasSolicitud
+     */
+    public ArrayList<LineaSolicitud> getLineasSolicitud() {
+        return lineasSolicitud;
+    }
+
+    /**
+     * @param lineasSolicitud the lineasSolicitud to set
+     */
+    public void setLineasSolicitud(ArrayList<LineaSolicitud> lineasSolicitud) {
+        this.lineasSolicitud = lineasSolicitud;
+    }
+
+   
 
     /**
      * @return the id
@@ -96,10 +113,19 @@ public class Solicitud {
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
+    
+    public Solicitud(){
+        lineasSolicitud = new ArrayList<LineaSolicitud>();
+        pedido = new Pedido();
+        logistico = new Empleado();
+        facturador = new Empleado();
+    }
+    
     private int id;
     private EstadoSolicitud estadoSolicitud;
     private Date fechaRegistro;
     private Empleado logistico;
     private Empleado facturador;
+    private ArrayList<LineaSolicitud> lineasSolicitud;
     private Pedido pedido;
 }

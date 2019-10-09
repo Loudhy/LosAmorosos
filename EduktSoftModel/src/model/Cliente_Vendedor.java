@@ -5,11 +5,27 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author alulab14
  */
 public class Cliente_Vendedor {
+
+    /**
+     * @return the pedidos
+     */
+    public ArrayList<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    /**
+     * @param pedidos the pedidos to set
+     */
+    public void setPedidos(ArrayList<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
 
     /**
      * @return the id_cliente_vendedor
@@ -25,6 +41,9 @@ public class Cliente_Vendedor {
         this.id_cliente_vendedor = id_cliente_vendedor;
     }
 
+    public void insertarPedido(Pedido pedido){
+        this.pedidos.add(pedido);
+    }
     /**
      * @return the cliente
      */
@@ -68,7 +87,8 @@ public class Cliente_Vendedor {
     }
     
     public Cliente_Vendedor(){
-        
+        cliente = new Cliente();
+        vendedor = new Vendedor();
     }
     
     public Cliente_Vendedor(Cliente cliente, Vendedor vendedor){
@@ -80,5 +100,6 @@ public class Cliente_Vendedor {
     private int id_cliente_vendedor;
     private Cliente cliente;
     private Vendedor vendedor;
+    private ArrayList<Pedido> pedidos;
     private boolean active;
 }

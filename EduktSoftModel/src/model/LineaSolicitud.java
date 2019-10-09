@@ -12,6 +12,20 @@ package model;
 public class LineaSolicitud {
 
     /**
+     * @return the estadoSolicitud
+     */
+    public EstadoLineaPedido getEstadoSolicitud() {
+        return estadoSolicitud;
+    }
+
+    /**
+     * @param estadoSolicitud the estadoSolicitud to set
+     */
+    public void setEstadoSolicitud(EstadoLineaPedido estadoSolicitud) {
+        this.estadoSolicitud = estadoSolicitud;
+    }
+
+    /**
      * @return the id
      */
     public int getId() {
@@ -55,4 +69,5 @@ public class LineaSolicitud {
     private int id;
     private int cantidad;
     private LineaPedido lineaPedido;
+    private EstadoLineaPedido estadoSolicitud;
 }
