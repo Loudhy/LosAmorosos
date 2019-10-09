@@ -108,14 +108,18 @@ public class EduktSoft {
             System.out.println(nombre+" "+apellidos+" "+dni);
         }
         */
+        
         Area area1 = new Area("ADMINISTRADOR",1);
         DBController.insertarArea(area1);
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         Empleado empleado1 = new Empleado("76272879","Juan Diego","Villegas",
                 formatoFecha.parse("1999-01-29"),"2852878","a2016731@pucp.edu.pe",Soltero,2500,area1,
                 formatoFecha.parse("2016-09-16"));
-    
+        
+        Usuario usuario1 = new Usuario("caricato","abcd1234",empleado1);
         DBController.insertarEmpleado(empleado1);
+        DBController.insertarUsuario(usuario1);
+        
         
         PasswordService password = new PasswordService();
         password.enviarCorreo("a2016731@pucp.edu.pe");

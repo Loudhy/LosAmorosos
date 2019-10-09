@@ -56,10 +56,11 @@ public class PasswordService {
         password = randomAlphaNumeric(6);
         String mensaje = "Muy buenas," + empleado.getNombre() + ", esta es tu nueva contraseña" + "\n" + password;
         Usuario usuario = new Usuario();
-        DBController.buscarUsuarioPorEmpleado(empleado);
+        usuario = DBController.buscarUsuarioPorEmpleado(empleado);
         usuario.setContraseña(password);
         DBController.actualizarUsuario(usuario);
         MimeMessage mail = new MimeMessage(sesion);
+        
         try { 
             mail.setFrom(new InternetAddress(correoEmpresa));
             mail.addRecipient(Message.RecipientType.TO, new InternetAddress(correoDestinatario));
