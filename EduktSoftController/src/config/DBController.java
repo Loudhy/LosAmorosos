@@ -224,8 +224,8 @@ public abstract class DBController {
         return daoFactory.getPedidoDAO().listarPorCliente(cliente);
     }
     
-    public static ArrayList<Pedido> listarPedidosPorVendedor(Vendedor vendedor){
-        return daoFactory.getPedidoDAO().listarPorVendedor(vendedor);
+    public static ArrayList<Pedido> listarPedidosPorVendedor(Vendedor vendedor,Date fechaIni, Date fechaFin){
+        return daoFactory.getPedidoDAO().listarPorVendedor(vendedor,fechaIni,fechaFin);
     }
     
     public static ArrayList<LineaPedido> listarLineasPedidoEnRangoDeFechas(Date fechaIni, Date fechaFin){

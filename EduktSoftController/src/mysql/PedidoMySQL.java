@@ -122,13 +122,15 @@ public class PedidoMySQL implements PedidoDAO{
     }
 
     @Override
-    public ArrayList<Pedido> listarPorVendedor(Vendedor vendedor) {
+    public ArrayList<Pedido> listarPorVendedor(Vendedor vendedor,Date fechaIni, Date fechaFin) {
         ArrayList<Pedido> pedidos = new ArrayList<>();
         
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call LISTAR_PEDIDO_POR_VENDEDOR(?)}");
+            cs = con.prepareCall("{call LISTAR_PEDIDO_POR_VENDEDOR(?,?,?)}");
             cs.setInt("_ID_VENDEDOR", vendedor.getId_vendedor());
+            cs.setDate("_FECHA_INI",new java.sql.Date(fechaIni.getTime()));
+            cs.setDate("_FECHA_FIN", new java.sql.Date(fechaFin.getTime()));
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 Pedido pedido = new Pedido();

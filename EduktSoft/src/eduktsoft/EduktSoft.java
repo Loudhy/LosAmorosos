@@ -109,7 +109,7 @@ public class EduktSoft {
         }
         */
         
-        Area area1 = new Area("ADMINISTRADOR",1);
+        /*Area area1 = new Area("ADMINISTRADOR",1);
         DBController.insertarArea(area1);
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         Empleado empleado1 = new Empleado("76272879","Juan Diego","Villegas",
@@ -123,6 +123,10 @@ public class EduktSoft {
         
         PasswordService password = new PasswordService();
         password.enviarCorreo("a2016731@pucp.edu.pe");
+|       */
+        
+            
+
     }
     
 }

@@ -21,7 +21,7 @@ public interface PedidoDAO {
     int insertar(Pedido pedido);
     int actualizar(Pedido pedido);
     int eliminar(int id_pedido);
-    ArrayList<Pedido> listarPorVendedor(Vendedor vendedor);
+    ArrayList<Pedido> listarPorVendedor(Vendedor vendedor,Date fechaIni,Date fechaFin);
     ArrayList<Pedido> listarPorCliente(Cliente cliente);
     ArrayList<LineaPedido> listarLineasPedido(Pedido pedido);
     ArrayList<LineaPedido> listarLineasPedidoEnRangoFechas(Date fechaIni,Date fechaFin);
