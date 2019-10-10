@@ -20,29 +20,11 @@ public class VentasService {
             //int dato = (int)aux.getTotal();            
             datos.addValue(aux.getTotal(),"Grafica 1","");                        
         }
-        grafico = ChartFactory.createLineChart("Grafica Prueba", "Eje X", "Eje Y",datos ,PlotOrientation.VERTICAL, true, true, false);
+        grafico = ChartFactory.createLineChart("Grafica Prueba", "Instancia de Venta", "Cantidad vendida",datos ,PlotOrientation.VERTICAL, true, true, false);
         ChartPanel cPanel = new ChartPanel(grafico);
         JFrame informacion = new JFrame("Grafica");
         informacion.getContentPane().add(cPanel);
         informacion.pack();
         informacion.setVisible(true);
     }
-    /*public void graphPorProducto(Date fechaInicio, Date fechaFin, String nombreProducto){
-        JFreeChart grafico = null;
-        DefaultCategoryDataset datos = new DefaultCategoryDataset();
-        ArrayList<Producto> productos = new ArrayList<>();
-        // pedidos = DBController.listarPedidos(fechaInicio,fechaFin,nombreVendedor);
-        for(Pedido aux : pedidos){
-            //int dato = (int)aux.getTotal();
-            
-            datos.addValue(aux.getTotal(),"Grafica 1","");                        
-        }
-        grafico = ChartFactory.createLineChart("Grafica Prueba", "Eje X", "Eje Y",datos ,PlotOrientation.VERTICAL, true, true, false);
-        ChartPanel cPanel = new ChartPanel(grafico);
-        JFrame informacion = new JFrame("Grafica");
-        informacion.getContentPane().add(cPanel);
-        informacion.pack();
-        informacion.setVisible(true);
-    }
-    */
 }

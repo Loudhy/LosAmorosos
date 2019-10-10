@@ -14,10 +14,7 @@ public class EmpleadosService {
         }
         if (filtro == "Area"){
             empleados = DBController.listarEmpleadosPorArea(area);            
-        }
-        /*if (filtro == "Nombre"){
-            empleados = DBController
-        }*/
+        }        
         return empleados;
     }
     
@@ -26,7 +23,7 @@ public class EmpleadosService {
         return empleados.size();
     }
     public int editarEmpleado(Empleado empleado){
-        int resultado = 0;
+        int resultado = 0;        
         resultado = DBController.actualizarEmpleado(empleado);
         return resultado;        
     }

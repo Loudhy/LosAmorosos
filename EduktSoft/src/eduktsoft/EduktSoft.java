@@ -23,6 +23,7 @@ import model.Producto;
 import model.Provincia;
 import model.Usuario;
 import model.Vendedor;
+import reportes.VentasService;
 
 /**
  *
@@ -124,9 +125,17 @@ public class EduktSoft {
         PasswordService password = new PasswordService();
         password.enviarCorreo("a2016731@pucp.edu.pe");
 |       */
+        Area area2 = new Area("COMERCIAL",2);        
+        //DBController.insertarArea(area2);
+        area2.setId(1);
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+        Vendedor vendedor1 = new Vendedor("76272879","Juan Diego","Villegas",
+                formatoFecha.parse("1999-01-29"),"2852878","caricato665@gmail.com",Soltero,2500,area2,
+                formatoFecha.parse("2016-09-16"));
         
-            
+        vendedor1.setId_vendedor(1);
+        VentasService ventas = new VentasService();       
+        ventas.graphPorVendedor(formatoFecha.parse("1999-01-29"), formatoFecha.parse("3000-01-29"), vendedor1);
 
     }
-    
 }

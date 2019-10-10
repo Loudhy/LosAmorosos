@@ -46,7 +46,7 @@ public class SolicitudMySQL implements SolicitudDAO{
             resultado = cs.executeUpdate();
             solicitud.setId(cs.getInt("_ID_SOLICITUD"));
             for (LineaSolicitud aux: solicitud.getLineasSolicitud()){
-                cs = con.prepareCall("{call INSERTAR_LINEA_SOLICITUD(?,?,?,?,?)}");
+                cs = con.prepareCall("{call INSERTAR_LINEA_SOLICITUD(?,?,?,?,?,?)}");
                 cs.setInt("_ID_SOLICITUD",solicitud.getId());
                 cs.setInt("_ID_LINEA_PEDIDO",aux.getLineaPedido().getId());
                 cs.setInt("_CANTIDAD",aux.getLineaPedido().getCantidadPorAtender());
@@ -119,6 +119,7 @@ public class SolicitudMySQL implements SolicitudDAO{
             while (rs.next()){
                 LineaSolicitud linea = new LineaSolicitud();
                 linea.setId(rs.getInt("ID_LINEA_SOLICITUD"));
+                linea.setEstadoSolicitud(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_SOLICITUD")));
                 linea.getLineaPedido().setCantidad(rs.getInt("CANTIDAD"));
                 linea.getLineaPedido().setCantidadPorAtender(rs.getInt("CANTIDAD_A_ATENDER"));
                 linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_PEDIDO")));
@@ -149,7 +150,8 @@ public class SolicitudMySQL implements SolicitudDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaRegistro);
                 solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
-                solicitud.setLineasSolicitud(listarLineasSolicitud(solicitud));
+                ArrayList<LineaSolicitud> lineas = listarLineasSolicitud(solicitud);
+                solicitud.setLineasSolicitud(lineas);
                 solicitudes.add(solicitud);
             }
         }catch (SQLException ex) {
