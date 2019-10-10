@@ -41,6 +41,7 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
+        
         //Probando productos----Imp 2
         Producto prod1 = new Producto(50,15.3f,"Aros apilables","Juego didactico");
         Producto prod2 = new Producto(30,20.6f,"Rompecabeza 30 fichas Gusano","Rompecabeza");
@@ -51,7 +52,7 @@ public class EduktSoft {
         System.out.println("Producto insertado correctamente");
         DBController.insertarProducto(prod3);
         System.out.println("Producto insertado correctamente");
-            
+          
         //Probando lista de productos ----- Imp 3
         //Algoritmo para listar los productos acumulados en la interfaz
         //de Logistica
@@ -82,11 +83,11 @@ public class EduktSoft {
                 formatoFecha.parse("2016-09-16"));
         DBController.insertarVendedor(vendedor1);
         Cliente_Vendedor relacion1 = new Cliente_Vendedor(cliente1,vendedor1);
-        DBController.insertarClienteVendedor(relacion1);
+        //DBController.insertarClienteVendedor(relacion1);
         pedido1.setCliente_vendedor(relacion1);
         pedido1.setFechaRegistro(format1.parse("2019-10-08"));
         pedido1.setEstadoPedido(EstadoPedido.Pendiente);
-        DBController.insertarPedido(pedido1);
+        //DBController.insertarPedido(pedido1);
         
         Pedido pedido2 = new Pedido();
         pedido2.insertarLineaPedido(linea1);
@@ -94,7 +95,7 @@ public class EduktSoft {
         pedido2.setCliente_vendedor(relacion1);
         pedido2.setFechaRegistro(format1.parse("2019-10-08"));
         pedido2.setEstadoPedido(EstadoPedido.Pendiente);
-        DBController.insertarPedido(pedido2);
+        //DBController.insertarPedido(pedido2);
         
         LineaSolicitud ls1 = new LineaSolicitud();
         ls1.setCantidad(50);
@@ -116,7 +117,7 @@ public class EduktSoft {
         DBController.insertarArea(area1);
         DBController.insertarArea(area3);
         Empleado empleado1 = new Empleado("76272879","Juan Diego","Villegas",
-                formatoFecha.parse("1999-01-29"),"2852878","caricato665@gmail.com",Soltero,2500,area1,
+                formatoFecha.parse("1999-01-29"),"2852878","a20151593@pucp.edu.pe",Soltero,2500,area1,
                 formatoFecha.parse("2016-09-16"));
         Empleado empleado2 = new Empleado("15441","ASD FGD","SACFVFAS",
                 formatoFecha.parse("1999-01-29"),"256","caricato665@gmail.com",Soltero,2500,area3,
@@ -125,7 +126,7 @@ public class EduktSoft {
         DBController.insertarEmpleado(empleado1);
         sol1.setLogistico(empleado2);
         sol1.setFacturador(empleado1);
-        DBController.insertarSolicitud(sol1);
+        //DBController.insertarSolicitud(sol1);
         
         LineaSolicitud ls3 = new LineaSolicitud();
         ls3.setCantidad(50);
@@ -143,7 +144,7 @@ public class EduktSoft {
         sol2.setEstadoSolicitud(EstadoSolicitud.Pendiente);
         sol2.setLogistico(empleado2);
         sol2.setFacturador(empleado1);
-        DBController.insertarSolicitud(sol2);
+        //DBController.insertarSolicitud(sol2);
         
         
     
@@ -241,6 +242,11 @@ public class EduktSoft {
                 //retonar formulario administracion
                 break;        
         }
+        
+        PasswordService pass = new PasswordService();
+        pass.enviarCorreo("a20151593@pucp.edu.pe");
+        VentasService ventas = new VentasService();
+        ventas.graphPorVendedor(formatoFecha.parse("1999-01-29"), formatoFecha.parse("3000-01-29"), vendedor1);
 
     }
 }
