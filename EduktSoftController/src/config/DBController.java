@@ -13,6 +13,7 @@ import model.Cliente_Vendedor;
 import model.DatosGenerales;
 import model.Departamento;
 import model.Empleado;
+import model.EstadoPedido;
 import model.EstadoSolicitud;
 import model.LineaPedido;
 import model.LineaSolicitud;
@@ -224,8 +225,20 @@ public abstract class DBController {
         return daoFactory.getPedidoDAO().listarPorCliente(cliente);
     }
     
-    public static ArrayList<Pedido> listarPedidosPorVendedor(Vendedor vendedor,Date fechaIni, Date fechaFin){
-        return daoFactory.getPedidoDAO().listarPorVendedor(vendedor,fechaIni,fechaFin);
+    public static ArrayList<Pedido> listarPedidosPorVendedor(Vendedor vendedor){
+        return daoFactory.getPedidoDAO().listarPorVendedor(vendedor);
+    }
+    
+    public static ArrayList<Pedido> listarPedidosPorEstadoDePedido(EstadoPedido estado){
+        return daoFactory.getPedidoDAO().listarPorEstadoDePedido(estado);
+    }
+    
+    public static ArrayList<LineaPedido> listarLineasDePedido(Pedido pedido){
+        return daoFactory.getPedidoDAO().listarLineasPedido(pedido);
+    }
+    
+    public static ArrayList<Pedido> listarPedidosPorVendedorPorRangoDeFechas(Vendedor vendedor,Date fechaIni, Date fechaFin){
+        return daoFactory.getPedidoDAO().listarPorVendedorPorRangoDeFechas(vendedor,fechaIni,fechaFin);
     }
     
     public static ArrayList<LineaPedido> listarLineasPedidoEnRangoDeFechas(Date fechaIni, Date fechaFin){

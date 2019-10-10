@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import model.EstadoLineaPedido;
 import model.EstadoSolicitud;
 import model.LineaSolicitud;
+import model.Pedido;
 import model.Solicitud;
 
 /**
@@ -191,5 +192,35 @@ public class SolicitudMySQL implements SolicitudDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return solicitudes;
+    }
+
+    @Override
+    public Solicitud buscarSolicitudPorPedido(Pedido pedido) {
+        Solicitud solicitud = new Solicitud();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_SOLICITUD_POR_PEDIDO(?)}");
+            cs.setInt("_ID_PEDIDO", pedido.getId());
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()){
+                solicitud.setId(rs.getInt("ID_SOLICITUD"));
+                solicitud.setEstadoSolicitud(EstadoSolicitud.valueOf(rs.getString("ESTADO_SOLICITUD")));
+                java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaRegistro);
+                solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
+                solicitud.getFacturador().setId(rs.getInt("ID_FACTURADOR"));
+                solicitud.getLogistico().setId(rs.getInt("ID_LOGISTICO"));
+                solicitud.setLineasSolicitud(listarLineasSolicitud(solicitud));
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        
+        return solicitud;
     }
 }

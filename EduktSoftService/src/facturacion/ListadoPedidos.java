@@ -15,26 +15,23 @@ import model.Producto;
 import model.Pedido;
 import model.Vendedor;
 
-public class ListadoPedidosService {    
+public class ListadoPedidos {    
     public ArrayList<Pedido> listar(String filtro,Cliente cliente,Vendedor vendedor,EstadoPedido estado){
         ArrayList<Pedido> pedidos = new ArrayList<>();
-        if (filtro == "Default"){
-            pedidos = DBController.listarPedidos();    //por fechas       
-        }
-        else if (filtro == "Cliente"){
+        if (filtro == "Cliente"){
             pedidos = DBController.listarPedidosPorCliente(cliente);            
         }
         else if (filtro == "Vendedor"){
             pedidos = DBController.listarPedidosPorVendedor(vendedor);
         }
         else if (filtro == "Estado"){
-            pedidos = DBController.listarPedidosPorEstado(estado);
+            pedidos = DBController.listarPedidosPorEstadoDePedido(estado);
         }
         return pedidos;
     }
     public ArrayList<LineaPedido> listarLineasDePedido(Pedido pedido){
         ArrayList<LineaPedido> lineasPedido = new ArrayList<>();
-        lineasPedido = DBController.listarLineasPedido(pedido);
+        lineasPedido = DBController.listarLineasDePedido(pedido);
         return lineasPedido;
     }
     

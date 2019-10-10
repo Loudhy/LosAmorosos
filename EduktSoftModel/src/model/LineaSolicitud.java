@@ -66,6 +66,11 @@ public class LineaSolicitud {
     public void setLineaPedido(LineaPedido lineaPedido) {
         this.lineaPedido = lineaPedido;
     }
+    
+    public LineaSolicitud(){
+        lineaPedido = new LineaPedido();
+    }
+    
     private int id;
     private int cantidad;
     private LineaPedido lineaPedido;
