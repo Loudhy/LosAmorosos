@@ -98,6 +98,36 @@ public class ProvinciaMySQL implements ProvinciaDAO {
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        return provincias;    }
+        return provincias;    
+    }
+
+    @Override
+    public Provincia encontrarPorId(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Provincia> listar() {
+        ArrayList<Provincia> provincias = new ArrayList<Provincia>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_PROVINCIAS()}");
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Provincia provincia = new Provincia();
+                provincia.setId(rs.getInt("ID_PROVINCIA"));
+                provincia.setNombre(rs.getString("NOMBRE_PROVINCIA"));
+                provincia.getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
+                provincia.getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                provincia.setActive(rs.getBoolean("ACTIVE"));
+                provincias.add(provincia);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return provincias; 
+    }
     
 }

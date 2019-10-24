@@ -101,8 +101,8 @@ public abstract class DBController {
         return daoFactory.getEmpleadoDAO().buscarEmpleadoPorDni(dni);
     }
     
-    public static Empleado buscarEmpleadoPorNombre(String nombre){
-        return daoFactory.getEmpleadoDAO().buscarEmpleadoPorApellidos(nombre);
+    public static Empleado buscarEmpleadoPorNombre(String apellidoPaterno, String apellidoMaterno){
+        return daoFactory.getEmpleadoDAO().buscarEmpleadoPorApellidos(apellidoPaterno,apellidoMaterno);
     }
     
     public static int insertarDatosGenerales(DatosGenerales datosGenerales){
@@ -263,7 +263,7 @@ public abstract class DBController {
     }
     
     public static ArrayList<Solicitud> listarSolicitudes(){
-        return daoFactory.getSolicitudDAO().listarSolicitudes();
+        return daoFactory.getSolicitudDAO().listar();
     }
     
     public static ArrayList<Solicitud> listarSolicitudesPorEstadoDeSolicitud(EstadoSolicitud estadoSolicitud){

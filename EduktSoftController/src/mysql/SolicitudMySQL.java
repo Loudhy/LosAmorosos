@@ -134,7 +134,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     }
 
     @Override
-    public ArrayList<Solicitud> listarSolicitudes() {
+    public ArrayList<Solicitud> listar() {
         ArrayList<Solicitud> solicitudes = new ArrayList<Solicitud>();
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
@@ -218,4 +218,11 @@ public class SolicitudMySQL implements SolicitudDAO{
         
         return solicitud;
     }
+
+    @Override
+    public Solicitud encontrarPorId(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 }

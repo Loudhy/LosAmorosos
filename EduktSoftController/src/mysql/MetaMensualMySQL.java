@@ -115,5 +115,10 @@ public class MetaMensualMySQL implements MetaMensualDAO {
         }
         return metasMensuales;
     }
+
+    @Override
+    public MetaMensual encontrarPorId(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

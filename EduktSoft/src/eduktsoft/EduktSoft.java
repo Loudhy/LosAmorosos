@@ -15,7 +15,7 @@ import model.Cliente_Vendedor;
 import model.Departamento;
 import model.Empleado;
 import static model.EstadoCivil.Soltero;
-import static model.EstadoLineaPedido.Pendiente;
+import static model.EstadoLineaPedido.Solicitado;
 import model.EstadoPedido;
 import model.LineaPedido;
 import model.Pedido;
@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import model.Area;
 import model.EstadoCivil;
+import model.EstadoLineaPedido;
+import model.EstadoLineaSolicitud;
 /**
  *
  * @author UsuarioA
@@ -56,9 +58,9 @@ public class EduktSoft {
         //Probando lista de productos ----- Imp 3
         //Algoritmo para listar los productos acumulados en la interfaz
         //de Logistica
-        Departamento departamento1 = new Departamento("LIMA");
+        Departamento departamento1 = new Departamento("LIMA","123456");
         DBController.insertarDepartamento(departamento1);
-        Provincia provincia1 = new Provincia("BARRANCA",departamento1);
+        Provincia provincia1 = new Provincia("BARRANCA",departamento1,"654345");
         DBController.insertarProvincia(provincia1);
         
         Cliente cliente1 = new Cliente("76272879","Librerias GAA","2839255","Av Lima 231","libreriasGaa@gmail.com",provincia1);
@@ -70,21 +72,21 @@ public class EduktSoft {
         DBController.insertarProducto(producto2);
         
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        LineaPedido linea1 = new LineaPedido(producto1,50,Pendiente,format1.parse("2019-10-08"));
-        LineaPedido linea2 = new LineaPedido(producto2,70,Pendiente,format1.parse("2019-10-08"));
+        LineaPedido linea1 = new LineaPedido(producto1,50,EstadoLineaPedido.Solicitado,format1.parse("2019-10-08"));
+        LineaPedido linea2 = new LineaPedido(producto2,70,EstadoLineaPedido.Solicitado,format1.parse("2019-10-08"));
         Pedido pedido1 = new Pedido();
         pedido1.insertarLineaPedido(linea2);
         pedido1.insertarLineaPedido(linea1);
         Area area2 = new Area("COMERCIAL",2);
         DBController.insertarArea(area2);
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-        Vendedor vendedor1 = new Vendedor("76272879","Juan Diego","Villegas",
+        Vendedor vendedor1 = new Vendedor("76272879","Juan Diego","Villegas", "Diaz",
                 formatoFecha.parse("1999-01-29"),"2852878","caricato665@gmail.com",Soltero,2500,area2,
                 formatoFecha.parse("2016-09-16"));
         DBController.insertarVendedor(vendedor1);
         Cliente_Vendedor relacion1 = new Cliente_Vendedor(cliente1,vendedor1);
         DBController.insertarClienteVendedor(relacion1);
-        pedido1.setCliente_vendedor(relacion1);
+        pedido1.setClienteVendedor(relacion1);
         pedido1.setFechaRegistro(format1.parse("2019-10-08"));
         pedido1.setEstadoPedido(EstadoPedido.Pendiente);
         DBController.insertarPedido(pedido1);
@@ -92,7 +94,7 @@ public class EduktSoft {
         Pedido pedido2 = new Pedido();
         pedido2.insertarLineaPedido(linea1);
         pedido2.insertarLineaPedido(linea2);
-        pedido2.setCliente_vendedor(relacion1);
+        pedido2.setClienteVendedor(relacion1);
         pedido2.setFechaRegistro(format1.parse("2019-10-08"));
         pedido2.setEstadoPedido(EstadoPedido.Pendiente);
         DBController.insertarPedido(pedido2);
@@ -100,11 +102,11 @@ public class EduktSoft {
         LineaSolicitud ls1 = new LineaSolicitud();
         ls1.setCantidad(50);
         ls1.setLineaPedido(linea1);
-        ls1.setEstadoSolicitud(Pendiente);
+        ls1.setEstadoSolicitud(EstadoLineaSolicitud.Pendiente);
         LineaSolicitud ls2 = new LineaSolicitud();
         ls2.setCantidad(70);
         ls2.setLineaPedido(linea2);
-        ls2.setEstadoSolicitud(Pendiente);
+        ls2.setEstadoSolicitud(EstadoLineaSolicitud.Pendiente);
         Solicitud sol1 = new Solicitud();
         sol1.getLineasSolicitud().add(ls1);
         sol1.getLineasSolicitud().add(ls2);
@@ -116,34 +118,30 @@ public class EduktSoft {
         Area area3 = new Area("LOGISTICA",5);
         DBController.insertarArea(area1);
         DBController.insertarArea(area3);
-        Empleado empleado1 = new Empleado("76272879","Juan Diego","Villegas",
+        Empleado empleado1 = new Empleado("76272879","Juan Diego","Villegas", "Diaz",
                 formatoFecha.parse("1999-01-29"),"2852878","a20151593@pucp.edu.pe",Soltero,2500,area1,
                 formatoFecha.parse("2016-09-16"));
-        Empleado empleado2 = new Empleado("15441","ASD FGD","SACFVFAS",
+        Empleado empleado2 = new Empleado("15441","Gian","Guzman", "Tito",
                 formatoFecha.parse("1999-01-29"),"256","caricato665@gmail.com",Soltero,2500,area3,
                 formatoFecha.parse("2016-09-16"));
         DBController.insertarEmpleado(empleado2);
         DBController.insertarEmpleado(empleado1);
-        sol1.setLogistico(empleado2);
-        sol1.setFacturador(empleado1);
         DBController.insertarSolicitud(sol1);
         
         LineaSolicitud ls3 = new LineaSolicitud();
         ls3.setCantidad(50);
         ls3.setLineaPedido(linea1);
-        ls3.setEstadoSolicitud(Pendiente);
+        ls3.setEstadoSolicitud(EstadoLineaSolicitud.Pendiente);
         LineaSolicitud ls4 = new LineaSolicitud();
         ls4.setCantidad(70);
         ls4.setLineaPedido(linea2);
-        ls4.setEstadoSolicitud(Pendiente);
+        ls4.setEstadoSolicitud(EstadoLineaSolicitud.Pendiente);
         Solicitud sol2 = new Solicitud();
         sol2.getLineasSolicitud().add(ls3);
         sol2.getLineasSolicitud().add(ls4);
         sol2.setFechaRegistro(formatoFecha.parse("2015-05-26"));
         sol2.setPedido(pedido2);
         sol2.setEstadoSolicitud(EstadoSolicitud.Pendiente);
-        sol2.setLogistico(empleado2);
-        sol2.setFacturador(empleado1);
         DBController.insertarSolicitud(sol2);
         
         
@@ -217,11 +215,11 @@ public class EduktSoft {
         //Probando devolver un area a un empleado --- Imp 1
                 
         EstadoCivil ec = null;       
-        Empleado emp1 = new Empleado("77208434","Gianmarco","Fernandez Murga",
+        Empleado emp1 = new Empleado("77208434","Gianmarco","Fernandez", "Murga",
                         formatoFecha.parse("05-09-1997"),"993935124",
                         "a20140667@pucp.pe",ec.Casado,1500f,area1,formatoFecha.parse("09-10-2019"));
         DBController.insertarEmpleado(emp1);
-        Usuario user1 = new Usuario("TrillMage","abcd1234",emp1);
+        Usuario user1 = new Usuario("TrillMage","abcd1234");
         DBController.insertarUsuario(user1);
         String nombreArea;
         nombreArea=DBController.buscarAreaPorUsuario(user1);

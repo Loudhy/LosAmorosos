@@ -15,9 +15,6 @@ import model.Area;
  *
  * @author UsuarioA
  */
-public interface AreaDAO {
-    int insertar(Area area);
-    int actualizar(Area area);
-    int eliminar(int id_area);
-    ArrayList<Area> listar();
+public interface AreaDAO extends CrudDAO<Area> {
+
 }

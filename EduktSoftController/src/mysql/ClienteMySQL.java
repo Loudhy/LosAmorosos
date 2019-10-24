@@ -103,5 +103,20 @@ public class ClienteMySQL implements ClienteDAO{
         return clientes;
     }
 
+    @Override
+    public Cliente encontrarPorId(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int eliminar(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Cliente> listar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 }

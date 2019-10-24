@@ -13,7 +13,6 @@ import model.DatosGenerales;
  *
  * @author UsuarioA
  */
-public interface DatosGeneralesDAO {
-    int insertar(DatosGenerales datosGenerales);
+public interface DatosGeneralesDAO extends CrudDAO<DatosGenerales> {
     DatosGenerales encontrarPorFecha(Date fecha);
 }

@@ -1,12 +1,13 @@
 package model;
 
 public class ObjetivoVendedor {
-    
+
     private int id;
     private MetaMensual metaMensual;
     private float monto;
     private float bono;
     private float comision;
+    private Vendedor vendedor;
     private boolean active;
     
     public ObjetivoVendedor(){        
@@ -16,6 +17,7 @@ public class ObjetivoVendedor {
         this.metaMensual = metaMensual;
         this.monto = monto;
         this.bono = bono;
+        this.vendedor = new Vendedor();
         this.comision = comision;
         this.active = true;
     }    
@@ -68,5 +70,12 @@ public class ObjetivoVendedor {
         this.active = active;
     }
     
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+    }
     
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
 }

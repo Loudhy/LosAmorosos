@@ -12,9 +12,6 @@ import model.Departamento;
  *
  * @author UsuarioA
  */
-public interface DepartamentoDAO {
-    int insertar(Departamento departamento);
-    int actualizar(Departamento departamento);
-    int eliminar(int id_departamento);
+public interface DepartamentoDAO extends CrudDAO<Departamento> {
     ArrayList<Departamento> listar();
 }

@@ -13,9 +13,6 @@ import model.Provincia;
  *
  * @author UsuarioA
  */
-public interface ProvinciaDAO {
-    int insertar(Provincia provincia);
-    int actualizar(Provincia provincia);
-    int eliminar(int id_provincia);
+public interface ProvinciaDAO extends CrudDAO<Provincia> {
     ArrayList<Provincia> listarPorDepartamento(Departamento departamento);
 }

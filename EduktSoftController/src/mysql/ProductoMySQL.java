@@ -133,5 +133,15 @@ public class ProductoMySQL implements ProductoDAO{
         }
         return producto;
     }
+
+    @Override
+    public Producto encontrarPorId(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Producto> listar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

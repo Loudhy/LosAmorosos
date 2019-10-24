@@ -96,5 +96,11 @@ public class DepartamentoMySQL implements DepartamentoDAO{
         }
         return departamentos;
     }
+
+    @Override
+    public Departamento encontrarPorId(int id) {
+        Departamento departamento = null;
+        return departamento;
+    }
     
 }

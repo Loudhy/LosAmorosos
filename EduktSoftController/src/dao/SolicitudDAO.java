@@ -15,12 +15,8 @@ import model.Solicitud;
  *
  * @author UsuarioA
  */
-public interface SolicitudDAO {
-    int insertar(Solicitud solicitud);
-    int actualizar(Solicitud solicitud);
-    int eliminar(int id_solicitud);
+public interface SolicitudDAO extends CrudDAO<Solicitud> {
     ArrayList<LineaSolicitud> listarLineasSolicitud(Solicitud solicitud);
-    ArrayList<Solicitud> listarSolicitudes();
     ArrayList<Solicitud> listarSolicitudesPorEstado(EstadoSolicitud estado);
     Solicitud buscarSolicitudPorPedido(Pedido pedido);
 }

@@ -13,8 +13,6 @@ import model.Vendedor;
  *
  * @author UsuarioA
  */
-public interface ClienteDAO {
-    int insertar(Cliente cliente);
-    int actualizar(Cliente cliente);
+public interface ClienteDAO extends CrudDAO<Cliente> {
     ArrayList<Cliente> listarClientesPorVendedor(Vendedor vendedor);
 }

@@ -12,9 +12,6 @@ import model.MetaMensual;
  *
  * @author UsuarioA
  */
-public interface MetaMensualDAO {
-    int insertar(MetaMensual metaMensual);
-    int actualizar(MetaMensual metaMensual);
-    int eliminar(int id_meta_mensual);
+public interface MetaMensualDAO extends CrudDAO<MetaMensual>{
     ArrayList<MetaMensual> listar();
 }

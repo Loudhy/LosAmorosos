@@ -18,10 +18,7 @@ import model.Vendedor;
  *
  * @author alulab14
  */
-public interface PedidoDAO {
-    int insertar(Pedido pedido);
-    int actualizar(Pedido pedido);
-    int eliminar(int id_pedido);
+public interface PedidoDAO extends CrudDAO<Pedido> {
     ArrayList<Pedido> listarPorVendedor(Vendedor vendedor);
     ArrayList<Pedido> listarPorVendedorPorRangoDeFechas(Vendedor vendedor,Date fechaIni,Date fechaFin);
     ArrayList<Pedido> listarPorCliente(Cliente cliente);

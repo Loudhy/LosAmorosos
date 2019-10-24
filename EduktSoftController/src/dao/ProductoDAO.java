@@ -12,10 +12,7 @@ import model.Producto;
  *
  * @author UsuarioA
  */
-public interface ProductoDAO {
-    int insertar(Producto producto);
-    int actualizar(Producto producto);
-    int eliminar(int id_producto);
+public interface ProductoDAO extends CrudDAO<Producto>{
     ArrayList<Producto> listarDisponibles();
     Producto buscarProductoPorNombre(String nombre);
 }

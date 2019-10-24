@@ -18,15 +18,15 @@ public class Cliente {
     }
     
     public Cliente(String ruc, String razonSocial, String telefono, String direccion,
-            String correo, Provincia provincia,TipoCliente tipoCliente, int puntaje){
+            String correo, Provincia provincia){
         this.ruc = ruc;
         this.razonSocial = razonSocial;
         this.telefono = telefono;
         this.direccion = direccion;
         this.correo = correo;
         this.provincia = provincia;
-        this.tipoCliente = tipoCliente;
-        this.puntaje = puntaje;
+        this.tipoCliente = TipoCliente.Pagador_Neutral;
+        this.puntaje = 50;
         this.active = true;
     }
         
