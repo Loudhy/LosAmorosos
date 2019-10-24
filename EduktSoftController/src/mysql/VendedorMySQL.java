@@ -40,7 +40,8 @@ public class VendedorMySQL implements VendedorDAO{
             cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?)} ");
             cs.setString("_DNI_EMPLEADO", vendedor.getDni());
             cs.setString("_NOMBRE_EMPLEADO", vendedor.getNombre());
-            cs.setString("_APELLIDOS", vendedor.getApellidos());            
+            cs.setString("_APELLIDO_PATERNO", vendedor.getApellidoPaterno());
+            cs.setString("_APELLIDO_MATERNO",vendedor.getApellidoMaterno());
             cs.setDate("_FECHA_NACIMIENTO", new java.sql.Date(vendedor.getFechaNacimiento().getTime()));
             cs.setString("_TELEFONO_EMPLEADO",vendedor.getTelefono());
             cs.setString("_CORREO_EMPLEADO", vendedor.getCorreo());
@@ -95,8 +96,8 @@ public class VendedorMySQL implements VendedorDAO{
                 pedido.setId(rs.getInt("ID_PEDIDO"));
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
-                pedido.getCliente_vendedor().getCliente().setId(rs.getInt("ID_CLIENTE"));
-                pedido.getCliente_vendedor().getCliente().setRazonSocial(rs.getString("NOMBRE_CLIENTE"));
+                pedido.getClienteVendedor().getCliente().setId(rs.getInt("ID_CLIENTE"));
+                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("NOMBRE_CLIENTE"));
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 String fechaAux = formatoFecha.format(fechaIngreso);

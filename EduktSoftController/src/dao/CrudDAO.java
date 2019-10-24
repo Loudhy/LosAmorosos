@@ -4,16 +4,16 @@
  * and open the template in the editor.
  */
 package dao;
-
 import java.util.ArrayList;
-import model.Empleado;
-import model.Usuario;
 
 /**
  *
- * @author UsuarioA
+ * @author alulab14
  */
-public interface UsuarioDAO extends CrudDAO<Usuario> {
-    String buscarArea(Usuario usuario);
-    Usuario buscarPorEmpleado(Empleado empleado);
+public interface CrudDAO<T> {
+    int insertar(T objeto);
+    T encontrarPorId(int id);
+    int actualizar(T objeto);
+    int eliminar(int id);
+    ArrayList<T> listar();
 }

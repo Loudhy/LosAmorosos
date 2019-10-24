@@ -83,11 +83,11 @@ public class EduktSoft {
                 formatoFecha.parse("2016-09-16"));
         DBController.insertarVendedor(vendedor1);
         Cliente_Vendedor relacion1 = new Cliente_Vendedor(cliente1,vendedor1);
-        //DBController.insertarClienteVendedor(relacion1);
+        DBController.insertarClienteVendedor(relacion1);
         pedido1.setCliente_vendedor(relacion1);
         pedido1.setFechaRegistro(format1.parse("2019-10-08"));
         pedido1.setEstadoPedido(EstadoPedido.Pendiente);
-        //DBController.insertarPedido(pedido1);
+        DBController.insertarPedido(pedido1);
         
         Pedido pedido2 = new Pedido();
         pedido2.insertarLineaPedido(linea1);
@@ -95,7 +95,7 @@ public class EduktSoft {
         pedido2.setCliente_vendedor(relacion1);
         pedido2.setFechaRegistro(format1.parse("2019-10-08"));
         pedido2.setEstadoPedido(EstadoPedido.Pendiente);
-        //DBController.insertarPedido(pedido2);
+        DBController.insertarPedido(pedido2);
         
         LineaSolicitud ls1 = new LineaSolicitud();
         ls1.setCantidad(50);
@@ -126,7 +126,7 @@ public class EduktSoft {
         DBController.insertarEmpleado(empleado1);
         sol1.setLogistico(empleado2);
         sol1.setFacturador(empleado1);
-        //DBController.insertarSolicitud(sol1);
+        DBController.insertarSolicitud(sol1);
         
         LineaSolicitud ls3 = new LineaSolicitud();
         ls3.setCantidad(50);
@@ -144,7 +144,7 @@ public class EduktSoft {
         sol2.setEstadoSolicitud(EstadoSolicitud.Pendiente);
         sol2.setLogistico(empleado2);
         sol2.setFacturador(empleado1);
-        //DBController.insertarSolicitud(sol2);
+        DBController.insertarSolicitud(sol2);
         
         
     

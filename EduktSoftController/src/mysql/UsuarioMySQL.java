@@ -145,5 +145,24 @@ public class UsuarioMySQL implements UsuarioDAO {
         }
         return usuario;
     }
+
+    @Override
+    public Usuario encontrarPorId(int id) {
+        Usuario usuario = new Usuario();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call ENCONTRAR_USUARIO_POR_ID(?)}");
+            cs.setInt("_ID_USUARIO",id);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return usuario;
+    }
     
 }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.EstadoLineaPedido;
+import model.EstadoLineaSolicitud;
 import model.EstadoSolicitud;
 import model.LineaSolicitud;
 import model.Pedido;
@@ -37,11 +38,9 @@ public class SolicitudMySQL implements SolicitudDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_SOLICITUD(?,?,?,?,?,?,?)}");
+            cs = con.prepareCall("{call INSERTAR_SOLICITUD(?,?,?,?,?)}");
             cs.setString("_ESTADO_SOLICITUD",solicitud.getEstadoSolicitud().toString());
             cs.setDate("_FECHA_REGISTRO", new java.sql.Date(solicitud.getFechaRegistro().getTime()));
-            cs.setInt("_ID_LOGISTICO",solicitud.getLogistico().getId());
-            cs.setInt("_ID_FACTURADOR",solicitud.getFacturador().getId());
             cs.setInt("_ID_PEDIDO",solicitud.getPedido().getId());
             cs.setBoolean("_ACTIVE",true);
             resultado = cs.executeUpdate();
@@ -69,12 +68,10 @@ public class SolicitudMySQL implements SolicitudDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_SOLICITUD(?,?,?,?,?,?)}");
+            cs = con.prepareCall("{call ACTUALIZAR_SOLICITUD(?,?,?,?)}");
             cs.setInt("_ID_SOLICITUD",solicitud.getId());
             cs.setString("_ESTADO_SOLICITUD",solicitud.getEstadoSolicitud().toString());
             cs.setDate("_FECHA_REGISTRO", new java.sql.Date(solicitud.getFechaRegistro().getTime()));
-            cs.setInt("_ID_LOGISTICO",solicitud.getLogistico().getId());
-            cs.setInt("_ID_FACTURADOR",solicitud.getFacturador().getId());
             cs.setInt("_ID_PEDIDO",solicitud.getPedido().getId());
             resultado = cs.executeUpdate();
             for (LineaSolicitud aux: solicitud.getLineasSolicitud()){
@@ -120,7 +117,7 @@ public class SolicitudMySQL implements SolicitudDAO{
             while (rs.next()){
                 LineaSolicitud linea = new LineaSolicitud();
                 linea.setId(rs.getInt("ID_LINEA_SOLICITUD"));
-                linea.setEstadoSolicitud(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_SOLICITUD")));
+                linea.setEstadoSolicitud(EstadoLineaSolicitud.valueOf(rs.getString("ESTADO_LINEA_SOLICITUD")));
                 linea.getLineaPedido().setCantidad(rs.getInt("CANTIDAD"));
                 linea.getLineaPedido().setCantidadPorAtender(rs.getInt("CANTIDAD_A_ATENDER"));
                 linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_PEDIDO")));
@@ -209,8 +206,6 @@ public class SolicitudMySQL implements SolicitudDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaRegistro);
                 solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
-                solicitud.getFacturador().setId(rs.getInt("ID_FACTURADOR"));
-                solicitud.getLogistico().setId(rs.getInt("ID_LOGISTICO"));
                 solicitud.setLineasSolicitud(listarLineasSolicitud(solicitud));
             }
         }catch (SQLException ex) {

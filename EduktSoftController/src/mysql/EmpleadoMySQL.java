@@ -35,10 +35,11 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         int resultado = 0;
         try{       
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
             cs.setString("_DNI_EMPLEADO", empleado.getDni());
             cs.setString("_NOMBRE_EMPLEADO", empleado.getNombre());
-            cs.setString("_APELLIDOS", empleado.getApellidos());            
+            cs.setString("_APELLIDO_PATERNO", empleado.getApellidoPaterno());
+            cs.setString("_APELLIDO_MATERNO",empleado.getApellidoMaterno());            
             cs.setDate("_FECHA_NACIMIENTO", new java.sql.Date(empleado.getFechaNacimiento().getTime()));
             cs.setString("_TELEFONO_EMPLEADO",empleado.getTelefono());
             cs.setString("_CORREO_EMPLEADO", empleado.getCorreo());
@@ -62,11 +63,12 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?)}");
+            cs = con.prepareCall("{call ACTUALIZAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?)}");
             cs.setInt("_ID_EMPLEADO", empleado.getId());
             cs.setString("_DNI_EMPLEADO", empleado.getDni());
             cs.setString("_NOMBRE_EMPLEADO", empleado.getNombre());
-            cs.setString("_APELLIDOS", empleado.getApellidos());            
+            cs.setString("_APELLIDO_PATERNO", empleado.getApellidoPaterno());
+            cs.setString("_APELLIDO_MATERNO",empleado.getApellidoMaterno());
             cs.setDate("_FECHA_NACIMIENTO", new java.sql.Date(empleado.getFechaNacimiento().getTime()));
             cs.setString("_TELEFONO_EMPLEADO",empleado.getTelefono());
             cs.setString("_CORREO_EMPLEADO", empleado.getCorreo());
@@ -111,7 +113,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
-                empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -151,7 +154,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
-                empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -179,18 +183,20 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     }
 
     @Override
-    public Empleado buscarEmpleadoPorApellidos(String apellidos) {
+    public Empleado buscarEmpleadoPorApellidos(String apellido_paterno,String apellido_materno) {
         Empleado empleado = null;
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_APELLIDOS(?)}");
-            cs.setString("_APELIDOS", apellidos);
+            cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_APELLIDOS(?,?)}");
+            cs.setString("_APELIDO_PATERNO", apellido_paterno);
+            cs.setString("_APELLIDO_MATERNO",apellido_materno);
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
                 empleado = new Empleado();
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
-                empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
@@ -228,7 +234,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado = new Empleado();
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
-                empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
@@ -266,7 +273,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado = new Empleado();
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
-                empleado.setApellidos(rs.getString("APELLIDOS_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
@@ -282,13 +290,49 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (SQLException | ParseException ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
+        return empleado;
+    }
+
+    @Override
+    public Empleado encontrarPorId(int id) {
+        Empleado empleado = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_ID(?)}");
+            cs.setInt("_ID_EMPLEADO", id);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()){
+                empleado = new Empleado();
+                empleado.setId(rs.getInt("ID_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+                empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                empleado.setDni(rs.getString("DNI_EMPLEADO"));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.getArea().setId(rs.getInt("ID_AREA"));
+                empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                empleado.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
+                empleado.setActive(rs.getBoolean("ACTIVE"));
+            }
+        }catch (SQLException | ParseException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        
         return empleado;
     }
     

@@ -13,13 +13,9 @@ import model.Empleado;
  *
  * @author UsuarioA
  */
-public interface EmpleadoDAO {
-    int insertar(Empleado empleado);
-    int actualizar(Empleado empleado);
-    int eliminar(int id_empleado);
-    ArrayList<Empleado> listar();
+public interface EmpleadoDAO extends CrudDAO<Empleado>{
     ArrayList<Empleado> listarPorArea(Area area);
     Empleado buscarEmpleadoPorDni(String dni);
-    Empleado buscarEmpleadoPorApellidos(String apellidos);
+    Empleado buscarEmpleadoPorApellidos(String apellido_paterno,String apellido_materno);
     Empleado buscarEmpleadoPorCorreo(String correo);
 }

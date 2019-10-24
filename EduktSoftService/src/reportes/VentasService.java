@@ -15,7 +15,7 @@ public class VentasService {
         JFreeChart grafico = null;
         DefaultCategoryDataset datos = new DefaultCategoryDataset();
         ArrayList<Pedido> pedidos = new ArrayList<>();
-        pedidos = DBController.listarPedidosPorVendedorPorRangoDeFechas(vendedor, fechaInicio,fechaFin);
+        pedidos = DBController.listarPedidosPorVendedorPorRangoDeFechas(vendedor,fechaInicio,fechaFin);
         for(Pedido aux : pedidos){
             //int dato = (int)aux.getTotal();            
             datos.addValue(aux.getTotal(),"Grafica 1","");                        
