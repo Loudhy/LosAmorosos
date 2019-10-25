@@ -11,16 +11,14 @@ package model;
  */
 public class Presentacion {
     private int id;
-    private String tamaño;
-    private String color;
+    private String diseño;
     private boolean active;
     
     public Presentacion(){       
     }
     
-    public Presentacion(String tamaño, String color){       
-        this.tamaño = tamaño;
-        this.color = color;
+    public Presentacion(String diseño){  
+        this.diseño = diseño;
         this.active = true;
     }
     
@@ -32,20 +30,12 @@ public class Presentacion {
         this.id = id;
     }
 
-    public String getTamaño() {
-        return tamaño;
+    public String getDiseño() {
+        return diseño;
     }
 
-    public void setTamaño(String tamaño) {
-        this.tamaño = tamaño;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
+    public void setDiseño(String diseño) {
+        this.diseño = diseño;
     }
 
     public boolean isActive() {
