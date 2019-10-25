@@ -1,7 +1,8 @@
 package model;
 
-public class Producto {
-    
+import java.util.ArrayList;
+
+public class Producto {    
     private int id;
     private int stockEmpresa;
     private int stockVendedor;
@@ -9,17 +10,21 @@ public class Producto {
     private String nombre;
     private String descripcion;
     private byte[] foto;
+    private ArrayList<Presentacion> presentaciones;
     private boolean active;
     
-    public Producto(){      
+    public Producto(){
+        presentaciones = new ArrayList<Presentacion>();
     }
     
-    public Producto(int stockEmpresa, float precioUnitario, String nombre, String descripcion){
+    public Producto(int stockEmpresa, float precioUnitario, String nombre, String descripcion,
+                    ArrayList<Presentacion> presentaciones){
         this.stockEmpresa = stockEmpresa;
         this.stockVendedor = stockEmpresa;
         this.precioUnitario = precioUnitario;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.presentaciones = presentaciones;
         this.active = true;
     }    
 
@@ -87,4 +92,11 @@ public class Producto {
         this.foto = foto;
     }
     
+    public ArrayList<Presentacion> getPresentaciones() {
+        return presentaciones;
+    }
+
+    public void setPresentaciones(ArrayList<Presentacion> presentaciones) {
+        this.presentaciones = presentaciones;
+    }
 }
