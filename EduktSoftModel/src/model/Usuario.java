@@ -14,7 +14,6 @@ public class Usuario {
     public Usuario(String nombre,String contraseña){
         this.nombre = nombre;    
         this.contraseña = contraseña;
-        this.estado = EstadoUsuario.Creado;
         this.active = true;
     }
 
