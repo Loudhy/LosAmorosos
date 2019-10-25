@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.Cliente;
+import model.Pedido;
 import model.Vendedor;
 
 /**
@@ -183,6 +184,23 @@ public class ClienteMySQL implements ClienteDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return clientes;
+    }
+
+    @Override
+    public Pedido buscarUltimoPedido(int id_cliente) {
+        Pedido pedido = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            con.prepareCall("{call BUSCAR_ULTIMO_PEDIDO(?)}");
+            cs.setInt("_ID_CLIENTE", id_cliente);
+            ResultSet rs = cs.executeQuery();
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        
+        return pedido;
     }
 
 

@@ -164,5 +164,24 @@ public class UsuarioMySQL implements UsuarioDAO {
         }
         return usuario;
     }
+
+    @Override
+    public int validarUsuario(String nombre, String contraseña) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_USUARIO(?,?)}");
+            cs.setString("_NOMBRE_USUARIO",nombre);
+            cs.setString("_CONTRASEÑA", contraseña);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next())
+                resultado = 1;
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
     
 }
