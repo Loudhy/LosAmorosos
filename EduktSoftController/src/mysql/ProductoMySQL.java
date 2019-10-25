@@ -40,8 +40,8 @@ public class ProductoMySQL implements ProductoDAO{
             resultado = cs.executeUpdate();
             producto.setId(cs.getInt("_ID_PRODUCTO"));
             for(Presentacion m:producto.getPresentaciones()){
-                cs = con.prepareCall("{call INSERTAR_PRESENTACION(?,?,?)} ");
-                cs.setInt("_ID_PRODUCTO", m.getId_producto());
+                cs = con.prepareCall("{call INSERTAR_PRESENTACION(?,?,?,?)} ");
+                cs.setInt("_ID_PRODUCTO", m.getProducto().getId());
                 cs.setString("_DISEÑO",m.getDiseño());
                 cs.setBoolean("_ACTIVE", m.isActive());
                 resultado=cs.executeUpdate();

@@ -11,14 +11,16 @@ package model;
  */
 public class Presentacion {
     private int id;
-    private int id_producto;
+    private Producto producto;
     private String diseño;
     private boolean active;
     
-    public Presentacion(){       
+    public Presentacion(){ 
+        this.producto = new Producto();
     }
     
-    public Presentacion(String diseño){  
+    public Presentacion(String diseño){
+        this.producto = new Producto();
         this.diseño = diseño;
         this.active = true;
     }
@@ -47,11 +49,11 @@ public class Presentacion {
         this.active = active;
     }
 
-    public int getId_producto() {
-        return id_producto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 }
