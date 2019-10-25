@@ -8,6 +8,7 @@ public class Producto {
     private float precioUnitario;
     private String nombre;
     private String descripcion;
+    private byte[] foto;
     private boolean active;
     
     public Producto(){      
@@ -76,6 +77,14 @@ public class Producto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
     
 }
