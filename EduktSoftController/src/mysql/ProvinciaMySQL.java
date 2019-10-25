@@ -103,7 +103,26 @@ public class ProvinciaMySQL implements ProvinciaDAO {
 
     @Override
     public Provincia encontrarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Provincia provincia = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_PROVINCIA_POR_ID()}");
+            cs.setInt("_ID_PROVINCIA", id);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                provincia = new Provincia();
+                provincia.setId(id);
+                provincia.setNombre(rs.getString("NOMBRE_PROVINCIA"));
+                provincia.getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
+                provincia.getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                provincia.setActive(rs.getBoolean("ACTIVE"));
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return provincia; 
     }
 
     @Override

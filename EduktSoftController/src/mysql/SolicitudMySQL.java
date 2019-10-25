@@ -221,7 +221,31 @@ public class SolicitudMySQL implements SolicitudDAO{
 
     @Override
     public Solicitud encontrarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Solicitud solicitud = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_SOLCITUD_POR_ID(?)}");
+            cs.setInt("_ID_SOLICITUD", id);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                solicitud = new Solicitud();
+                solicitud.setId(id);
+                solicitud.setEstadoSolicitud(EstadoSolicitud.valueOf(rs.getString("ESTADO_SOLICITUD")));
+                java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaRegistro);
+                solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
+                ArrayList<LineaSolicitud> lineas = listarLineasSolicitud(solicitud);
+                solicitud.setLineasSolicitud(lineas);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return solicitud;
     }
 
     

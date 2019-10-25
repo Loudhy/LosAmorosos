@@ -118,7 +118,34 @@ public class MetaMensualMySQL implements MetaMensualDAO {
 
     @Override
     public MetaMensual encontrarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MetaMensual metasMensual = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_META_MENSUAL_POR_ID(?)}");
+            cs.setInt("_ID_META_MENSUAL", id);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                MetaMensual metaMensual = new MetaMensual();
+                java.util.Date fechaInicio = new java.util.Date(rs.getDate("FECHA_INICIO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaInicio);
+                metaMensual.setFechaInicio(formatoFecha.parse(fechaAux));
+                java.util.Date fechaLimite = new java.util.Date(rs.getDate("FECHA_LIMITE").getTime());
+                fechaAux = formatoFecha.format(fechaLimite);
+                metaMensual.setFechaLimite(formatoFecha.parse(fechaAux));
+                metaMensual.setCantidadObjetivo(rs.getFloat("CANTIDAD_OBJETIVO"));
+                metaMensual.setDescripcion(rs.getString("DESCRIPCION_META_MENSUAL"));
+                metaMensual.setActive(rs.getBoolean("ACTIVE"));
+            }
+            
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return metasMensual;
     }
     
 }

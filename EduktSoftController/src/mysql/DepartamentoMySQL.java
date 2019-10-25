@@ -100,6 +100,22 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     @Override
     public Departamento encontrarPorId(int id) {
         Departamento departamento = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_DEPARTAMENTO_POR_ID(?)}");
+            cs.setInt("_ID_DEPARTAMENTO", id);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                departamento = new Departamento();
+                departamento.setId(id);
+                departamento.setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                departamento.setActive(rs.getBoolean("ACTIVE"));
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
         return departamento;
     }
     

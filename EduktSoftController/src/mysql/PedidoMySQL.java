@@ -382,7 +382,37 @@ public class PedidoMySQL implements PedidoDAO{
 
     @Override
     public Pedido encontrarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Pedido pedido = null;        
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_PEDIDO_POR_IDPEDIDO(?)}");
+            cs.setInt("_ID_PEDIDO", id);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                pedido = new Pedido();
+                pedido.setId(id);
+                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
+                pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
+                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                pedido.getClienteVendedor().getCliente().setCorreo(rs.getString("CORREO_CLIENTE"));
+                pedido.getClienteVendedor().getCliente().setDireccion(rs.getString("DIRECCION"));
+                pedido.getClienteVendedor().getCliente().setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                pedido.setActive(rs.getBoolean("ACTIVE"));
+                pedido.setLineasPedido(listarLineasPedido(pedido));
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return pedido;
     }
 
     @Override

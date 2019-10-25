@@ -14,10 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import model.Cliente_Vendedor;
 
-/**
- *
- * @author UsuarioA
- */
 public class ClienteVendedorMySQL implements ClienteVendedorDAO{
     Connection con = null;
     Statement st = null;
@@ -56,5 +52,7 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
         }
         return resultado;
     }
+    
+    
     
 }

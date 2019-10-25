@@ -107,14 +107,15 @@ public class AreaMySQL implements AreaDAO {
 
     @Override
     public Area encontrarPorId(int id) {
-        Area area = new Area();
+        Area area = null;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_AREA_POR_ID(?)}");
             cs.setInt("_ID_AREA", id);
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                area.setId(rs.getInt("ID_AREA"));
+                area = new Area();
+                area.setId(id);
                 area.setNombre(rs.getString("NOMBRE_AREA"));
                 area.setCodigo(rs.getInt("CODIGO_AREA"));
                 area.setActive(rs.getBoolean("ACTIVE"));
@@ -127,6 +128,4 @@ public class AreaMySQL implements AreaDAO {
         }
         return area;
     }
-    
-   
 }

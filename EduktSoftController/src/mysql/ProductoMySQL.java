@@ -99,6 +99,7 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setStockEmpresa(rs.getInt("STOCK_EMPRESA"));
                 producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
                 producto.setActive(rs.getBoolean("ACTIVE"));
+                productos.add(producto);
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -136,12 +137,54 @@ public class ProductoMySQL implements ProductoDAO{
 
     @Override
     public Producto encontrarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Producto producto = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_PRODUCTO_POR_ID(?)}");
+            cs.setInt("_ID_PRODUCTO", id);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                producto = new Producto();
+                producto.setId(id);
+                producto.setNombre(rs.getString("NOMBRE_PRODUCTO"));
+                producto.setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
+                producto.setDescripcion(rs.getString("DESCRIPCION"));
+                producto.setStockEmpresa(rs.getInt("STOCK_EMPRESA"));
+                producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
+                producto.setActive(rs.getBoolean("ACTIVE"));
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        
+        return producto;
     }
 
     @Override
     public ArrayList<Producto> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Producto> productos = new ArrayList<Producto>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_PRODUCTOS()}");
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Producto producto = new Producto();
+                producto.setId(rs.getInt("ID_PRODUCTO"));
+                producto.setNombre(rs.getString("NOMBRE_PRODUCTO"));
+                producto.setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
+                producto.setDescripcion(rs.getString("DESCRIPCION"));
+                producto.setStockEmpresa(rs.getInt("STOCK_EMPRESA"));
+                producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
+                producto.setActive(rs.getBoolean("ACTIVE"));
+                productos.add(producto);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return productos;
     }
-    
 }
