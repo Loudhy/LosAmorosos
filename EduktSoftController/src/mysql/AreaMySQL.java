@@ -107,7 +107,25 @@ public class AreaMySQL implements AreaDAO {
 
     @Override
     public Area encontrarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Area area = new Area();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_AREA_POR_ID(?)}");
+            cs.setInt("_ID_AREA", id);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                area.setId(rs.getInt("ID_AREA"));
+                area.setNombre(rs.getString("NOMBRE_AREA"));
+                area.setCodigo(rs.getInt("CODIGO_AREA"));
+                area.setActive(rs.getBoolean("ACTIVE"));
+            }
+            
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return area;
     }
     
    
