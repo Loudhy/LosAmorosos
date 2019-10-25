@@ -17,6 +17,7 @@ public class Empleado {
     private Area area;
     private Usuario usuario;
     private Date fechaIngreso;
+    private byte[] foto;
     private boolean active;
     
     public Empleado(){
@@ -149,6 +150,14 @@ public class Empleado {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
     
 }
