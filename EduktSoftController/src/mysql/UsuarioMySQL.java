@@ -30,8 +30,8 @@ public class UsuarioMySQL implements UsuarioDAO {
         int resultado = 0;
         try{       
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_USUARIO(?,?,?,?,?)} ");
-            //cs.setInt("_ID_EMPLEADO", usuario.getEmpleado().getId());
+            cs = con.prepareCall("{call INSERTAR_USUARIO(?,?,?,?)} ");
+            cs.setInt("_ID_EMPLEADO", usuario.getEmpleado().getId());
             cs.setString("_NOMBRE_USUARIO", usuario.getNombre());
             cs.setString("_CONTRASEÑA", usuario.getContraseña());
             cs.setBoolean("_ACTIVE", usuario.isActive());
