@@ -194,6 +194,9 @@ public class ClienteMySQL implements ClienteDAO{
             con.prepareCall("{call BUSCAR_ULTIMO_PEDIDO(?)}");
             cs.setInt("_ID_CLIENTE", id_cliente);
             ResultSet rs = cs.executeQuery();
+            if (rs.next()){
+                pedido = new Pedido();
+            }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }finally{
