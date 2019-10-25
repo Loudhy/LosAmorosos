@@ -6,6 +6,7 @@ public class Usuario {
     private String nombre;
     private String contraseña;
     private EstadoUsuario estado;
+    private Empleado empleado;
     private boolean active;
             
     public Usuario(){
@@ -58,4 +59,11 @@ public class Usuario {
         return estado;
     }
 
+     public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
 }
