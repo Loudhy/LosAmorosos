@@ -7,6 +7,7 @@ package dao;
 
 import java.util.ArrayList;
 import model.Cliente;
+import model.Pedido;
 import model.Vendedor;
 
 /**
@@ -15,4 +16,5 @@ import model.Vendedor;
  */
 public interface ClienteDAO extends CrudDAO<Cliente> {
     ArrayList<Cliente> listarClientesPorVendedor(Vendedor vendedor);
+    Pedido buscarUltimoPedido(int id_cliente);
 }

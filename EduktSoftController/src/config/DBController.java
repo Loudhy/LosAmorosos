@@ -269,5 +269,9 @@ public abstract class DBController {
     public static ArrayList<Solicitud> listarSolicitudesPorEstadoDeSolicitud(EstadoSolicitud estadoSolicitud){
         return daoFactory.getSolicitudDAO().listarSolicitudesPorEstado(estadoSolicitud);
     }
+    
+    public static int validarLoginDeUsuario(String nombre, String contraseña){
+        return daoFactory.getUsuarioDAO().validarUsuario(nombre, contraseña);
+    }
 }
 
