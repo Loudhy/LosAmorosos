@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import model.Presentacion;
 import model.Producto;
 
 /**
@@ -38,6 +39,14 @@ public class ProductoMySQL implements ProductoDAO{
             cs.setBoolean("_ACTIVE", producto.isActive());
             resultado = cs.executeUpdate();
             producto.setId(cs.getInt("_ID_PRODUCTO"));
+            for(Presentacion m:producto.getPresentaciones()){
+                cs = con.prepareCall("{call INSERTAR_PRESENTACION(?,?,?)} ");
+                cs.setInt("_ID_PRODUCTO", m.getId_producto());
+                cs.setString("_DISEÑO",m.getDiseño());
+                cs.setBoolean("_ACTIVE", m.isActive());
+                resultado=cs.executeUpdate();
+                m.setId(cs.getInt("_ID_PRESENTACION"));
+            }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }finally{
@@ -59,6 +68,13 @@ public class ProductoMySQL implements ProductoDAO{
             cs.setFloat("_PRECIO_UNITARIO",producto.getPrecioUnitario());
             cs.setString("_DESCRIPCION",producto.getDescripcion());
             resultado = cs.executeUpdate();
+            producto.setId(cs.getInt("_ID_PRODUCTO"));
+            for(Presentacion m:producto.getPresentaciones()){
+                cs = con.prepareCall("{call ACTUALIZAR_PRESENTACION(?,?)} ");
+                cs.setInt("_ID_PRESENTACION",m.getId());
+                cs.setString("_DISEÑO",m.getDiseño());
+                resultado=cs.executeUpdate();
+            }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }finally{
@@ -106,7 +122,6 @@ public class ProductoMySQL implements ProductoDAO{
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        
         return productos;
     }
 
@@ -187,4 +202,29 @@ public class ProductoMySQL implements ProductoDAO{
         }
         return productos;
     }
+
+    @Override
+    public ArrayList<Presentacion> listarPresentaciones(int id_producto) {
+        ArrayList<Presentacion> presentaciones = new ArrayList<Presentacion>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_PRESENTACIONES(?)}");
+            cs.setInt("_ID_PRODUCTO", id_producto);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Presentacion presentacion = new Presentacion();
+                presentacion.setDiseño(rs.getString("DISEÑO"));
+                presentacion.setActive(true);
+                presentaciones.add(presentacion);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return presentaciones;
+    }
+    
 }
+
+
