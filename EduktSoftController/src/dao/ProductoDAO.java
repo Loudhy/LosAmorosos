@@ -6,6 +6,7 @@
 package dao;
 
 import java.util.ArrayList;
+import model.Presentacion;
 import model.Producto;
 
 /**
@@ -15,4 +16,5 @@ import model.Producto;
 public interface ProductoDAO extends CrudDAO<Producto>{
     ArrayList<Producto> listarDisponibles();
     Producto buscarProductoPorNombre(String nombre);
+    ArrayList<Presentacion> listarPresentaciones(int id_producto);
 }

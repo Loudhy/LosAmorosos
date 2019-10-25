@@ -11,6 +11,7 @@ package model;
  */
 public class Presentacion {
     private int id;
+    private int id_producto;
     private String diseño;
     private boolean active;
     
@@ -44,5 +45,13 @@ public class Presentacion {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public int getId_producto() {
+        return id_producto;
+    }
+
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
     }
 }
