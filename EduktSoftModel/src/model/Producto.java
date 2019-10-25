@@ -14,17 +14,16 @@ public class Producto {
     private boolean active;
     
     public Producto(){
-        presentaciones = new ArrayList<Presentacion>();
+        this.presentaciones = new ArrayList<Presentacion>();
     }
     
-    public Producto(int stockEmpresa, float precioUnitario, String nombre, String descripcion,
-                    ArrayList<Presentacion> presentaciones){
+    public Producto(int stockEmpresa, float precioUnitario, String nombre, String descripcion){
         this.stockEmpresa = stockEmpresa;
         this.stockVendedor = stockEmpresa;
         this.precioUnitario = precioUnitario;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.presentaciones = presentaciones;
+        this.presentaciones = new ArrayList<Presentacion>();
         this.active = true;
     }    
 
