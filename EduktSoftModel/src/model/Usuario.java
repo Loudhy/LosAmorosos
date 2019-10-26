@@ -9,11 +9,13 @@ public class Usuario {
     private boolean active;
             
     public Usuario(){
+        empleado = new Empleado();
     }
     
     public Usuario(String nombre,String contraseña){
         this.nombre = nombre;    
         this.contraseña = contraseña;
+        this.empleado = new Empleado();
         this.active = true;
     }
 

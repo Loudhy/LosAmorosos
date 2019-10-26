@@ -10,7 +10,8 @@ public class ObjetivoVendedor {
     private Vendedor vendedor;
     private boolean active;
     
-    public ObjetivoVendedor(){        
+    public ObjetivoVendedor(){
+        this.vendedor = new Vendedor();
     }
     
     public ObjetivoVendedor(MetaMensual metaMensual, float monto, float bono, float comision){

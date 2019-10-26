@@ -50,6 +50,10 @@ public abstract class DBController {
         return daoFactory.getAreaDAO().listar();
     }
     
+    public static Area buscarAreaPorId(int id){
+        return daoFactory.getAreaDAO().encontrarPorId(id);
+    }
+    
     public static String buscarAreaPorUsuario(Usuario usuario){
         return daoFactory.getUsuarioDAO().buscarArea(usuario);
     }
@@ -91,6 +95,10 @@ public abstract class DBController {
     
     public static ArrayList<Empleado> listarEmpleadosPorArea(Area area){
         return daoFactory.getEmpleadoDAO().listarPorArea(area);
+    }
+    
+    public static Empleado buscarEmpleadoPorId(int id){
+        return daoFactory.getEmpleadoDAO().encontrarPorId(id);
     }
     
     public static Empleado buscarEmpleadoPorCorreo(String correo){
@@ -270,8 +278,11 @@ public abstract class DBController {
         return daoFactory.getSolicitudDAO().listarSolicitudesPorEstado(estadoSolicitud);
     }
     
+    //Logica de negocio
+    
     public static int validarLoginDeUsuario(String nombre, String contraseña){
         return daoFactory.getUsuarioDAO().validarUsuario(nombre, contraseña);
     }
+    
 }
 

@@ -12,16 +12,7 @@ import javax.swing.JOptionPane;
 import model.Usuario;
 
 public class LogginUsuarioService {
-    public boolean buscarUsuario(String correo,String contraseña){
-        ArrayList<Usuario> usuarios = DBController.listarUsuarios();
-        for (Usuario u : usuarios){
-            if ((u.getEmpleado().getCorreo().compareTo(correo) == 0) &&
-                (u.getContraseña().compareTo(contraseña) == 0)){
-                int id = u.getEmpleado().getArea().getId();               
-                return true;
-            }
-        }
-        JOptionPane.showMessageDialog(null, "No ingresa los datos correctamente");
-        return false;
+    public int buscarUsuario(String correo,String contraseña){
+        return DBController.validarLoginDeUsuario(correo, contraseña);
     }
 }
