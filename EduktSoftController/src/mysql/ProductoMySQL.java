@@ -30,12 +30,13 @@ public class ProductoMySQL implements ProductoDAO{
         int resultado = 0;
         try{       
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_PRODUCTO(?,?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call INSERTAR_PRODUCTO(?,?,?,?,?,?,?,?)} ");
             cs.setString("_NOMBRE_PRODUCTO",producto.getNombre());
             cs.setInt("_STOCK_EMPRESA", producto.getStockEmpresa());
             cs.setInt("_STOCK_VENDEDOR", producto.getStockVendedor());
             cs.setFloat("_PRECIO_UNITARIO",producto.getPrecioUnitario());
             cs.setString("_DESCRIPCION",producto.getDescripcion());
+            cs.setBytes("_FOTO", producto.getFoto());
             cs.setBoolean("_ACTIVE", producto.isActive());
             resultado = cs.executeUpdate();
             producto.setId(cs.getInt("_ID_PRODUCTO"));
@@ -60,15 +61,15 @@ public class ProductoMySQL implements ProductoDAO{
         int resultado = 0;
         try{       
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_PRODUCTO(?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call ACTUALIZAR_PRODUCTO(?,?,?,?,?,?,?)} ");
             cs.setInt("_ID_PRODUCTO", producto.getId());
             cs.setString("_NOMBRE_PRODUCTO",producto.getNombre());
             cs.setInt("_STOCK_EMPRESA", producto.getStockEmpresa());
             cs.setInt("_STOCK_VENDEDOR", producto.getStockVendedor());
             cs.setFloat("_PRECIO_UNITARIO",producto.getPrecioUnitario());
+            cs.setBytes("_FOTO",producto.getFoto());
             cs.setString("_DESCRIPCION",producto.getDescripcion());
             resultado = cs.executeUpdate();
-            producto.setId(cs.getInt("_ID_PRODUCTO"));
             for(Presentacion m:producto.getPresentaciones()){
                 cs = con.prepareCall("{call ACTUALIZAR_PRESENTACION(?,?)} ");
                 cs.setInt("_ID_PRESENTACION",m.getId());
@@ -130,7 +131,7 @@ public class ProductoMySQL implements ProductoDAO{
         Producto producto = new Producto();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("BUSCAR_PRODUCTO_POR_NOMBRE(?)");
+            cs = con.prepareCall("{call BUSCAR_PRODUCTO_POR_NOMBRE(?)}");
             cs.setString("_NOMBRE_PRODUCTO", nombre);
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
