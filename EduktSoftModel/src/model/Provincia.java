@@ -16,6 +16,7 @@ public class Provincia {
         this.nombre = nombre;
         this.departamento = departamento;
         this.ubigeo = ubigeo;
+        this.active = true;
     }
        
     public int getId() {
