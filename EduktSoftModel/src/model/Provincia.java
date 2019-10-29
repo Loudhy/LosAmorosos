@@ -5,7 +5,6 @@ public class Provincia {
     private int id;
     private String nombre;
     private Departamento departamento;
-    private String ubigeo;
     private boolean active;
     
     public Provincia(){
@@ -15,7 +14,6 @@ public class Provincia {
     public Provincia(String nombre, Departamento departamento, String ubigeo){
         this.nombre = nombre;
         this.departamento = departamento;
-        this.ubigeo = ubigeo;
     }
        
     public int getId() {
@@ -50,12 +48,4 @@ public class Provincia {
         this.active = active;
     }
 
-    public String getUbigeo() {
-        return ubigeo;
-    }
-
-    public void setUbigeo(String ubigeo) {
-        this.ubigeo = ubigeo;
-    }
-    
 }
