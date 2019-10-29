@@ -8,9 +8,14 @@ package server;
 import administracion.LogginUsuarioService;
 import administracion.PasswordService;
 import config.DBController;
+import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import model.Cliente;
+import model.Empleado;
+import model.Presentacion;
+import model.Producto;
 
 /**
  *
@@ -28,7 +33,7 @@ public class Servicio {
     }
     
     @WebMethod(operationName = "validarLogin")
-    public int validarLogin(@WebParam(name = "nombre") String nombre, @WebParam(name = "contraseña") String contraseña ){
+    public Empleado validarLogin(@WebParam(name = "nombre") String nombre, @WebParam(name = "contraseña") String contraseña ){
         LogginUsuarioService login = new LogginUsuarioService();
         return login.buscarUsuario(nombre, contraseña);
     }
@@ -37,5 +42,30 @@ public class Servicio {
     public int restaurarContraseña(@WebParam(name = "name") String correo){
         PasswordService passwordService = new PasswordService();
         return passwordService.enviarCorreo(correo);
+    }
+    
+    @WebMethod(operationName = "listarProductos")
+    public ArrayList<Producto> listarProductos(){
+        return DBController.listarProductos();
+    }
+    
+    @WebMethod(operationName = "listarPresentacionesDeProducto")
+    public ArrayList<Presentacion> listarPresentaciones(@WebParam(name = "id_producto") int id_producto){
+        return DBController.listarPresentaciones(id_producto);
+    }
+    
+    @WebMethod(operationName = "eliminarPedido")
+    public int eliminarPedido(int id){
+        return DBController.eliminarPedido(id);
+    }
+    
+    @WebMethod(operationName = "listarCliente")
+    public ArrayList<Cliente> listarClientesPorVendedor(@WebParam(name = "id_vendedor") int id){
+        return DBController.listarClientesPorVendedor(id);
+    }
+    
+    @WebMethod(operationName = "listarClientesPorNombre")
+    public ArrayList<Cliente> listarClientesPorNombre(@WebParam(name = "nombre") String nombre){
+        return DBController.listarClientesPorNombre(nombre);
     }
 }

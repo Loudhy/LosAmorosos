@@ -17,7 +17,6 @@ import dao.PedidoDAO;
 import dao.ProductoDAO;
 import dao.ProvinciaDAO;
 import dao.UsuarioDAO;
-import dao.VendedorDAO;
 import dao.SolicitudDAO;
 /**
  *
@@ -33,7 +32,6 @@ public abstract class DAOFactory {
     public abstract ProvinciaDAO getProvinciaDAO();
     public abstract ProductoDAO getProductoDAO();
     public abstract ObjetivoVendedorDAO getObjetivoVendedorDAO();
-    public abstract VendedorDAO getVendedorDAO();
     public abstract ClienteDAO getClienteDAO();
     public abstract PedidoDAO getPedidoDAO();
     public abstract ClienteVendedorDAO getClienteVendedorDAO();

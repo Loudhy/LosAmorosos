@@ -9,10 +9,14 @@ import config.DBController;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import model.Empleado;
 import model.Usuario;
 
 public class LogginUsuarioService {
-    public int buscarUsuario(String correo,String contraseña){
-        return DBController.validarLoginDeUsuario(correo, contraseña);
+    public Empleado buscarUsuario(String correo,String contraseña){
+        if (DBController.validarLoginDeUsuario(correo, contraseña)){
+            return DBController.buscarEmpleadoPorCorreo(correo);
+        }
+        else return null;
     }
 }

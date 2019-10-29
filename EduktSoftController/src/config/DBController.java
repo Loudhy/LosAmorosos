@@ -20,6 +20,7 @@ import model.LineaSolicitud;
 import model.MetaMensual;
 import model.ObjetivoVendedor;
 import model.Pedido;
+import model.Presentacion;
 import model.Producto;
 import model.Provincia;
 import model.Solicitud;
@@ -197,14 +198,6 @@ public abstract class DBController {
         return daoFactory.getObjetivoVendedorDAO().actualizar(objetivoVendedor);
     }
     
-    public static int insertarVendedor(Vendedor vendedor){
-        return daoFactory.getVendedorDAO().insertar(vendedor);
-    }
-    
-    public static int eliminarVendedor(int id_vendedor){
-        return daoFactory.getVendedorDAO().eliminar(id_vendedor);
-    }
-  
     public static int insertarCliente(Cliente cliente){
         return daoFactory.getClienteDAO().insertar(cliente);
     }
@@ -221,12 +214,24 @@ public abstract class DBController {
         return daoFactory.getClienteVendedorDAO().eliminar(id_cliente_vendedor);
     }
     
+    public static ArrayList<Cliente> listarClientesPorVendedor(int id_vendedor){
+        return daoFactory.getClienteVendedorDAO().listarClientesPorVendedor(id_vendedor);
+    }
+    
+    public static ArrayList<Cliente> listarClientesPorNombre(String nombre){
+        return daoFactory.getClienteDAO().listarClientesPorNombre(nombre);
+    }
+    
     public static int insertarPedido(Pedido pedido){
         return daoFactory.getPedidoDAO().insertar(pedido);
     }
     
     public static int actualizarPedido(Pedido pedido){
         return daoFactory.getPedidoDAO().actualizar(pedido);
+    }
+    
+    public static int eliminarPedido(int id){
+        return daoFactory.getPedidoDAO().eliminar(id);
     }
     
     public static ArrayList<Pedido> listarPedidosPorCliente(Cliente cliente){
@@ -280,9 +285,17 @@ public abstract class DBController {
     
     //Logica de negocio
     
-    public static int validarLoginDeUsuario(String nombre, String contraseña){
+    public static boolean validarLoginDeUsuario(String nombre, String contraseña){
         return daoFactory.getUsuarioDAO().validarUsuario(nombre, contraseña);
     }
     
+    public static ArrayList<Producto> listarProductos(){
+        return daoFactory.getProductoDAO().listar();
+    }
+    
+    public static ArrayList<Presentacion>listarPresentaciones(int id){
+        return daoFactory.getProductoDAO().listarPresentaciones(id);
+    }
+
 }
 

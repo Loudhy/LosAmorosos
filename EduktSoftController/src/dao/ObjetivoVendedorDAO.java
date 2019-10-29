@@ -11,7 +11,6 @@ import model.ObjetivoVendedor;
  *
  * @author alulab14
  */
-public interface ObjetivoVendedorDAO {
-    int insertar(ObjetivoVendedor objetivoVendedor);
-    int actualizar(ObjetivoVendedor objetivoVendedor);
+public interface ObjetivoVendedorDAO extends CrudDAO<ObjetivoVendedor>{
+    
 }

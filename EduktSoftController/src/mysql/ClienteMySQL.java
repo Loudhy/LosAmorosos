@@ -33,13 +33,14 @@ public class ClienteMySQL implements ClienteDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_CLIENTE(?,?,?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call INSERTAR_CLIENTE(?,?,?,?,?,?,?,?,?)} ");
             cs.setString("_RUC",cliente.getRuc());
             cs.setString("_RAZON_SOCIAL", cliente.getRazonSocial());
             cs.setString("_CORREO_CLIENTE",cliente.getCorreo());
             cs.setInt("_ID_PROVINCIA", cliente.getProvincia().getId());
             cs.setString("_DIRECCION", cliente.getDireccion());
             cs.setString("_TELEFONO_CLIENTE", cliente.getTelefono());
+            cs.setInt("_PUNTOS", cliente.getPuntaje());
             cs.setBoolean("_ACTIVE", cliente.getActive());
             resultado = cs.executeUpdate();
             cliente.setId(cs.getInt("_ID_CLIENTE"));
@@ -56,7 +57,7 @@ public class ClienteMySQL implements ClienteDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_CLIENTE(?,?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call ACTUALIZAR_CLIENTE(?,?,?,?,?,?,?,?)} ");
             cs.setInt("_ID_CLIENTE", cliente.getId());
             cs.setString("_RUC",cliente.getRuc());
             cs.setString("_RAZON_SOCIAL",cliente.getRazonSocial());
@@ -64,6 +65,7 @@ public class ClienteMySQL implements ClienteDAO{
             cs.setInt("_ID_PROVINCIA", cliente.getProvincia().getId());
             cs.setString("_TELEFONO_CLIENTE", cliente.getTelefono());
             cs.setString("_DIRECCION", cliente.getDireccion());
+            cs.setInt("_PUNTOS", cliente.getPuntaje());
             resultado = cs.executeUpdate();           
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -73,36 +75,7 @@ public class ClienteMySQL implements ClienteDAO{
         return resultado;
     }
 
-    @Override
-    public ArrayList<Cliente> listarClientesPorVendedor(Vendedor vendedor) {
-        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-        try{
-            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("LISTAR_CLIENTES_POR_VENDEDOR(?)");
-            cs.setInt("_ID_VENDEDOR", vendedor.getId());
-            ResultSet rs = cs.executeQuery();
-            while (rs.next()){
-                Cliente cliente = new Cliente();
-                cliente.setId(rs.getInt("ID_CLIENTE"));
-                cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
-                cliente.setRuc(rs.getString("RUC"));
-                cliente.setDireccion(rs.getString("DIRECCION"));
-                cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
-                cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
-                cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
-                cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
-                cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
-                cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
-                clientes.add(cliente);
-            }
-
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }finally{
-            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
-        }
-        return clientes;
-    }
+ 
 
     @Override
     public Cliente encontrarPorId(int id) {
@@ -124,6 +97,7 @@ public class ClienteMySQL implements ClienteDAO{
                 cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
                 cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
                 cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                cliente.setPuntaje(rs.getInt("PUNTOS"));
                 cliente.setActive(true);
                 cliente.getProvincia().setActive(true);
                 cliente.getProvincia().getDepartamento().setActive(true);
@@ -172,6 +146,7 @@ public class ClienteMySQL implements ClienteDAO{
                 cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
                 cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
                 cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                cliente.setPuntaje(rs.getInt("PUNTOS"));
                 cliente.setActive(true);
                 cliente.getProvincia().setActive(true);
                 cliente.getProvincia().getDepartamento().setActive(true);
@@ -204,6 +179,41 @@ public class ClienteMySQL implements ClienteDAO{
         }
         
         return pedido;
+    }
+
+    @Override
+    public ArrayList<Cliente> listarClientesPorNombre(String nombre) {
+        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            con.prepareCall("LISTAR_CLIENTES_POR_NOMBRE(?)");
+            cs.setString("_RAZON_SOCIAL", nombre);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("ID_CLIENTE"));
+                cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                cliente.setRuc(rs.getString("RUC"));
+                cliente.setDireccion(rs.getString("DIRECCION"));
+                cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
+                cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
+                cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
+                cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
+                cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                cliente.setPuntaje(rs.getInt("PUNTOS"));
+                cliente.setActive(true);
+                cliente.getProvincia().setActive(true);
+                cliente.getProvincia().getDepartamento().setActive(true);
+                clientes.add(cliente);
+            }
+
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return clientes;
     }
 
 

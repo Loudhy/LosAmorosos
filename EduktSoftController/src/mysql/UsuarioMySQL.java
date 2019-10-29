@@ -165,8 +165,8 @@ public class UsuarioMySQL implements UsuarioDAO {
     }
 
     @Override
-    public int validarUsuario(String nombre, String contraseña) {
-        int resultado = 0;
+    public boolean validarUsuario(String nombre, String contraseña) {
+        boolean resultado= false;
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_USUARIO(?,?)}");
@@ -174,7 +174,7 @@ public class UsuarioMySQL implements UsuarioDAO {
             cs.setString("_CONTRASEÑA", contraseña);
             ResultSet rs = cs.executeQuery();
             if (rs.next())
-                resultado = 1;
+                resultado = true;
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }finally{

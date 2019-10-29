@@ -209,7 +209,7 @@ public class ProductoMySQL implements ProductoDAO{
         ArrayList<Presentacion> presentaciones = new ArrayList<Presentacion>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_PRESENTACIONES(?)}");
+            cs = con.prepareCall("{call LISTAR_PRESENTACION(?)}");
             cs.setInt("_ID_PRODUCTO", id_producto);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
