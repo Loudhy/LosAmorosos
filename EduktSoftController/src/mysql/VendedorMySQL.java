@@ -38,12 +38,14 @@ public class VendedorMySQL implements VendedorDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
             cs.setString("_DNI_EMPLEADO", vendedor.getDni());
             cs.setString("_NOMBRE_EMPLEADO", vendedor.getNombre());
             cs.setString("_APELLIDO_PATERNO", vendedor.getApellidoPaterno());
             cs.setString("_APELLIDO_MATERNO",vendedor.getApellidoMaterno());
             cs.setDate("_FECHA_NACIMIENTO", new java.sql.Date(vendedor.getFechaNacimiento().getTime()));
+            cs.setString("_USUARIO", vendedor.getUsuario().getNombre());
+            cs.setString("_CONTRASEÑA", vendedor.getUsuario().getContraseña());
             cs.setString("_TELEFONO_EMPLEADO",vendedor.getTelefono());
             cs.setString("_CORREO_EMPLEADO", vendedor.getCorreo());
             cs.setString("_ESTADO_CIVIL", vendedor.getEstadoCivil().name());
@@ -53,10 +55,6 @@ public class VendedorMySQL implements VendedorDAO{
             cs.setBoolean("_ACTIVE", vendedor.isActive());
             resultado = cs.executeUpdate();
             vendedor.setId(cs.getInt("_ID_EMPLEADO"));
-            cs = con.prepareCall("{call INSERTAR_VENDEDOR(?,?)} ");
-            cs.setInt("_ID_EMPLEADO", vendedor.getId());
-            cs.executeUpdate();
-            vendedor.setId_vendedor(cs.getInt("_ID_VENDEDOR"));
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }finally{
