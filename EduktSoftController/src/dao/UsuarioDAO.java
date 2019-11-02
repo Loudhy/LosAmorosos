@@ -15,6 +15,6 @@ import model.Usuario;
  */
 public interface UsuarioDAO extends CrudDAO<Usuario> {
     String buscarArea(Usuario usuario);
-    int validarUsuario(String nombre, String contraseña);
+    boolean validarUsuario(String nombre, String contraseña);
     Usuario buscarPorEmpleado(Empleado empleado);
 }

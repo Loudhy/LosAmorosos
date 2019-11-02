@@ -15,6 +15,6 @@ import model.Vendedor;
  * @author UsuarioA
  */
 public interface ClienteDAO extends CrudDAO<Cliente> {
-    ArrayList<Cliente> listarClientesPorVendedor(Vendedor vendedor);
+    ArrayList<Cliente> listarClientesPorNombre(String nombre);
     Pedido buscarUltimoPedido(int id_cliente);
 }

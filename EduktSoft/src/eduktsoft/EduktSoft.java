@@ -83,7 +83,7 @@ public class EduktSoft {
         Vendedor vendedor1 = new Vendedor("76272879","Juan Diego","Villegas", "Diaz",
                 formatoFecha.parse("1999-01-29"),"2852878","caricato665@gmail.com",Soltero,2500,area2,
                 formatoFecha.parse("2016-09-16"));
-        DBController.insertarVendedor(vendedor1);
+        DBController.insertarEmpleado(vendedor1);
         Cliente_Vendedor relacion1 = new Cliente_Vendedor(cliente1,vendedor1);
         DBController.insertarClienteVendedor(relacion1);
         pedido1.setClienteVendedor(relacion1);

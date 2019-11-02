@@ -55,8 +55,7 @@ public class PasswordService {
         String password = "";
         password = randomAlphaNumeric(6);
         String mensaje = "Muy buenas," + empleado.getNombre() + ", esta es tu nueva contraseña" + "\n" + password;
-        Usuario usuario = new Usuario();
-        usuario = DBController.buscarUsuarioPorEmpleado(empleado);
+        Usuario usuario = DBController.buscarUsuarioPorEmpleado(empleado);
         usuario.setContraseña(password);
         DBController.actualizarUsuario(usuario);
         MimeMessage mail = new MimeMessage(sesion);
@@ -72,11 +71,11 @@ public class PasswordService {
             transportar.sendMessage(mail, mail.getRecipients(Message.RecipientType.TO));          
             transportar.close();
             
-            JOptionPane.showMessageDialog(null, "Listo, correo enviado");
+            //JOptionPane.showMessageDialog(null, "Listo, correo enviado");
         } catch (AddressException ex) {
-            Logger.getLogger(PasswordService.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         } catch (MessagingException ex) {
-            Logger.getLogger(PasswordService.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
         return 1;
     }

@@ -1,5 +1,6 @@
 package administracion;
 
+
 import config.DBController;
 import java.util.ArrayList;
 import model.Area;

@@ -1,16 +1,17 @@
 package model;
 
 public class ObjetivoVendedor {
-
     private int id;
     private MetaMensual metaMensual;
     private float monto;
     private float bono;
     private float comision;
+    private float progreso;
     private Vendedor vendedor;
     private boolean active;
     
-    public ObjetivoVendedor(){        
+    public ObjetivoVendedor(){
+        this.vendedor = new Vendedor();
     }
     
     public ObjetivoVendedor(MetaMensual metaMensual, float monto, float bono, float comision){
@@ -19,6 +20,7 @@ public class ObjetivoVendedor {
         this.bono = bono;
         this.vendedor = new Vendedor();
         this.comision = comision;
+        this.progreso = 0;
         this.active = true;
     }    
 
@@ -77,5 +79,12 @@ public class ObjetivoVendedor {
     public Vendedor getVendedor() {
         return vendedor;
     }
-
+    
+    public void setProgreso(float progreso) {
+        this.progreso = progreso;
+    }
+    
+    public float getProgreso() {
+        return progreso;
+    }
 }

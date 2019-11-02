@@ -5,7 +5,12 @@
  */
 package dao;
 
+import java.util.ArrayList;
+import java.util.Date;
+import model.Cliente;
 import model.Cliente_Vendedor;
+import model.Pedido;
+import model.Vendedor;
 
 /**
  *
@@ -13,5 +18,7 @@ import model.Cliente_Vendedor;
  */
 public interface ClienteVendedorDAO {
     int insertar(Cliente_Vendedor cliente_vendedor);
+    ArrayList<Cliente> listarClientesPorVendedor(int id_vendedor);
+    ArrayList<Pedido> listarPedidosEnRangoDeFechas(Date fechaIni, Date fechaFin, Vendedor vendedor);
     int eliminar(int id_cliente_vendedor);
 }
