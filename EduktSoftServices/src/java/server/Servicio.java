@@ -16,6 +16,7 @@ import model.Cliente;
 import model.Empleado;
 import model.Presentacion;
 import model.Producto;
+import ventas.MejoresProductosService;
 
 /**
  *
@@ -59,5 +60,11 @@ public class Servicio {
     @WebMethod(operationName = "listarClientesPorNombre")
     public ArrayList<Cliente> listarClientesPorNombre(@WebParam(name = "nombre") String nombre){
         return DBController.listarClientesPorNombre(nombre);
+    }
+    
+    @WebMethod(operationName = "listarMejoresProductosDeCliente")
+    public ArrayList<Producto> listarMejoresProductosDeCliente(@WebParam(name = "id_cliente") int id_cliente){
+        MejoresProductosService mejoresTres = new MejoresProductosService();
+        return mejoresTres.listarTresMejoresProductosPorCliente(id_cliente);
     }
 }

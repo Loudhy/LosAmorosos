@@ -125,6 +125,29 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
         }
         return pedidos;
     }
+
+    @Override
+    public ArrayList<Cliente_Vendedor> listarPorCliente(int id_cliente) {
+        ArrayList<Cliente_Vendedor> clientesVendedor = new ArrayList<Cliente_Vendedor>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_CLIENTE_VENDEDOR_POR_CLIENTE(?)}");
+            cs.setInt("_ID_CLIENTE", id_cliente);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Cliente_Vendedor clienteVendedor = new Cliente_Vendedor();
+                clienteVendedor.setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
+                clienteVendedor.getCliente().setId(rs.getInt("ID_CLIENTE"));
+                clienteVendedor.getVendedor().setId(rs.getInt("ID_VENDEDOR"));
+                clientesVendedor.add(clienteVendedor);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return clientesVendedor;
+    }
     
     
 }

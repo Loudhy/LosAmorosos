@@ -450,5 +450,10 @@ public class PedidoMySQL implements PedidoDAO{
         }
         return pedidos;
     }
+
+    @Override
+    public int listarMejoresProductosEnPedido(int id_cliente_vendedor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

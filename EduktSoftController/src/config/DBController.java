@@ -7,6 +7,7 @@ package config;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import model.Area;
 import model.Cliente;
 import model.Cliente_Vendedor;
@@ -186,6 +187,10 @@ public abstract class DBController {
         return daoFactory.getProductoDAO().listarDisponibles();
     }
     
+    public static Producto buscarProductoPorId(int id){
+        return daoFactory.getProductoDAO().encontrarPorId(id);
+    }
+    
     public static Producto buscarProductoPorNombre(String nombre){
         return daoFactory.getProductoDAO().buscarProductoPorNombre(nombre);
     }
@@ -295,6 +300,14 @@ public abstract class DBController {
     
     public static ArrayList<Presentacion>listarPresentaciones(int id){
         return daoFactory.getProductoDAO().listarPresentaciones(id);
+    }
+    
+    public static ArrayList<Cliente_Vendedor> listarClientesVendedorPorCliente(int id_cliente){
+        return daoFactory.getClienteVendedorDAO().listarPorCliente(id_cliente);
+    }
+    
+    public static int actualizarMapa(Map mapa, int id_cliente_vendedor){
+        return daoFactory.getPedidoDAO().listarMejoresProductosEnPedido(id_cliente_vendedor);
     }
 
 }
