@@ -35,11 +35,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         int resultado = 0;
         try{       
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-<<<<<<< HEAD
             cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
-=======
-            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
->>>>>>> ceee8d5918c86ef5949d12c74e87c13d8678059a
+
             cs.setString("_DNI_EMPLEADO", empleado.getDni());
             cs.setString("_NOMBRE_EMPLEADO", empleado.getNombre());
             cs.setString("_APELLIDO_PATERNO", empleado.getApellidoPaterno());
