@@ -24,14 +24,6 @@ import model.Producto;
 @WebService(serviceName = "Servicio")
 public class Servicio {
 
-    /**
-     * This is a sample web service operation
-     */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
-    }
-    
     @WebMethod(operationName = "validarLogin")
     public Empleado validarLogin(@WebParam(name = "nombre") String nombre, @WebParam(name = "contraseña") String contraseña ){
         LogginUsuarioService login = new LogginUsuarioService();
@@ -45,24 +37,13 @@ public class Servicio {
     }
     
     @WebMethod(operationName = "listarProductos")
-    public String listarProductos(){
-        ArrayList<Producto> productos = DBController.listarProductos();
-        String mensaje="";
-        for (Producto aux : productos){
-            mensaje+=aux.getNombre();
-        }
-        
-        return mensaje;
+    public ArrayList<Producto> listarProductos(){
+        return DBController.listarProductos();
     }
     
     @WebMethod(operationName = "listarPresentacionesDeProducto")
-    public String listarPresentaciones(@WebParam(name = "id_producto") int id_producto){
-        ArrayList<Presentacion> presentaciones =  DBController.listarPresentaciones(id_producto);
-        String mensaje="";
-        for (Presentacion aux: presentaciones){
-            mensaje+=aux.getDiseño();
-        }
-        return mensaje;
+    public ArrayList<Presentacion> listarPresentaciones(@WebParam(name = "id_producto") int id_producto){
+        return DBController.listarPresentaciones(id_producto);
     }
     
     @WebMethod(operationName = "eliminarPedido")
