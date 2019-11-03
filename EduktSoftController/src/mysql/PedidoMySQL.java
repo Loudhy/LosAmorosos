@@ -26,7 +26,6 @@ import model.LineaPedido;
 import model.Pedido;
 import model.Producto;
 import model.Vendedor;
-
 /**
  *
  * @author alulab14
@@ -53,7 +52,7 @@ public class PedidoMySQL implements PedidoDAO{
             cs.setBoolean("_ACTIVE",true);
             cs.executeUpdate();
             pedido.setId(cs.getInt("_ID_PEDIDO"));
-            
+
             for (LineaPedido aux: pedido.getLineasPedido()){
                 cs = con.prepareCall("{call INSERTAR_LINEA_PEDIDO(?,?,?,?,?,?,?,?)}");
                 cs.setInt("_CANTIDAD",aux.getCantidad());
@@ -86,7 +85,7 @@ public class PedidoMySQL implements PedidoDAO{
             cs.setDate("_FECHA_REGISTRO",new java.sql.Date(pedido.getFechaRegistro().getTime()));
             resultado=cs.executeUpdate();
             for (LineaPedido aux: pedido.getLineasPedido()){
-                cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO(?,?,?,?,?,?,?,?)}");    
+                cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO(?,?,?,?,?,?,?,?)}");
                 cs.setInt("_ID_LINEA_PEDIDO",aux.getId());
                 cs.setInt("_CANTIDAD",aux.getCantidad());
                 cs.setInt("_ID_PEDIDO", pedido.getId());
@@ -124,7 +123,7 @@ public class PedidoMySQL implements PedidoDAO{
     @Override
     public ArrayList<Pedido> listarPorVendedorPorRangoDeFechas(Vendedor vendedor,Date fechaIni, Date fechaFin) {
         ArrayList<Pedido> pedidos = new ArrayList<>();
-        
+
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_VENDEDOR_POR_FECHAS(?,?,?)}");
@@ -164,7 +163,7 @@ public class PedidoMySQL implements PedidoDAO{
     @Override
     public ArrayList<Pedido> listarPorCliente(Cliente cliente) {
         ArrayList<Pedido> pedidos = new ArrayList<>();
-        
+
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_CLIENTE(?)}");
@@ -200,7 +199,7 @@ public class PedidoMySQL implements PedidoDAO{
     @Override
     public ArrayList<LineaPedido> listarLineasPedido(Pedido pedido) {
         ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
-        
+
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_LINEAS_PEDIDO(?)}");
@@ -226,7 +225,7 @@ public class PedidoMySQL implements PedidoDAO{
                 lineaPedido.getProducto().setActive(rs.getBoolean("ACTIVE"));
                 lineasPedido.add(lineaPedido);
             }
-            
+
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
@@ -234,7 +233,7 @@ public class PedidoMySQL implements PedidoDAO{
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        return lineasPedido;   
+        return lineasPedido;
     }
 
     @Override
@@ -265,7 +264,7 @@ public class PedidoMySQL implements PedidoDAO{
                 lineaPedido.getProducto().setActive(rs.getBoolean("ACTIVE"));
                 lineasPedido.add(lineaPedido);
             }
-            
+
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
@@ -273,7 +272,7 @@ public class PedidoMySQL implements PedidoDAO{
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        
+
         return lineasPedido;
     }
 
@@ -307,7 +306,7 @@ public class PedidoMySQL implements PedidoDAO{
     @Override
     public ArrayList<Pedido> listarPorVendedor(Vendedor vendedor) {
         ArrayList<Pedido> pedidos = new ArrayList<>();
-        
+
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_VENDEDOR(?)}");
@@ -339,13 +338,13 @@ public class PedidoMySQL implements PedidoDAO{
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        return pedidos;    
+        return pedidos;
     }
 
     @Override
     public ArrayList<Pedido> listarPorEstadoDePedido(EstadoPedido estado) {
         ArrayList<Pedido> pedidos = new ArrayList<>();
-        
+
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_ESTADO(?)}");
@@ -382,7 +381,7 @@ public class PedidoMySQL implements PedidoDAO{
 
     @Override
     public Pedido encontrarPorId(int id) {
-        Pedido pedido = null;        
+        Pedido pedido = null;
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_PEDIDO_POR_IDPEDIDO(?)}");
@@ -418,7 +417,7 @@ public class PedidoMySQL implements PedidoDAO{
     @Override
     public ArrayList<Pedido> listar() {
         ArrayList<Pedido> pedidos = new ArrayList<>();
-        
+
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDOS()}");
@@ -451,9 +450,4 @@ public class PedidoMySQL implements PedidoDAO{
         return pedidos;
     }
 
-    @Override
-    public int listarMejoresProductosEnPedido(int id_cliente_vendedor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }
