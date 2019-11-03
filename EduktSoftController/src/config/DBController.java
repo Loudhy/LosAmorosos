@@ -279,6 +279,10 @@ public abstract class DBController {
         return daoFactory.getSolicitudDAO().eliminar(id_solicitud);
     }
 
+    public static int buscarSolicitudPorId(int id_solicitud){
+       return daoFactory.getSolicitudDAO().encontrarPorId(id_solicitud);
+    }
+
     public static ArrayList<LineaSolicitud> listarLineasDeSolicitud(Solicitud solicitud){
         return daoFactory.getSolicitudDAO().listarLineasSolicitud(solicitud);
     }

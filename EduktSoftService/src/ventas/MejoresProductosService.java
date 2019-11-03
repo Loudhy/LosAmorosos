@@ -30,15 +30,15 @@ public class MejoresProductosService {
         ArrayList<Pedido> pedidos = DBController.listarPedidosPorCliente(cliente);
         Map<Integer, Integer> mapa = new HashMap<Integer, Integer>();
         for(Pedido pedido: pedidos ){
-          ArrayList<LineaPedido> lineasPedido = DBController.listarLineasDePedido(pedido);
-          for (LineaPedido lineaPedido:lineasPedido){
-            if(mapa.contains(lineaPedido.getProducto().getId())){
-              mapa.put(key,map.get(key) + lineaPedido.getCantidadPorAtender());
+            ArrayList<LineaPedido> lineasPedido = DBController.listarLineasDePedido(pedido);
+            for (LineaPedido lineaPedido:lineasPedido){
+                if(mapa.contains(lineaPedido.getProducto().getId())){
+                  mapa.put(key,map.get(key) + lineaPedido.getCantidadPorAtender());
+                }
+                else{
+                  mapa.put(lineaPedido.getProducto().getId()), lineaPedido.getCantidadPorAtender())
+                }
             }
-            else{
-              mapa.put(lineaPedido.getProducto().getId()), lineaPedido.getCantidadPorAtender())
-            }
-          }
         }
 
         Map<Integer, Integer> result = mapa.entrySet().stream()
