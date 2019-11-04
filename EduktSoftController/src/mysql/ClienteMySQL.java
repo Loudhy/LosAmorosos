@@ -198,9 +198,6 @@ public class ClienteMySQL implements ClienteDAO{
                 cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
                 cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
                 cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
-                cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
-                cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
-                cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
                 cliente.setPuntaje(rs.getInt("PUNTOS"));
                 cliente.setActive(true);
                 cliente.getProvincia().setActive(true);
@@ -214,6 +211,38 @@ public class ClienteMySQL implements ClienteDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return clientes;
+    }
+
+    @Override
+    public Cliente buscarClientePorFiltro(String filtro) {
+        Cliente cliente = new Cliente();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            con.prepareCall(("{call BUSCAR_CLIENTE_POR_FILTRO(?)}"));
+            cs.setString("_FILTRO", filtro);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                cliente.setId(rs.getInt("ID_CLIENTE"));
+                cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                cliente.setRuc(rs.getString("RUC"));
+                cliente.setDireccion(rs.getString("DIRECCION"));
+                cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
+                cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
+                cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
+                cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
+                cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                cliente.setPuntaje(rs.getInt("PUNTOS"));
+                cliente.setActive(true);
+                cliente.getProvincia().setActive(true);
+                cliente.getProvincia().getDepartamento().setActive(true);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return cliente;
     }
 
 

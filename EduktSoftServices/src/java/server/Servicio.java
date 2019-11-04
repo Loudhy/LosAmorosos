@@ -85,12 +85,12 @@ public class Servicio {
     }
 
     @WebMethod(operationName = "buscarClientePorRUC")
-    public Cliente buscarClientePorFiltro(@WebParam(name = "ruc") String ruc){
-        return DBController.buscarClientePorRUC(ruc);
+    public Cliente buscarClientePorFiltro(@WebParam(name = "filtro") String filtro){
+        return DBController.buscarClientePorFiltro(filtro);
     }
 
     @WebMethod(operationName = "actualizarCliente")
-    public Cliente actualizarCliente(@WebParam(name = "cliente") Cliente cliente){
+    public int actualizarCliente(@WebParam(name = "cliente") Cliente cliente){
         return DBController.actualizarCliente(cliente);
     }
 }
