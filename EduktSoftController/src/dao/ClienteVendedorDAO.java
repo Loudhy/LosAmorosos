@@ -18,6 +18,7 @@ import model.Vendedor;
  */
 public interface ClienteVendedorDAO {
     int insertar(Cliente_Vendedor cliente_vendedor);
+    Cliente_Vendedor buscarRelacion(Cliente cliente, Vendedor vendedor);
     ArrayList<Cliente> listarClientesPorVendedor(int id_vendedor);
     ArrayList<Cliente_Vendedor> listarPorCliente(int id_cliente);
     ArrayList<Pedido> listarPedidosEnRangoDeFechas(Date fechaIni, Date fechaFin, Vendedor vendedor);

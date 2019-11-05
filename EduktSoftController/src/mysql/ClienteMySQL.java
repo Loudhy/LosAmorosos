@@ -82,8 +82,8 @@ public class ClienteMySQL implements ClienteDAO{
         Cliente cliente = null;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("BUSCAR_CLIENTE_POR_ID(?)");
-            cs.setInt("_ID_VENDEDOR", id);
+            cs = con.prepareCall("{call BUSCAR_CLIENTE_POR_ID(?)}");
+            cs.setInt("_ID_CLIENTE", id);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
                 cliente = new Cliente();
@@ -132,7 +132,7 @@ public class ClienteMySQL implements ClienteDAO{
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("LISTAR_CLIENTES()");
+            con.prepareCall("{call LISTAR_CLIENTES()}");
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
                 Cliente cliente = new Cliente();
@@ -186,7 +186,7 @@ public class ClienteMySQL implements ClienteDAO{
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("LISTAR_CLIENTES_POR_NOMBRE(?)");
+            con.prepareCall("call{LISTAR_CLIENTES_POR_NOMBRE(?)}");
             cs.setString("_RAZON_SOCIAL", nombre);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){

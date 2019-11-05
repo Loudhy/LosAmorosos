@@ -11,9 +11,9 @@ public class Vendedor extends Empleado{
     private boolean active;
     
     public Vendedor(){
-        clientes_vendedor = new ArrayList<Cliente_Vendedor>();
-        objetivoVendedor = new ObjetivoVendedor();
     }
+    
+    
     
      public Vendedor(String dni, String nombre, String apellidoPaterno, String apellidoMaterno, Date fecha_nacimiento,
            String telefono, String correo, EstadoCivil estado_civil, float sueldo, Area area, Date fecha_ingreso){

@@ -148,6 +148,29 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
         }
         return clientesVendedor;
     }
+
+    @Override
+    public Cliente_Vendedor buscarRelacion(Cliente cliente, Vendedor vendedor) {
+        Cliente_Vendedor clienteVendedor = new Cliente_Vendedor();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_RELACION_CLIENTE_VENDEDOR(?,?)}");
+            cs.setInt("_ID_CLIENTE", cliente.getId());
+            cs.setInt("_ID_VENDEDOR", vendedor.getId());
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                clienteVendedor.setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
+                clienteVendedor.getCliente().setId(rs.getInt("ID_CLIENTE"));
+                clienteVendedor.getVendedor().setId(rs.getInt("ID_VENDEDOR"));
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        
+        return clienteVendedor;
+    }
     
     
 }

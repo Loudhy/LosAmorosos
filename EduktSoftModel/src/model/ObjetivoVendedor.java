@@ -11,7 +11,7 @@ public class ObjetivoVendedor {
     private boolean active;
     
     public ObjetivoVendedor(){
-        this.vendedor = new Vendedor();
+        
     }
     
     public ObjetivoVendedor(MetaMensual metaMensual, float monto, float bono, float comision){

@@ -149,6 +149,10 @@ public abstract class DBController {
     public static int eliminarDepartamento(int id_departamento){
         return daoFactory.getDepartamentoDAO().eliminar(id_departamento);
     }
+    
+    public static Departamento buscarDepartamentoPorId(int id_departamento){
+        return daoFactory.getDepartamentoDAO().encontrarPorId(id_departamento);
+    }
 
     public static ArrayList<Departamento> listarDepartamentos(){
         return daoFactory.getDepartamentoDAO().listar();
@@ -164,6 +168,10 @@ public abstract class DBController {
 
     public static int eliminarProvincia(int id_provincia){
         return daoFactory.getProvinciaDAO().eliminar(id_provincia);
+    }
+    
+    public static Provincia buscarProvinciaPorId(int id_provincia){
+        return daoFactory.getProvinciaDAO().encontrarPorId(id_provincia);
     }
 
     public static ArrayList<Provincia> listarProvinciasPorDepartamento(Departamento departamento){
@@ -181,6 +189,7 @@ public abstract class DBController {
     public static int eliminarProducto(int id_producto){
         return daoFactory.getProductoDAO().eliminar(id_producto);
     }
+    
 
     public static ArrayList<Producto> listarProductosDisponibles(){
         return daoFactory.getProductoDAO().listarDisponibles();
@@ -224,6 +233,10 @@ public abstract class DBController {
 
     public static int eliminarClienteVendedor(int id_cliente_vendedor){
         return daoFactory.getClienteVendedorDAO().eliminar(id_cliente_vendedor);
+    }
+    
+    public static Cliente_Vendedor buscarRelacionClienteVendedor(Cliente cliente, Vendedor vendedor){
+        return daoFactory.getClienteVendedorDAO().buscarRelacion(cliente, vendedor);
     }
 
     public static ArrayList<Cliente> listarClientesPorVendedor(int id_vendedor){

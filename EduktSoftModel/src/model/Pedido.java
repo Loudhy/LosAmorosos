@@ -16,7 +16,14 @@ public class Pedido {
     private boolean active;
     
     public Pedido(){
+        
+    }
+    
+    public Pedido(Date fechaRegistro){
+        this.fechaRegistro = fechaRegistro;
         lineasPedido = new ArrayList<LineaPedido>();
+        clienteVendedor = new Cliente_Vendedor();
+        active = true;
     }
         
     public float getTotal() {

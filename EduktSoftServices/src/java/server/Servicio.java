@@ -15,6 +15,7 @@ import javax.jws.WebParam;
 import model.Cliente;
 import model.Solicitud;
 import model.Empleado;
+import model.Pedido;
 import model.Presentacion;
 import model.Producto;
 import ventas.MejoresProductosService;
@@ -33,9 +34,14 @@ public class Servicio {
     }
 
     @WebMethod(operationName = "restaurarContra")
-    public int restaurarContraseña(@WebParam(name = "name") String correo){
+    public int restaurarContraseña(@WebParam(name = "correo") String correo){
         PasswordService passwordService = new PasswordService();
         return passwordService.enviarCorreo(correo);
+    }
+    
+    @WebMethod(operationName = "insertarProducto")
+    public int insertarProducto(@WebParam(name = "producto") Producto producto){
+        return DBController.insertarProducto(producto);
     }
 
     @WebMethod(operationName = "listarProductos")
@@ -51,6 +57,12 @@ public class Servicio {
     @WebMethod(operationName = "eliminarPedido")
     public int eliminarPedido(int id){
         return DBController.eliminarPedido(id);
+    }
+    
+    
+    @WebMethod(operationName = "insertarPedido")
+    public int insertarPedido(@WebParam(name = "pedido") Pedido pedido){
+        return DBController.insertarPedido(pedido);
     }
 
     @WebMethod(operationName = "listarCliente")

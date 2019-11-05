@@ -42,8 +42,62 @@ public class EduktSoft {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {      
+        /*try{
+            Departamento departamento1 = new Departamento();
+            departamento1.setId(19);
+            departamento1.setNombre("PIURA");
+
+            Provincia provincia1 = new Provincia();
+            provincia1.setId(19);
+            provincia1.setDepartamento(departamento1);
+            provincia1.setNombre("PIURA");
+
+            Cliente cliente1 = DBController.buscarClientePorId(1);
+
+
+            Departamento departamento2 = new Departamento();
+            departamento2.setId(14);
+            departamento2.setNombre("LIMA");
+
+            Provincia provincia2 = new Provincia();
+            provincia2.setId(14);
+            provincia2.setDepartamento(departamento1);
+            provincia2.setNombre("CAJATAMBO");
         
+            Cliente cliente2 = DBController.buscarClientePorId(2);
+            Producto producto1 = DBController.buscarProductoPorId(10);
+            Producto producto2 = DBController.buscarProductoPorId(11);
+            Producto producto3 = DBController.buscarProductoPorId(12);
+            Producto producto4 = DBController.buscarProductoPorId(13);
+            Producto producto5 = DBController.buscarProductoPorId(14);
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+            LineaPedido linea1 = new LineaPedido(producto1,30,EstadoLineaPedido.Disponible,format1.parse("2019-11-06"));
+            LineaPedido linea2 = new LineaPedido(producto2,20,EstadoLineaPedido.Disponible,format1.parse("2019-11-06"));
+            Pedido pedido1 = new Pedido(format1.parse("2019-11-06"));
+            pedido1.insertarLineaPedido(linea2);
+            pedido1.insertarLineaPedido(linea1);
+            Area area = DBController.buscarAreaPorId(3);
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+            Empleado empleado1 = new Vendedor();
+            empleado1 = DBController.buscarEmpleadoPorDni("75276938");
+            Vendedor vendedor1 = new Vendedor(empleado1.getDni(), empleado1.getNombre(), empleado1.getApellidoPaterno(),empleado1.getApellidoMaterno(),empleado1.getFechaNacimiento(),empleado1.getTelefono(),empleado1.getCorreo(),empleado1.getEstadoCivil(),empleado1.getSueldo(),area,empleado1.getFechaIngreso());
+            vendedor1.setId(empleado1.getId());
+            Cliente_Vendedor relacion1 = DBController.buscarRelacionClienteVendedor(cliente1, vendedor1);
+            if (relacion1 == null){
+                DBController.insertarClienteVendedor(relacion1);
+            }
+
+            pedido1.setClienteVendedor(relacion1);
+            pedido1.setFechaRegistro(format1.parse("2019-10-08"));
+            pedido1.setEstadoPedido(EstadoPedido.Pendiente);
+            DBController.insertarPedido(pedido1);
+        }catch(ParseException ex){
+            System.out.println(ex.getMessage());
+        }
+       
+
+        /*
         //Probando productos----Imp 2
         Producto prod1 = new Producto(50,15.3f,"Aros apilables","Juego didactico");
         Producto prod2 = new Producto(30,20.6f,"Rompecabeza 30 fichas Gusano","Rompecabeza");
@@ -244,8 +298,8 @@ public class EduktSoft {
         PasswordService pass = new PasswordService();
         pass.enviarCorreo("a20151593@pucp.edu.pe");
         VentasService ventas = new VentasService();
-        ventas.graphPorVendedor(formatoFecha.parse("1999-01-29"), formatoFecha.parse("3000-01-29"), vendedor1);
-
+        ventas.graphPorVendedor(formatoFecha.parse("1999-01-29"), formatoFecha.parse("3000-01-29"), vendedor1);*/
+        
     }
 }
 

@@ -17,8 +17,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Cliente;
 import model.EstadoLineaPedido;
 import model.EstadoPedido;
@@ -153,7 +151,7 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -190,7 +188,7 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -334,7 +332,7 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -372,7 +370,7 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -407,7 +405,7 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -443,7 +441,7 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
