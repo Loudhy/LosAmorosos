@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import logistica.ProductosSolicitud;
 import model.Cliente;
 import model.Solicitud;
 import model.Empleado;
@@ -104,5 +105,11 @@ public class Servicio {
     @WebMethod(operationName = "actualizarCliente")
     public int actualizarCliente(@WebParam(name = "cliente") Cliente cliente){
         return DBController.actualizarCliente(cliente);
+    }
+    
+    @WebMethod(operationName = "listarProductosDeSolicitudes")
+    public ArrayList<ProductosSolicitud> listarProductosDeSolicitudes(){
+        ProductosSolicitud prod = new ProductosSolicitud();
+        return prod.sacarCantidadAcumuladaDeSolicitud();
     }
 }
