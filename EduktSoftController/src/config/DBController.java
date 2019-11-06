@@ -170,6 +170,10 @@ public abstract class DBController {
         return daoFactory.getProvinciaDAO().eliminar(id_provincia);
     }
     
+    public static ArrayList<Provincia> listarProvincias(){
+        return daoFactory.getProvinciaDAO().listar();
+    }
+    
     public static Provincia buscarProvinciaPorId(int id_provincia){
         return daoFactory.getProvinciaDAO().encontrarPorId(id_provincia);
     }
@@ -193,6 +197,10 @@ public abstract class DBController {
 
     public static ArrayList<Producto> listarProductosDisponibles(){
         return daoFactory.getProductoDAO().listarDisponibles();
+    }
+    
+    public static ArrayList<Producto> listarProductosPorNombre(String filtro){
+        return daoFactory.getProductoDAO().listarPorNombre(filtro);
     }
 
     public static Producto buscarProductoPorId(int id){
@@ -267,8 +275,8 @@ public abstract class DBController {
         return daoFactory.getPedidoDAO().listarPorVendedor(vendedor);
     }
 
-    public static ArrayList<Pedido> listarPedidosPorEstadoDePedido(EstadoPedido estado){
-        return daoFactory.getPedidoDAO().listarPorEstadoDePedido(estado);
+    public static ArrayList<Pedido> listarPedidosPorEstadoDePedido(){
+        return daoFactory.getPedidoDAO().listarPorEstadoDePedido();
     }
 
     public static ArrayList<LineaPedido> listarLineasDePedido(Pedido pedido){
@@ -330,5 +338,9 @@ public abstract class DBController {
         return daoFactory.getClienteVendedorDAO().listarPorCliente(id_cliente);
     }
 
+    
+    public static Cliente_Vendedor buscarClienteVendedorPorId(int id){
+        return daoFactory.getClienteVendedorDAO().encontrarPorId(id);
+    }
 
 }

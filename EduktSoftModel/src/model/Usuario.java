@@ -9,7 +9,7 @@ public class Usuario {
     private boolean active;
             
     public Usuario(){
-        empleado = new Empleado();
+        
     }
     
     public Usuario(String nombre,String contraseña){

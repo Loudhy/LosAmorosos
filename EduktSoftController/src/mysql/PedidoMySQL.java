@@ -5,6 +5,7 @@
  */
 package mysql;
 
+import config.DBController;
 import config.DBManager;
 import dao.PedidoDAO;
 import java.sql.CallableStatement;
@@ -18,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import model.Cliente;
+import model.Cliente_Vendedor;
+import model.Empleado;
 import model.EstadoLineaPedido;
 import model.EstadoPedido;
 import model.LineaPedido;
@@ -314,16 +317,11 @@ public class PedidoMySQL implements PedidoDAO{
                 Pedido pedido = new Pedido();
                 pedido.setId(rs.getInt("ID_PEDIDO"));
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
-                //pedido.getCliente_vendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
-                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
-                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
-                pedido.getClienteVendedor().getCliente().setCorreo(rs.getString("CORREO_CLIENTE"));
-                pedido.getClienteVendedor().getCliente().setDireccion(rs.getString("DIRECCION"));
-                pedido.getClienteVendedor().getCliente().setTelefono(rs.getString("TELEFONO_CLIENTE"));
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
@@ -340,28 +338,22 @@ public class PedidoMySQL implements PedidoDAO{
     }
 
     @Override
-    public ArrayList<Pedido> listarPorEstadoDePedido(EstadoPedido estado) {
+    public ArrayList<Pedido> listarPorEstadoDePedido() {
         ArrayList<Pedido> pedidos = new ArrayList<>();
 
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call LISTAR_PEDIDO_POR_ESTADO(?)}");
-            cs.setString("_ESTADO_PEDIDO", estado.toString());
+            cs = con.prepareCall("{call LISTAR_PEDIDO_POR_ESTADO()}");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 Pedido pedido = new Pedido();
                 pedido.setId(rs.getInt("ID_PEDIDO"));
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
-                //pedido.getCliente_vendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
-                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
-                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
-                pedido.getClienteVendedor().getCliente().setCorreo(rs.getString("CORREO_CLIENTE"));
-                pedido.getClienteVendedor().getCliente().setDireccion(rs.getString("DIRECCION"));
-                pedido.getClienteVendedor().getCliente().setTelefono(rs.getString("TELEFONO_CLIENTE"));
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
@@ -382,22 +374,18 @@ public class PedidoMySQL implements PedidoDAO{
         Pedido pedido = null;
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call BUSCAR_PEDIDO_POR_IDPEDIDO(?)}");
+            cs = con.prepareCall("{call BUSCAR_PEDIDO_POR_ID(?)}");
             cs.setInt("_ID_PEDIDO", id);
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 pedido = new Pedido();
                 pedido.setId(id);
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
-                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
-                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
-                pedido.getClienteVendedor().getCliente().setCorreo(rs.getString("CORREO_CLIENTE"));
-                pedido.getClienteVendedor().getCliente().setDireccion(rs.getString("DIRECCION"));
-                pedido.getClienteVendedor().getCliente().setTelefono(rs.getString("TELEFONO_CLIENTE"));
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
@@ -424,15 +412,11 @@ public class PedidoMySQL implements PedidoDAO{
                 Pedido pedido = new Pedido();
                 pedido.setId(rs.getInt("ID_PEDIDO"));
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
-                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
-                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
-                pedido.getClienteVendedor().getCliente().setCorreo(rs.getString("CORREO_CLIENTE"));
-                pedido.getClienteVendedor().getCliente().setDireccion(rs.getString("DIRECCION"));
-                pedido.getClienteVendedor().getCliente().setTelefono(rs.getString("TELEFONO_CLIENTE"));
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));

@@ -42,7 +42,8 @@ public class EduktSoft {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {       
+    public static void main(String[] args) {
+        ArrayList<Provincia> provincias = DBController.listarProvincias();
         /*try{
             Departamento departamento1 = new Departamento();
             departamento1.setId(19);

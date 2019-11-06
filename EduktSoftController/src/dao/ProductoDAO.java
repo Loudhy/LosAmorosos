@@ -14,6 +14,7 @@ import model.Producto;
  * @author UsuarioA
  */
 public interface ProductoDAO extends CrudDAO<Producto>{
+    ArrayList<Producto> listarPorNombre(String filtro);
     ArrayList<Producto> listarDisponibles();
     Producto buscarProductoPorNombre(String nombre);
     ArrayList<Presentacion> listarPresentaciones(int id_producto);

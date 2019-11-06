@@ -132,7 +132,7 @@ public class ClienteMySQL implements ClienteDAO{
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("{call LISTAR_CLIENTES()}");
+            cs = con.prepareCall("{call LISTAR_CLIENTES()}");
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
                 Cliente cliente = new Cliente();
@@ -166,7 +166,7 @@ public class ClienteMySQL implements ClienteDAO{
         Pedido pedido = null;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("{call BUSCAR_ULTIMO_PEDIDO(?)}");
+            cs = con.prepareCall("{call BUSCAR_ULTIMO_PEDIDO(?)}");
             cs.setInt("_ID_CLIENTE", id_cliente);
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
@@ -186,7 +186,7 @@ public class ClienteMySQL implements ClienteDAO{
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("call{LISTAR_CLIENTES_POR_NOMBRE(?)}");
+            cs = con.prepareCall("{call LISTAR_CLIENTES_POR_NOMBRE(?)}");
             cs.setString("_RAZON_SOCIAL", nombre);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
@@ -218,7 +218,7 @@ public class ClienteMySQL implements ClienteDAO{
         Cliente cliente = new Cliente();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall(("{call BUSCAR_CLIENTE_POR_FILTRO(?)}"));
+            cs = con.prepareCall(("{call BUSCAR_CLIENTE_POR_FILTRO(?)}"));
             cs.setString("_FILTRO", filtro);
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
