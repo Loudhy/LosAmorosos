@@ -82,8 +82,8 @@ public class ClienteMySQL implements ClienteDAO{
         Cliente cliente = null;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("BUSCAR_CLIENTE_POR_ID(?)");
-            cs.setInt("_ID_VENDEDOR", id);
+            cs = con.prepareCall("{call BUSCAR_CLIENTE_POR_ID(?)}");
+            cs.setInt("_ID_CLIENTE", id);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
                 cliente = new Cliente();
@@ -132,7 +132,7 @@ public class ClienteMySQL implements ClienteDAO{
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("LISTAR_CLIENTES()");
+            cs = con.prepareCall("{call LISTAR_CLIENTES()}");
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
                 Cliente cliente = new Cliente();
@@ -166,7 +166,7 @@ public class ClienteMySQL implements ClienteDAO{
         Pedido pedido = null;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("{call BUSCAR_ULTIMO_PEDIDO(?)}");
+            cs = con.prepareCall("{call BUSCAR_ULTIMO_PEDIDO(?)}");
             cs.setInt("_ID_CLIENTE", id_cliente);
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
@@ -186,11 +186,42 @@ public class ClienteMySQL implements ClienteDAO{
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("LISTAR_CLIENTES_POR_NOMBRE(?)");
+            cs = con.prepareCall("{call LISTAR_CLIENTES_POR_NOMBRE(?)}");
             cs.setString("_RAZON_SOCIAL", nombre);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
                 Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("ID_CLIENTE"));
+                cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                cliente.setRuc(rs.getString("RUC"));
+                cliente.setDireccion(rs.getString("DIRECCION"));
+                cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
+                cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
+                cliente.setPuntaje(rs.getInt("PUNTOS"));
+                cliente.setActive(true);
+                cliente.getProvincia().setActive(true);
+                cliente.getProvincia().getDepartamento().setActive(true);
+                clientes.add(cliente);
+            }
+
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return clientes;
+    }
+
+    @Override
+    public Cliente buscarClientePorFiltro(String filtro) {
+        Cliente cliente = new Cliente();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall(("{call BUSCAR_CLIENTE_POR_FILTRO(?)}"));
+            cs.setString("_FILTRO", filtro);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
                 cliente.setId(rs.getInt("ID_CLIENTE"));
                 cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
                 cliente.setRuc(rs.getString("RUC"));
@@ -205,15 +236,13 @@ public class ClienteMySQL implements ClienteDAO{
                 cliente.setActive(true);
                 cliente.getProvincia().setActive(true);
                 cliente.getProvincia().getDepartamento().setActive(true);
-                clientes.add(cliente);
             }
-
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        return clientes;
+        return cliente;
     }
 
 

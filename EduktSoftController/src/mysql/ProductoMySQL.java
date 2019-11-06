@@ -37,14 +37,14 @@ public class ProductoMySQL implements ProductoDAO{
             cs.setFloat("_PRECIO_UNITARIO",producto.getPrecioUnitario());
             cs.setString("_DESCRIPCION",producto.getDescripcion());
             cs.setBytes("_FOTO", producto.getFoto());
-            cs.setBoolean("_ACTIVE", producto.isActive());
+            cs.setBoolean("_ACTIVE", true);
             resultado = cs.executeUpdate();
             producto.setId(cs.getInt("_ID_PRODUCTO"));
             for(Presentacion m:producto.getPresentaciones()){
                 cs = con.prepareCall("{call INSERTAR_PRESENTACION(?,?,?,?)} ");
                 cs.setInt("_ID_PRODUCTO", producto.getId());
                 cs.setString("_DISEÑO",m.getDiseño());
-                cs.setBoolean("_ACTIVE", m.isActive());
+                cs.setBoolean("_ACTIVE", true);
                 resultado=cs.executeUpdate();
                 m.setId(cs.getInt("_ID_PRESENTACION"));
             }
@@ -134,7 +134,7 @@ public class ProductoMySQL implements ProductoDAO{
             cs = con.prepareCall("{call BUSCAR_PRODUCTO_POR_NOMBRE(?)}");
             cs.setString("_NOMBRE_PRODUCTO", nombre);
             ResultSet rs = cs.executeQuery();
-            if (rs.next()){
+            while (rs.next()){
                 producto.setId(rs.getInt("ID_PRODUCTO"));
                 producto.setNombre(nombre);
                 producto.setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
@@ -193,7 +193,36 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setDescripcion(rs.getString("DESCRIPCION"));
                 producto.setStockEmpresa(rs.getInt("STOCK_EMPRESA"));
                 producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
+                producto.setFoto(rs.getBytes("FOTO"));
                 producto.setActive(rs.getBoolean("ACTIVE"));
+                productos.add(producto);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return productos;
+    }
+    
+    @Override
+    public ArrayList<Producto> listarPorNombre(String nombre){
+        ArrayList<Producto> productos = new ArrayList<Producto>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_PRODUCTOS_POR_NOMBRE(?)}");
+            cs.setString("_NOMBRE_PRODUCTO", nombre);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Producto producto = new Producto();
+                producto.setId(rs.getInt("ID_PRODUCTO"));
+                producto.setNombre(rs.getString("NOMBRE_PRODUCTO"));
+                producto.setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
+                producto.setStockEmpresa(rs.getInt("STOCK_EMPRESA"));
+                producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
+                producto.setDescripcion(rs.getString("DESCRIPCION"));
+                producto.setFoto(rs.getBytes("FOTO"));
+                producto.setActive(true);
                 productos.add(producto);
             }
         }catch (SQLException ex) {

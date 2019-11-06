@@ -137,7 +137,6 @@ public class ProvinciaMySQL implements ProvinciaDAO {
                 provincia.setId(rs.getInt("ID_PROVINCIA"));
                 provincia.setNombre(rs.getString("NOMBRE_PROVINCIA"));
                 provincia.getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
-                provincia.getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
                 provincia.setActive(rs.getBoolean("ACTIVE"));
                 provincias.add(provincia);
             }
