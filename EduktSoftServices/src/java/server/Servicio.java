@@ -167,6 +167,7 @@ public class Servicio {
     @WebMethod(operationName = "insertarPresentacion")
     public ArrayList<LineaSolicitud> listarLineasSolicitudesProducto(@WebParam(name = "nombreProducto") String nombreProducto){
         return DBController.listarLineasSolicitudesProducto(nombreProducto);
+    }
 
     @WebMethod(operationName = "aprobarListasSolicitudConProducto")
     public int aprobarListasSolicitudConProducto(@WebParam(name = "solicitudes") ArrayList<Solicitud> solicitudes, String nombreProducto){
