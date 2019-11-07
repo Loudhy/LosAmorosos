@@ -65,7 +65,7 @@ public class Servicio {
         return DBController.insertarProducto(producto);
     }
     
-    @WebMethod(operationName = "insertarProducto")
+    @WebMethod(operationName = "actualizarProducto")
     public int actualizarProducto(@WebParam(name = "producto") Producto producto){
         return DBController.actualizarProducto(producto);
     }
@@ -164,7 +164,7 @@ public class Servicio {
     }
     
 
-    @WebMethod(operationName = "insertarPresentacion")
+    @WebMethod(operationName = "listarLineasSolciitudesProducto")
     public ArrayList<LineaSolicitud> listarLineasSolicitudesProducto(@WebParam(name = "nombreProducto") String nombreProducto){
         return DBController.listarLineasSolicitudesProducto(nombreProducto);
     }
