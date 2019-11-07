@@ -14,7 +14,7 @@ public class Producto {
     private boolean active;
     
     public Producto(){
-        
+        this.presentaciones = new ArrayList<Presentacion>();
     }
     
     public Producto(int stockEmpresa, float precioUnitario, String nombre, String descripcion){
@@ -25,6 +25,7 @@ public class Producto {
         this.descripcion = descripcion;
         this.presentaciones = new ArrayList<Presentacion>();
         this.active = true;
+        
     }
 
     public boolean isActive() {

@@ -16,7 +16,7 @@ public class Pedido {
     private boolean active;
     
     public Pedido(){
-        
+        lineasPedido = new ArrayList<LineaPedido>();
     }
     
     public Pedido(Date fechaRegistro){

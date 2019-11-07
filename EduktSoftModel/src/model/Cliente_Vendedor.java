@@ -11,12 +11,12 @@ public class Cliente_Vendedor {
     private boolean active;
     
     public Cliente_Vendedor(){
-
+        this.cliente = new Cliente();
+        this.vendedor = new Vendedor();
+        this.pedidos = new ArrayList<Pedido>();
     }
     
     public Cliente_Vendedor(Cliente cliente, Vendedor vendedor){
-        this.cliente = new Cliente();
-        this.vendedor = new Vendedor();
         this.pedidos = new ArrayList<Pedido>();
         this.active = true;
     }

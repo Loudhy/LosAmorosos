@@ -590,7 +590,7 @@ CREATE PROCEDURE INSERTAR_LINEA_PEDIDO(
     IN _ID_PEDIDO INT,
     IN _ID_PRODUCTO INT,
     IN _SUBTOTAL FLOAT,
-    IN _ESTADO_LINEA_PEDIDO ENUM('Aceptado','Rechazado','Pendiente'),
+    IN _ESTADO_LINEA_PEDIDO ENUM('Disponible', 'No_disponible', 'Aceptado', 'Rechazado', 'Solicitado'),
     IN _FECHA_ATENCION DATE,
     IN _CANTIDAD_A_ATENDER INT)
 BEGIN
@@ -730,7 +730,7 @@ CREATE PROCEDURE INSERTAR_PEDIDO(
 	OUT _ID_PEDIDO INT,
     IN _TOTAL_PEDIDO FLOAT,
     IN _ID_CLIENTE_VENDEDOR INT,
-    IN _ESTADO_PEDIDO ENUM('Aceptado','Rechazado','Pendiente','Pagado'),
+    IN _ESTADO_PEDIDO ENUM('Aceptado','Cancelado','Pendiente','Pagado','En_proceso'),
     IN _FECHA_REGISTRO DATE,
 	IN _ACTIVE TINYINT(1))
 BEGIN
