@@ -250,5 +250,27 @@ public class SolicitudMySQL implements SolicitudDAO{
         return solicitud;
     }
 
+    @Override
+    public ArrayList<LineaSolicitud> listarSolicitudesPorProducto(String nombreProd) {
+        ArrayList<LineaSolicitud> lineas = new ArrayList<LineaSolicitud>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_LINEAS_SOLICITUD(?)}");
+            cs.setString("_NOMBRE_PRODUCTO", nombreProd);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                LineaSolicitud linea = new LineaSolicitud();
+                linea.setId(rs.getInt("ID_SOLICITUD"));
+                linea.setCantidad(rs.getInt("CANTIDAD_A_ATENDER"));
+                lineas.add(linea);
+            }
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return lineas;
+    }
+
     
 }

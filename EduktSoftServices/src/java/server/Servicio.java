@@ -17,6 +17,7 @@ import model.Cliente;
 import model.Cliente_Vendedor;
 import model.Solicitud;
 import model.Empleado;
+import model.LineaSolicitud;
 import model.Pedido;
 import model.Presentacion;
 import model.Producto;
@@ -159,6 +160,11 @@ public class Servicio {
     @WebMethod(operationName = "insertarPresentacion")
     public int insertarPresentacion(@WebParam(name = "presentacion") Presentacion presentacion){
         return DBController.insertarPresentacion(presentacion);
+    }
+    
+    @WebMethod(operationName = "insertarPresentacion")
+    public ArrayList<LineaSolicitud> listarLineasSolicitudesProducto(@WebParam(name = "nombreProducto") String nombreProducto){
+        return DBController.listarLineasSolicitudesProducto(nombreProducto);
     }
     
 }
