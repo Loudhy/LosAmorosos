@@ -280,13 +280,13 @@ public class SolicitudMySQL implements SolicitudDAO{
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call LISTAR_LINEAS_SOLICITUD(?)}");
+            cs = con.prepareCall("{call LISTAR_SOLICITUDES_POR_PRODUCTO(?)}");
             cs.setString("_NOMBRE_PRODUCTO", nombreProd);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
                 LineaSolicitud linea = new LineaSolicitud();
                 linea.setId(rs.getInt("ID_SOLICITUD"));
-                linea.setCantidad(rs.getInt("CANTIDAD_A_ATENDER"));
+                linea.setCantidad(rs.getInt("CANTIDAD"));
                 lineas.add(linea);
             }
         }catch (SQLException ex) {
