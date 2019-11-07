@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package eduktsoft;
+import administracion.LogginUsuarioService;
 import administracion.PasswordService;
 import config.DBController;
 import java.text.ParseException;
@@ -29,10 +30,12 @@ import reportes.VentasService;
 import model.EstadoSolicitud;
 import java.util.Collections;
 import java.util.Comparator;
+import logistica.ProductosSolicitud;
 import model.Area;
 import model.EstadoCivil;
 import model.EstadoLineaPedido;
 import model.EstadoLineaSolicitud;
+import model.Presentacion;
 /**
  *
  * @author UsuarioA
@@ -42,8 +45,26 @@ public class EduktSoft {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        ArrayList<Provincia> provincias = DBController.listarProvincias();
+    public static void main(String[] args) throws ParseException {
+        ArrayList<Pedido> pedidos = DBController.listarPedidosPorEstadoDePedido();
+        //ProductosSolicitud productosSoli = new ProductosSolicitud();
+        //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();
+        //ArrayList<Pedido> lineas = DBController.listarPedidosPorEstadoDePedido();
+        /*Area area = DBController.buscarAreaPorId(3);
+        Cliente cliente = DBController.buscarClientePorId(1);
+        Empleado empleado1 = DBController.buscarEmpleadoPorId(1);
+        Vendedor vendedor1 = new Vendedor(empleado1.getDni(), empleado1.getNombre(), empleado1.getApellidoPaterno(),empleado1.getApellidoMaterno(),empleado1.getFechaNacimiento(),empleado1.getTelefono(),empleado1.getCorreo(),empleado1.getEstadoCivil(),empleado1.getSueldo(),area,empleado1.getFechaIngreso());
+        vendedor1.setId(empleado1.getId());
+        Cliente_Vendedor clienteVend = DBController.buscarRelacionClienteVendedor(cliente, vendedor1);
+        //Producto prod1 = new Producto(50,15.3f,"Aros Rojos","Juego didactico");
+        //DBController.insertarProducto(prod1);
+        /*Producto prod1 = new Producto(50,15.3f,"Aros apilables","Juego didactico");
+        ArrayList<Presentacion> presentaciones = new ArrayList<Presentacion>();
+        
+        Presentacion pres1 = new Presentacion("Diseño1");
+        presentaciones.add(pres1);
+        prod1.setPresentaciones(presentaciones);
+        DBController.insertarProducto(prod1);
         /*try{
             Departamento departamento1 = new Departamento();
             departamento1.setId(19);

@@ -14,12 +14,14 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import logistica.ProductosSolicitud;
 import model.Cliente;
+import model.Cliente_Vendedor;
 import model.Solicitud;
 import model.Empleado;
 import model.Pedido;
 import model.Presentacion;
 import model.Producto;
 import model.Provincia;
+import model.Vendedor;
 import ventas.MejoresProductosService;
 
 /**
@@ -138,4 +140,15 @@ public class Servicio {
         ProductosSolicitud prod = new ProductosSolicitud();
         return prod.sacarCantidadAcumuladaDeSolicitud();
     }
+    
+    @WebMethod(operationName = "buscarRelacionClienteVendedor")
+    public Cliente_Vendedor buscarRelacionClienteVendedor(@WebParam(name = "cliente") Cliente cliente, @WebParam(name = "vendedor")Vendedor vendedor){
+        return DBController.buscarRelacionClienteVendedor(cliente, vendedor);
+    }
+    
+    @WebMethod(operationName = "insertarPresentacion")
+    public int insertarPresentacion(@WebParam(name = "presentacion") Presentacion presentacion){
+        return DBController.insertarPresentacion(presentacion);
+    }
+    
 }

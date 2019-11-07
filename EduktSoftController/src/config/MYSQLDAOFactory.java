@@ -14,6 +14,7 @@ import dao.EmpleadoDAO;
 import dao.MetaMensualDAO;
 import dao.ObjetivoVendedorDAO;
 import dao.PedidoDAO;
+import dao.PresentacionDAO;
 import dao.ProductoDAO;
 import dao.ProvinciaDAO;
 import dao.SolicitudDAO;
@@ -27,6 +28,7 @@ import mysql.EmpleadoMySQL;
 import mysql.MetaMensualMySQL;
 import mysql.ObjetivoVendedorMySQL;
 import mysql.PedidoMySQL;
+import mysql.PresentacionMySQL;
 import mysql.ProductoMySQL;
 import mysql.ProvinciaMySQL;
 import mysql.SolicitudMySQL;
@@ -50,13 +52,16 @@ public class MYSQLDAOFactory extends DAOFactory {
         return new AreaMySQL();
     }
     
+    @Override
     public UsuarioDAO getUsuarioDAO(){
         return new UsuarioMySQL();
     }
 
+    @Override
     public EmpleadoDAO getEmpleadoDAO(){
         return new EmpleadoMySQL();
     }
+    
 
     @Override
     public DatosGeneralesDAO getDatosGeneralesDAO() {
@@ -73,10 +78,12 @@ public class MYSQLDAOFactory extends DAOFactory {
         return new DepartamentoMySQL(); 
     }
     
+    @Override
     public ProvinciaDAO getProvinciaDAO(){
         return new ProvinciaMySQL();
     }
     
+    @Override
     public ProductoDAO getProductoDAO(){
         return new ProductoMySQL();
     }
@@ -105,5 +112,10 @@ public class MYSQLDAOFactory extends DAOFactory {
     @Override
     public SolicitudDAO getSolicitudDAO() {
         return new SolicitudMySQL();
+    }
+
+    @Override
+    public PresentacionDAO getPresentacionDAO() {
+        return new PresentacionMySQL();
     }
 }

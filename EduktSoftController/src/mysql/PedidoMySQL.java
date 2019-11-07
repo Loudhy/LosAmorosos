@@ -214,9 +214,9 @@ public class PedidoMySQL implements PedidoDAO{
                 lineaPedido.setId(rs.getInt("ID_PEDIDO"));
                 lineaPedido.setSubtotal(rs.getFloat("SUBTOTAL"));
                 SimpleDateFormat formatoFecha = new SimpleDateFormat();
-                java.util.Date fechaAtencion = new java.util.Date(rs.getDate("FECHA_ATENCION").getTime());
-                String fechaAux = formatoFecha.format(fechaAtencion);
-                lineaPedido.setFechaAtencion(formatoFecha.parse(fechaAux));
+                //java.util.Date fechaAtencion = new java.util.Date(rs.getDate("FECHA_ATENCION").getTime());
+                //String fechaAux = formatoFecha.format(fechaAtencion);
+                //lineaPedido.setFechaAtencion(formatoFecha.parse(fechaAux));
                 lineaPedido.getProducto().setId(rs.getInt("ID_PRODUCTO"));
                 lineaPedido.getProducto().setNombre(rs.getString("NOMBRE_PRODUCTO"));
                 lineaPedido.getProducto().setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
@@ -229,8 +229,7 @@ public class PedidoMySQL implements PedidoDAO{
 
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
+        
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -324,7 +323,8 @@ public class PedidoMySQL implements PedidoDAO{
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
-                pedido.setLineasPedido(listarLineasPedido(pedido));
+                ArrayList<LineaPedido> lineas = listarLineasPedido(pedido);
+                pedido.setLineasPedido(lineas);
                 pedidos.add(pedido);
             }
         }catch(SQLException ex){
@@ -356,7 +356,8 @@ public class PedidoMySQL implements PedidoDAO{
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
-                pedido.setLineasPedido(listarLineasPedido(pedido));
+                ArrayList<LineaPedido> lineas = listarLineasPedido(pedido);
+                pedido.setLineasPedido(lineas);
                 pedidos.add(pedido);
             }
         }catch(SQLException ex){

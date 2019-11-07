@@ -31,8 +31,8 @@ public class ProductosSolicitud {
         Map<Integer,Pair<String,Integer>> mapa = new HashMap<Integer,Pair<String, Integer>>();
         ArrayList<Solicitud> solicitudes = DBController.listarSolicitudes();
         for (Solicitud aux : solicitudes){
-            ArrayList<LineaSolicitud> lineasSolicitud = DBController.listarLineasDeSolicitud(aux);
-            for (LineaSolicitud aux2 : lineasSolicitud){
+            
+            for (LineaSolicitud aux2 : aux.getLineasSolicitud()){
                 if(mapa.containsKey(aux2.getLineaPedido().getProducto().getId())){
                     Pair<String, Integer> pair = mapa.get(aux2.getLineaPedido().getProducto().getId());
                     Pair<String, Integer> pair2 = new Pair<String,Integer>(pair.getKey(),pair.getValue() +aux2.getCantidad());
@@ -44,7 +44,6 @@ public class ProductosSolicitud {
                 }
             }
         }
-        
         
         for (Map.Entry<Integer,Pair<String,Integer>> entry : mapa.entrySet()){
             ProductosSolicitud productoSoli = new ProductosSolicitud();

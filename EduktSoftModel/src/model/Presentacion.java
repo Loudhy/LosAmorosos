@@ -10,12 +10,14 @@ package model;
  * @author alulab14
  */
 public class Presentacion {
+
     private int id;
     private int id_producto;
     private String diseño;
     private boolean active;
     
-    public Presentacion(){       
+    public Presentacion(){
+        
     }
     
     public Presentacion(String diseño){  
@@ -39,6 +41,15 @@ public class Presentacion {
         this.diseño = diseño;
     }
 
+    public int getId_producto() {
+        return id_producto;
+    }
+
+  
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
+    }
+    
     public boolean isActive() {
         return active;
     }
@@ -47,11 +58,5 @@ public class Presentacion {
         this.active = active;
     }
 
-    public int getId_producto() {
-        return id_producto;
-    }
-
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
-    }
+    
 }

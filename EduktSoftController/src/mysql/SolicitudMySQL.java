@@ -118,9 +118,11 @@ public class SolicitudMySQL implements SolicitudDAO{
                 LineaSolicitud linea = new LineaSolicitud();
                 linea.setId(rs.getInt("ID_LINEA_SOLICITUD"));
                 linea.setEstadoSolicitud(EstadoLineaSolicitud.valueOf(rs.getString("ESTADO_LINEA_SOLICITUD")));
+                linea.setCantidad(rs.getInt("CANTIDAD_A_ATENDER"));
                 linea.getLineaPedido().setCantidad(rs.getInt("CANTIDAD"));
                 linea.getLineaPedido().setCantidadPorAtender(rs.getInt("CANTIDAD_A_ATENDER"));
                 linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_PEDIDO")));
+                linea.getLineaPedido().getProducto().setId(rs.getInt("ID_PRODUCTO"));
                 linea.getLineaPedido().getProducto().setNombre(rs.getString("NOMBRE_PRODUCTO"));
                 linea.getLineaPedido().getProducto().setDescripcion(rs.getString("DESCRIPCION"));
                 lineas.add(linea);
@@ -153,9 +155,9 @@ public class SolicitudMySQL implements SolicitudDAO{
                 solicitudes.add(solicitud);
             }
         }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            
         } catch (ParseException ex) {
-            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

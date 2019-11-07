@@ -5,6 +5,7 @@
  */
 package mysql;
 
+import config.DBController;
 import config.DBManager;
 import dao.ProductoDAO;
 import java.sql.CallableStatement;
@@ -41,12 +42,8 @@ public class ProductoMySQL implements ProductoDAO{
             resultado = cs.executeUpdate();
             producto.setId(cs.getInt("_ID_PRODUCTO"));
             for(Presentacion m:producto.getPresentaciones()){
-                cs = con.prepareCall("{call INSERTAR_PRESENTACION(?,?,?)} ");
-                cs.setInt("_ID_PRODUCTO", m.getId_producto());
-                cs.setString("_DISEÑO",m.getDiseño());
-                cs.setBoolean("_ACTIVE", true);
-                resultado=cs.executeUpdate();
-                m.setId(cs.getInt("_ID_PRESENTACION"));
+                m.setId_producto(producto.getId());
+                DBController.insertarPresentacion(m);
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -71,10 +68,7 @@ public class ProductoMySQL implements ProductoDAO{
             cs.setString("_DESCRIPCION",producto.getDescripcion());
             resultado = cs.executeUpdate();
             for(Presentacion m:producto.getPresentaciones()){
-                cs = con.prepareCall("{call ACTUALIZAR_PRESENTACION(?,?)} ");
-                cs.setInt("_ID_PRESENTACION",m.getId());
-                cs.setString("_DISEÑO",m.getDiseño());
-                resultado=cs.executeUpdate();
+                DBController.actualizarPresentacion(m);
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -233,27 +227,7 @@ public class ProductoMySQL implements ProductoDAO{
         return productos;
     }
 
-    @Override
-    public ArrayList<Presentacion> listarPresentaciones(int id_producto) {
-        ArrayList<Presentacion> presentaciones = new ArrayList<Presentacion>();
-        try{
-            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_PRESENTACION(?)}");
-            cs.setInt("_ID_PRODUCTO", id_producto);
-            ResultSet rs = cs.executeQuery();
-            while (rs.next()){
-                Presentacion presentacion = new Presentacion();
-                presentacion.setDiseño(rs.getString("DISEÑO"));
-                presentacion.setActive(true);
-                presentaciones.add(presentacion);
-            }
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }finally{
-            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
-        }
-        return presentaciones;
-    }
+    
     
 }
 

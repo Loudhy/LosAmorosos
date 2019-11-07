@@ -16,7 +16,9 @@ public class Pedido {
     private boolean active;
     
     public Pedido(){
-        
+        ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
+        clienteVendedor = new Cliente_Vendedor();
+        active = true;
     }
     
     public Pedido(Date fechaRegistro){
