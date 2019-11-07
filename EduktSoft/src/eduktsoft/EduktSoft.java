@@ -46,7 +46,7 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        ArrayList<Pedido> pedidos = DBController.listarPedidosPorEstadoDePedido();
+        Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();
         //ArrayList<Pedido> lineas = DBController.listarPedidosPorEstadoDePedido();

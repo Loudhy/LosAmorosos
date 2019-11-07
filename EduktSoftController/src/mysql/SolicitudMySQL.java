@@ -226,7 +226,7 @@ public class SolicitudMySQL implements SolicitudDAO{
         Solicitud solicitud = null;
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call BUSCAR_SOLCITUD_POR_ID(?)}");
+            cs = con.prepareCall("{call BUSCAR_SOLICITUD_POR_ID(?)}");
             cs.setInt("_ID_SOLICITUD", id);
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
@@ -243,7 +243,7 @@ public class SolicitudMySQL implements SolicitudDAO{
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
-            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

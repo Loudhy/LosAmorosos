@@ -43,6 +43,11 @@ public class Servicio {
         return passwordService.enviarCorreo(correo);
     }
     
+    @WebMethod(operationName = "buscarSolicitudPorId")
+    public Solicitud buscarSolicitudPorId(@WebParam(name = "id")int id){
+        return DBController.buscarSolicitudPorId(id);
+    }
+    
     @WebMethod(operationName = "listarProvincias")
     public ArrayList<Provincia> listarProvincias(){
         return DBController.listarProvincias();
