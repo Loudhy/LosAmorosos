@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.util.Pair;
+import model.EstadoLineaSolicitud;
 import model.LineaSolicitud;
 import model.Solicitud;
 
@@ -33,14 +34,16 @@ public class ProductosSolicitud {
         for (Solicitud aux : solicitudes){
             
             for (LineaSolicitud aux2 : aux.getLineasSolicitud()){
-                if(mapa.containsKey(aux2.getLineaPedido().getProducto().getId())){
-                    Pair<String, Integer> pair = mapa.get(aux2.getLineaPedido().getProducto().getId());
-                    Pair<String, Integer> pair2 = new Pair<String,Integer>(pair.getKey(),pair.getValue() +aux2.getCantidad());
-                    mapa.put(aux2.getLineaPedido().getProducto().getId(),pair2);
-                }
-                else{
-                  Pair<String,Integer> pair = new Pair<String,Integer>(aux2.getLineaPedido().getProducto().getNombre(),aux2.getCantidad());
-                  mapa.put(aux2.getLineaPedido().getProducto().getId(), pair);
+                if (aux2.getEstadoSolicitud() == EstadoLineaSolicitud.Pendiente){
+                    if(mapa.containsKey(aux2.getLineaPedido().getProducto().getId())){
+                        Pair<String, Integer> pair = mapa.get(aux2.getLineaPedido().getProducto().getId());
+                        Pair<String, Integer> pair2 = new Pair<String,Integer>(pair.getKey(),pair.getValue() +aux2.getCantidad());
+                        mapa.put(aux2.getLineaPedido().getProducto().getId(),pair2);
+                    }
+                    else{
+                      Pair<String,Integer> pair = new Pair<String,Integer>(aux2.getLineaPedido().getProducto().getNombre(),aux2.getCantidad());
+                      mapa.put(aux2.getLineaPedido().getProducto().getId(), pair);
+                    }
                 }
             }
         }

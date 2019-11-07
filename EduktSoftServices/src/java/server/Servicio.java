@@ -13,6 +13,7 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import logistica.ProductosSolicitud;
+import logistica.aprobarSolicitudes;
 import model.Cliente;
 import model.Cliente_Vendedor;
 import model.Solicitud;
@@ -139,7 +140,7 @@ public class Servicio {
         return DBController.buscarClientePorId(id_cliente);
     }
 
-    @WebMethod(operationName = "buscarClientePorRUC")
+    @WebMethod(operationName = "buscarClientePorFiltro")
     public Cliente buscarClientePorFiltro(@WebParam(name = "filtro") String filtro){
         return DBController.buscarClientePorFiltro(filtro);
     }
@@ -159,6 +160,12 @@ public class Servicio {
     @WebMethod(operationName = "insertarPresentacion")
     public int insertarPresentacion(@WebParam(name = "presentacion") Presentacion presentacion){
         return DBController.insertarPresentacion(presentacion);
+    }
+    
+    @WebMethod(operationName = "aprobarListasSolicitudConProducto")
+    public int aprobarListasSolicitudConProducto(@WebParam(name = "solicitudes") ArrayList<Solicitud> solicitudes, String nombreProducto){
+        aprobarSolicitudes aprobar = new aprobarSolicitudes();
+        return  aprobar.aprobarLineasDeSolicitudConProducto(solicitudes, nombreProducto);
     }
     
 }
