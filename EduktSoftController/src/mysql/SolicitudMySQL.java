@@ -37,6 +37,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public int insertar(Solicitud solicitud) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_SOLICITUD(?,?,?,?,?)}");
             cs.setString("_ESTADO_SOLICITUD",solicitud.getEstadoSolicitud().toString());
@@ -57,6 +58,8 @@ public class SolicitudMySQL implements SolicitudDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -67,6 +70,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public int actualizar(Solicitud solicitud) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_SOLICITUD(?,?,?,?)}");
             cs.setInt("_ID_SOLICITUD",solicitud.getId());
@@ -85,6 +89,8 @@ public class SolicitudMySQL implements SolicitudDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -95,11 +101,14 @@ public class SolicitudMySQL implements SolicitudDAO{
     public int eliminar(int id_solicitud) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_SOLICITUD(?)}");
             cs.setInt("_ID_SOLICITUD", id_solicitud);
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -110,6 +119,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public ArrayList<LineaSolicitud> listarLineasSolicitud(Solicitud solicitud) {
         ArrayList<LineaSolicitud> lineas = new ArrayList<LineaSolicitud>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_LINEAS_SOLICITUD(?)}");
             cs.setInt("_ID_SOLICITUD", solicitud.getId());
@@ -129,6 +139,8 @@ public class SolicitudMySQL implements SolicitudDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -139,6 +151,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public ArrayList<Solicitud> listar() {
         ArrayList<Solicitud> solicitudes = new ArrayList<Solicitud>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_SOLICITUD()}");
             ResultSet rs = cs.executeQuery();
@@ -158,6 +171,8 @@ public class SolicitudMySQL implements SolicitudDAO{
             
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -168,6 +183,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public ArrayList<Solicitud> listarSolicitudesPorEstado(EstadoSolicitud estado) {
         ArrayList<Solicitud> solicitudes = new ArrayList<Solicitud>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_SOLICITUD(?)}");
             cs.setString("_ESTADO_SOLICITUD", estado.toString());
@@ -187,6 +203,8 @@ public class SolicitudMySQL implements SolicitudDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -197,6 +215,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public Solicitud buscarSolicitudPorPedido(Pedido pedido) {
         Solicitud solicitud = new Solicitud();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_SOLICITUD_POR_PEDIDO(?)}");
             cs.setInt("_ID_PEDIDO", pedido.getId());
@@ -214,6 +233,8 @@ public class SolicitudMySQL implements SolicitudDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -225,6 +246,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public Solicitud encontrarPorId(int id) {
         Solicitud solicitud = null;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_SOLICITUD_POR_ID(?)}");
             cs.setInt("_ID_SOLICITUD", id);
@@ -244,6 +266,8 @@ public class SolicitudMySQL implements SolicitudDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -254,6 +278,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public ArrayList<LineaSolicitud> listarSolicitudesPorProducto(String nombreProd) {
         ArrayList<LineaSolicitud> lineas = new ArrayList<LineaSolicitud>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_LINEAS_SOLICITUD(?)}");
             cs.setString("_NOMBRE_PRODUCTO", nombreProd);
@@ -266,6 +291,8 @@ public class SolicitudMySQL implements SolicitudDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

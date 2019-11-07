@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Cliente;
 import model.Pedido;
 import model.Vendedor;
@@ -32,6 +34,7 @@ public class ClienteMySQL implements ClienteDAO{
     public int insertar(Cliente cliente) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_CLIENTE(?,?,?,?,?,?,?,?,?)} ");
             cs.setString("_RUC",cliente.getRuc());
@@ -46,6 +49,8 @@ public class ClienteMySQL implements ClienteDAO{
             cliente.setId(cs.getInt("_ID_CLIENTE"));
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClienteMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -56,6 +61,7 @@ public class ClienteMySQL implements ClienteDAO{
     public int actualizar(Cliente cliente) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_CLIENTE(?,?,?,?,?,?,?,?)} ");
             cs.setInt("_ID_CLIENTE", cliente.getId());
@@ -69,6 +75,8 @@ public class ClienteMySQL implements ClienteDAO{
             resultado = cs.executeUpdate();           
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClienteMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -81,6 +89,7 @@ public class ClienteMySQL implements ClienteDAO{
     public Cliente encontrarPorId(int id) {
         Cliente cliente = null;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_CLIENTE_POR_ID(?)}");
             cs.setInt("_ID_CLIENTE", id);
@@ -105,6 +114,8 @@ public class ClienteMySQL implements ClienteDAO{
 
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClienteMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -115,12 +126,15 @@ public class ClienteMySQL implements ClienteDAO{
     public int eliminar(int id) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_CLIENTE(?)}");
             cs.setInt("_ID_CLIENTE", id);
             resultado = cs.executeUpdate();
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClienteMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -131,6 +145,7 @@ public class ClienteMySQL implements ClienteDAO{
     public ArrayList<Cliente> listar() {
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_CLIENTES()}");
             ResultSet rs = cs.executeQuery();
@@ -155,6 +170,8 @@ public class ClienteMySQL implements ClienteDAO{
 
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClienteMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -165,6 +182,7 @@ public class ClienteMySQL implements ClienteDAO{
     public Pedido buscarUltimoPedido(int id_cliente) {
         Pedido pedido = null;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_ULTIMO_PEDIDO(?)}");
             cs.setInt("_ID_CLIENTE", id_cliente);
@@ -174,6 +192,8 @@ public class ClienteMySQL implements ClienteDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClienteMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -185,6 +205,7 @@ public class ClienteMySQL implements ClienteDAO{
     public ArrayList<Cliente> listarClientesPorNombre(String nombre) {
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_CLIENTES_POR_NOMBRE(?)}");
             cs.setString("_RAZON_SOCIAL", nombre);
@@ -207,6 +228,8 @@ public class ClienteMySQL implements ClienteDAO{
 
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClienteMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -217,6 +240,7 @@ public class ClienteMySQL implements ClienteDAO{
     public Cliente buscarClientePorFiltro(String filtro) {
         Cliente cliente = new Cliente();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall(("{call BUSCAR_CLIENTE_POR_FILTRO(?)}"));
             cs.setString("_FILTRO", filtro);
@@ -239,6 +263,8 @@ public class ClienteMySQL implements ClienteDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClienteMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

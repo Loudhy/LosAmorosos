@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.ObjetivoVendedor;
 
 /**
@@ -29,6 +31,7 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
     public int insertar(ObjetivoVendedor objetivoVendedor) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_OBJETIVO_VENDEDOR(?,?,?,?,?,?,?)} ");
             cs.setInt("_ID_META_MENSUAL", objetivoVendedor.getMetaMensual().getId());
@@ -41,6 +44,8 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             objetivoVendedor.setId(cs.getInt("_ID_OBJETIVO_VENDEDOR"));
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ObjetivoVendedorMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -51,6 +56,7 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
     public int actualizar(ObjetivoVendedor objetivoVendedor) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_OBJETIVO_VENDEDOR(?,?,?,?,?,?)} ");
             cs.setInt("_ID_OBJETIVO_VENDEDOR",objetivoVendedor.getId());
@@ -62,6 +68,8 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             resultado = cs.executeUpdate();           
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ObjetivoVendedorMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -72,6 +80,7 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
     public ObjetivoVendedor encontrarPorId(int id) {
         ObjetivoVendedor objetivo = new ObjetivoVendedor();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_OBJETIVO_VENDEDOR_POR_ID(?)} ");
             cs.setInt("_ID_OBJETIVO_VENDEDOR", id);
@@ -86,6 +95,8 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ObjetivoVendedorMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -96,12 +107,15 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
     public int eliminar(int id) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_OBJETIVO_VENDEDOR(?)} ");
             cs.setInt("_ID_OBJETIVO_VENDEDOR", id);
             resultado = cs.executeUpdate();           
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ObjetivoVendedorMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -112,6 +126,7 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
     public ArrayList<ObjetivoVendedor> listar() {
         ArrayList<ObjetivoVendedor> objetivos = new ArrayList<ObjetivoVendedor>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_OBJETIVO_VENDEDOR()} ");
             ResultSet rs = cs.executeQuery();
@@ -127,6 +142,8 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ObjetivoVendedorMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

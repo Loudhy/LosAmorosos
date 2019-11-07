@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Empleado;
 import model.Usuario;
 
@@ -28,7 +30,8 @@ public class UsuarioMySQL implements UsuarioDAO {
     @Override
     public int insertar(Usuario usuario) {
         int resultado = 0;
-        try{       
+        try{  
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_USUARIO(?,?,?,?)} ");
             cs.setInt("_ID_EMPLEADO", usuario.getEmpleado().getId());
@@ -38,6 +41,8 @@ public class UsuarioMySQL implements UsuarioDAO {
             usuario.setId(cs.getInt("_ID_USUARIO"));
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -48,6 +53,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     public int actualizar(Usuario usuario) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_USUARIO(?,?,?)}");
             cs.setInt("_ID_USUARIO", usuario.getId());
@@ -56,6 +62,8 @@ public class UsuarioMySQL implements UsuarioDAO {
             resultado = cs.executeUpdate();
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -66,12 +74,15 @@ public class UsuarioMySQL implements UsuarioDAO {
     public int eliminar(int id_usuario) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_USUARIO(?)}");
             cs.setInt("_ID_USUARIO", id_usuario);
             resultado = cs.executeUpdate();
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -82,6 +93,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     public ArrayList<Usuario> listar() {
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_USUARIO()}");
             ResultSet rs = cs.executeQuery();
@@ -98,6 +110,8 @@ public class UsuarioMySQL implements UsuarioDAO {
             
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -108,6 +122,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     public String buscarArea(Usuario usuario) {
         String nombreArea = new String();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_AREA_POR_USUARIO(?)}");
             cs.setString("_NOMBRE_USUARIO", usuario.getNombre());
@@ -116,6 +131,8 @@ public class UsuarioMySQL implements UsuarioDAO {
                 nombreArea = rs.getString("NOMBRE_AREA");
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -126,6 +143,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     public Usuario buscarPorEmpleado(Empleado empleado) {
         Usuario usuario = new Usuario();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_USUARIO_POR_EMPLEADO(?)}");
             cs.setString("_DNI_EMPLEADO", empleado.getDni());
@@ -139,6 +157,8 @@ public class UsuarioMySQL implements UsuarioDAO {
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -149,6 +169,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     public Usuario encontrarPorId(int id) {
         Usuario usuario = new Usuario();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call ENCONTRAR_USUARIO_POR_ID(?)}");
             cs.setInt("_ID_USUARIO",id);
@@ -158,6 +179,8 @@ public class UsuarioMySQL implements UsuarioDAO {
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -168,6 +191,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     public boolean validarUsuario(String nombre, String contraseña) {
         boolean resultado= false;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_USUARIO(?,?)}");
             cs.setString("_NOMBRE_USUARIO",nombre);
@@ -177,6 +201,8 @@ public class UsuarioMySQL implements UsuarioDAO {
                 resultado = true;
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

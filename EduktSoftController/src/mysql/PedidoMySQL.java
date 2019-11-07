@@ -18,6 +18,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Cliente;
 import model.Cliente_Vendedor;
 import model.Empleado;
@@ -39,6 +41,7 @@ public class PedidoMySQL implements PedidoDAO{
     public int insertar(Pedido pedido) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_PEDIDO(?,?,?,?,?,?)} ");
             float total=0;
@@ -68,6 +71,8 @@ public class PedidoMySQL implements PedidoDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -78,6 +83,7 @@ public class PedidoMySQL implements PedidoDAO{
     public int actualizar(Pedido pedido) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_PEDIDO(?,?,?,?)}");
             cs.setInt("_ID_PEDIDO",pedido.getId());
@@ -99,6 +105,8 @@ public class PedidoMySQL implements PedidoDAO{
             }
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -109,12 +117,15 @@ public class PedidoMySQL implements PedidoDAO{
     public int eliminar(int id_pedido) {
         int resultado=0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_PEDIDO(?)}");
             cs.setInt("_ID_PEDIDO",id_pedido);
             resultado=cs.executeUpdate();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -126,6 +137,7 @@ public class PedidoMySQL implements PedidoDAO{
         ArrayList<Pedido> pedidos = new ArrayList<>();
 
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_VENDEDOR_POR_FECHAS(?,?,?)}");
             cs.setInt("_ID_VENDEDOR", vendedor.getId_vendedor());
@@ -155,6 +167,8 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -166,6 +180,7 @@ public class PedidoMySQL implements PedidoDAO{
         ArrayList<Pedido> pedidos = new ArrayList<>();
 
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_CLIENTE(?)}");
             cs.setInt("_ID_CLIENTE", cliente.getId());
@@ -192,6 +207,8 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -202,6 +219,7 @@ public class PedidoMySQL implements PedidoDAO{
         ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
 
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_LINEAS_PEDIDO(?)}");
             cs.setInt("_ID_PEDIDO", pedido.getId());
@@ -230,6 +248,8 @@ public class PedidoMySQL implements PedidoDAO{
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -240,6 +260,7 @@ public class PedidoMySQL implements PedidoDAO{
     public ArrayList<LineaPedido> listarLineasPedidoEnRangoFechas(Date fechaIni, Date fechaFin) {
         ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_LINEAS_PEDIDO_POR_RANGO_DE_FECHAS(?,?)}");
             cs.setDate("_FECHA_INI",new java.sql.Date(fechaIni.getTime()));
@@ -269,6 +290,8 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -280,6 +303,7 @@ public class PedidoMySQL implements PedidoDAO{
     public ArrayList<LineaPedido> listarLineasPedidoPorProducto(Producto producto) {
         ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_LINEAS_PEDIDO_POR_PRODUCTO(?)}");
             cs.setInt("_ID_PRODUCTO", producto.getId());
@@ -297,6 +321,8 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -308,6 +334,7 @@ public class PedidoMySQL implements PedidoDAO{
         ArrayList<Pedido> pedidos = new ArrayList<>();
 
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_VENDEDOR(?)}");
             cs.setInt("_ID_VENDEDOR", vendedor.getId_vendedor());
@@ -331,6 +358,8 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -342,6 +371,7 @@ public class PedidoMySQL implements PedidoDAO{
         ArrayList<Pedido> pedidos = new ArrayList<>();
 
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_ESTADO()}");
             ResultSet rs = cs.executeQuery();
@@ -364,6 +394,8 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -374,6 +406,7 @@ public class PedidoMySQL implements PedidoDAO{
     public Pedido encontrarPorId(int id) {
         Pedido pedido = null;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_PEDIDO_POR_ID(?)}");
             cs.setInt("_ID_PEDIDO", id);
@@ -395,6 +428,8 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -406,6 +441,7 @@ public class PedidoMySQL implements PedidoDAO{
         ArrayList<Pedido> pedidos = new ArrayList<>();
 
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDOS()}");
             ResultSet rs = cs.executeQuery();
@@ -427,6 +463,8 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
