@@ -13,11 +13,10 @@ public class Cliente_Vendedor {
     public Cliente_Vendedor(){
         cliente = new Cliente();
         vendedor = new Vendedor();
+        this.pedidos = new ArrayList<Pedido>();
     }
     
     public Cliente_Vendedor(Cliente cliente, Vendedor vendedor){
-        this.cliente = new Cliente();
-        this.vendedor = new Vendedor();
         this.pedidos = new ArrayList<Pedido>();
         this.active = true;
     }
