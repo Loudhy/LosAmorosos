@@ -7,6 +7,8 @@ package logistica;
 
 import config.DBController;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 import model.EstadoLineaPedido;
 import model.EstadoLineaSolicitud;
@@ -34,6 +36,8 @@ public class aprobarSolicitudes {
                     System.out.println("ENTRO");
                     numLineasCambiadas++;
                     lineaSolicitud.setEstadoSolicitud(EstadoLineaSolicitud.Aceptado);
+                    Date today = Calendar.getInstance().getTime();
+                    lineaSolicitud.getLineaPedido().setFechaAtencion(today);
                     lineaSolicitud.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.Aceptado);
                     lineaSolicitud.getLineaPedido().setCantidadPorAtender(0);
                     lineasCambiadasSolicitud.add(lineaSolicitud);

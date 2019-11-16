@@ -113,10 +113,7 @@ public class SolicitudMySQL implements SolicitudDAO{
                 linea.getLineaPedido().setId(rs.getInt("ID_LINEA_PEDIDO"));
                 linea.getLineaPedido().setCantidad(rs.getInt("CANTIDAD"));
                 linea.getLineaPedido().setCantidadPorAtender(rs.getInt("CANTIDAD_A_ATENDER"));
-                java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_ATENCION").getTime());
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-                String fechaAux = formatoFecha.format(fechaRegistro);
-                linea.getLineaPedido().setFechaAtencion(formatoFecha.parse(fechaAux));
+
                 linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_PEDIDO")));
                 linea.getLineaPedido().getProducto().setId(rs.getInt("ID_PRODUCTO"));
                 linea.getLineaPedido().getProducto().setNombre(rs.getString("NOMBRE_PRODUCTO"));
