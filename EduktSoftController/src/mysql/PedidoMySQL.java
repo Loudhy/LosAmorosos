@@ -397,9 +397,12 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                pedido.getClienteVendedor().getVendedor().setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
-                pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
