@@ -37,6 +37,7 @@ import model.EstadoCivil;
 import model.EstadoLineaPedido;
 import model.EstadoLineaSolicitud;
 import model.Presentacion;
+import ventas.MejoresProductosService;
 /**
  *
  * @author UsuarioA
@@ -47,8 +48,9 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        ReporteProductosDisponibles reporte = new ReporteProductosDisponibles();
-        byte[] arreglo = reporte.devolverPdf();
+        Cliente cliente = DBController.buscarClientePorId(13);
+        MejoresProductosService mejores = new MejoresProductosService();
+        ArrayList<Producto> pedidos = mejores.listarTresMejoresProductosPorCliente(cliente);
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();

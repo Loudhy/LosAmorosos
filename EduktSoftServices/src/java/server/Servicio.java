@@ -8,16 +8,19 @@ package server;
 import administracion.LogginUsuarioService;
 import administracion.PasswordService;
 import comercial.ReporteProductosDisponibles;
+import comercial.listarVendedores;
 import config.DBController;
 import config.DBManager;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.Objects;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import logistica.ProductosSolicitud;
 import logistica.aprobarSolicitudes;
+import model.Area;
 import model.Cliente;
 import model.Cliente_Vendedor;
 import model.Solicitud;
@@ -140,9 +143,9 @@ public class Servicio {
     }
 
     @WebMethod(operationName = "listarMejoresProductosDeCliente")
-    public ArrayList<Producto> listarMejoresProductosDeCliente(@WebParam(name = "id_cliente") int id_cliente){
+    public ArrayList<Producto> listarMejoresProductosDeCliente(@WebParam(name = "cliente") Cliente cliente){
         MejoresProductosService mejoresTres = new MejoresProductosService();
-        return mejoresTres.listarTresMejoresProductosPorCliente(id_cliente);
+        return mejoresTres.listarTresMejoresProductosPorCliente(cliente);
     }
 
     @WebMethod(operationName = "listarSolicitudes")
@@ -230,6 +233,16 @@ public class Servicio {
     @WebMethod(operationName = "listarLineasSolciitudes")
     public ArrayList<LineaSolicitud> listarLineasSolciitudes(@WebParam(name = "solicitud") Solicitud solicitud){
         return DBController.listarLineasDeSolicitud(solicitud);
-
+    }
+    
+    @WebMethod(operationName = "listarEmpleados")
+    public ArrayList<Empleado> listarEmpleados(@WebParam(name = "area") Area area){
+        return DBController.listarEmpleadosPorArea(area);
+    }
+    
+    @WebMethod(operationName = "listarVendedores")
+    public ArrayList<Vendedor> listarVendedores(@WebParam(name = "area") Area area){
+        listarVendedores lista = new listarVendedores();
+        return lista.listarEmpleadosDeAreaVentas(area);
     }
 }

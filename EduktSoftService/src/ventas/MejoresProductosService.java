@@ -30,14 +30,25 @@ public class MejoresProductosService {
     public MejoresProductosService(){
 
     }
+    
+    public static Comparator<Pair<Integer,Integer>> CANTIDAD = new Comparator<Pair<Integer,Integer>>(){
+        public int compare(Pair<Integer,Integer> primero, Pair<Integer,Integer> segundo){
+            if (primero.getValue() >= segundo.getValue())
+                return 1;
+            else
+                return 0;
+        }
+    };
 
-    public ArrayList<Producto> listarTresMejoresProductosPorCliente(int id_cliente){
-        Cliente cliente = DBController.buscarClientePorId(id_cliente);
+    public ArrayList<Producto> listarTresMejoresProductosPorCliente(Cliente cliente){
         ArrayList<Pedido> pedidos = DBController.listarPedidosPorCliente(cliente);
+        if (pedidos.size() == 0){
+            return null;
+        }
         Map<Integer, Integer> mapa = new HashMap<Integer, Integer>();
         ArrayList<Producto> productos = new ArrayList<Producto>();
         for(Pedido pedido: pedidos ){
-            ArrayList<LineaPedido> lineasPedido = DBController.listarLineasDePedido(pedido);
+            ArrayList<LineaPedido> lineasPedido = pedido.getLineasPedido();
             for (LineaPedido lineaPedido:lineasPedido){
                 if(mapa.containsKey(lineaPedido.getProducto().getId())){
                   mapa.put(lineaPedido.getProducto().getId(),mapa.get(lineaPedido.getProducto().getId()) + lineaPedido.getCantidadPorAtender());
@@ -54,8 +65,7 @@ public class MejoresProductosService {
                    .sorted(Comparator.comparing(e -> -e.getValue()))
                    .map(e -> new Pair<>(e.getKey(), e.getValue()))
                    .collect(Collectors.toList());
-        
-        Collections.sort(lista, Collections.reverseOrder());
+        Collections.sort(lista,CANTIDAD);
        
         for (int i = 0; i < 3; i++){
             Pair<Integer,Integer> par = lista.get(i);

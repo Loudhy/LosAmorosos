@@ -222,8 +222,10 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
                 producto.setDescripcion(rs.getString("DESCRIPCION"));
                 producto.setFoto(rs.getBytes("FOTO"));
+                producto.setPresentaciones(DBController.listarPresentaciones(producto.getId()));
                 producto.setActive(true);
                 productos.add(producto);
+                
             }
         }catch (Exception ex) {
             System.out.println(ex.getMessage());
