@@ -366,4 +366,8 @@ public abstract class DBController {
     public static ArrayList<Pedido> listarPedidos(){
         return daoFactory.getPedidoDAO().listar();
     }
+    
+    public static int actualizarLineaSolicitado(int id_linea){
+        return daoFactory.getPedidoDAO().actualizarLineaPedidoSolicitado(id_linea);
+    }
 }

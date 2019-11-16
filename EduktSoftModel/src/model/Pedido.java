@@ -17,7 +17,7 @@ public class Pedido {
     
     public Pedido(){
         lineasPedido = new ArrayList<LineaPedido>();
-        //clienteVendedor = new Cliente_Vendedor();
+        clienteVendedor = new Cliente_Vendedor();
         active = true;
     }
     

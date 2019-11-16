@@ -414,4 +414,20 @@ public class PedidoMySQL implements PedidoDAO{
         return pedidos;
     }
 
+    @Override
+    public int actualizarLineaPedidoSolicitado(int id_linea) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO_SOLICITADO(?)}");
+            cs.setInt("_ID_LINEA_PEDIDO",id_linea);            
+            resultado=cs.executeUpdate();
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
+
 }
