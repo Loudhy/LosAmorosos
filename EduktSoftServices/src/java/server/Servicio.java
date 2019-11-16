@@ -182,7 +182,11 @@ public class Servicio {
     public int aprobarListasSolicitudConProducto(@WebParam(name = "solicitudes") ArrayList<Solicitud> solicitudes, String nombreProducto){
         aprobarSolicitudes aprobar = new aprobarSolicitudes();
         return  aprobar.aprobarLineasDeSolicitudConProducto(solicitudes, nombreProducto);
-
+    }
+    
+    @WebMethod(operationName = "listarPedidos")
+    public ArrayList<Pedido> listarPedidos(){
+        return DBController.listarPedidos();
     }
     
 }
