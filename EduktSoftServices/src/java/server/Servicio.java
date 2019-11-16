@@ -13,13 +13,17 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import logistica.ProductosSolicitud;
+import logistica.aprobarSolicitudes;
 import model.Cliente;
+import model.Cliente_Vendedor;
 import model.Solicitud;
 import model.Empleado;
+import model.LineaSolicitud;
 import model.Pedido;
 import model.Presentacion;
 import model.Producto;
 import model.Provincia;
+import model.Vendedor;
 import ventas.MejoresProductosService;
 
 /**
@@ -41,6 +45,11 @@ public class Servicio {
         return passwordService.enviarCorreo(correo);
     }
     
+    @WebMethod(operationName = "buscarSolicitudPorId")
+    public Solicitud buscarSolicitudPorId(@WebParam(name = "id")int id){
+        return DBController.buscarSolicitudPorId(id);
+    }
+    
     @WebMethod(operationName = "listarProvincias")
     public ArrayList<Provincia> listarProvincias(){
         return DBController.listarProvincias();
@@ -54,6 +63,11 @@ public class Servicio {
     @WebMethod(operationName = "insertarProducto")
     public int insertarProducto(@WebParam(name = "producto") Producto producto){
         return DBController.insertarProducto(producto);
+    }
+    
+    @WebMethod(operationName = "actualizarProducto")
+    public int actualizarProducto(@WebParam(name = "producto") Producto producto){
+        return DBController.actualizarProducto(producto);
     }
 
     @WebMethod(operationName = "listarProductosPorNombre")
@@ -79,6 +93,15 @@ public class Servicio {
     @WebMethod(operationName = "listarPedido")
     public ArrayList<Pedido> listarPedido(){
         return DBController.listarPedidosPorEstadoDePedido();
+    }
+    
+    @WebMethod(operationName = "listarPedidosPorVendedor")
+    public ArrayList<Pedido> listarPedidoPorvendedor(@WebParam(name = "vendedor")Vendedor vendedor){
+        return DBController.listarPedidosPorVendedor(vendedor);
+    }
+    @WebMethod(operationName = "buscarClientePorPedido")
+    public Cliente buscarClientePorPedido(@WebParam(name = "Pedido") Pedido pedido){
+        return DBController.buscarClientePorClienteVendedor(pedido.getClienteVendedor().getId_cliente_vendedor());
     }
     
     @WebMethod(operationName = "insertarPedido")
@@ -127,7 +150,7 @@ public class Servicio {
         return DBController.buscarClientePorId(id_cliente);
     }
 
-    @WebMethod(operationName = "buscarClientePorRUC")
+    @WebMethod(operationName = "buscarClientePorFiltro")
     public Cliente buscarClientePorFiltro(@WebParam(name = "filtro") String filtro){
         return DBController.buscarClientePorFiltro(filtro);
     }
@@ -138,4 +161,28 @@ public class Servicio {
         ProductosSolicitud prod = new ProductosSolicitud();
         return prod.sacarCantidadAcumuladaDeSolicitud();
     }
+    
+    @WebMethod(operationName = "buscarRelacionClienteVendedor")
+    public Cliente_Vendedor buscarRelacionClienteVendedor(@WebParam(name = "cliente") Cliente cliente, @WebParam(name = "vendedor")Vendedor vendedor){
+        return DBController.buscarRelacionClienteVendedor(cliente, vendedor);
+    }
+    
+    @WebMethod(operationName = "insertarPresentacion")
+    public int insertarPresentacion(@WebParam(name = "presentacion") Presentacion presentacion){
+        return DBController.insertarPresentacion(presentacion);
+    }
+    
+
+    @WebMethod(operationName = "listarLineasSolciitudesProducto")
+    public ArrayList<LineaSolicitud> listarLineasSolicitudesProducto(@WebParam(name = "nombreProducto") String nombreProducto){
+        return DBController.listarLineasSolicitudesProducto(nombreProducto);
+    }
+
+    @WebMethod(operationName = "aprobarListasSolicitudConProducto")
+    public int aprobarListasSolicitudConProducto(@WebParam(name = "solicitudes") ArrayList<Solicitud> solicitudes, String nombreProducto){
+        aprobarSolicitudes aprobar = new aprobarSolicitudes();
+        return  aprobar.aprobarLineasDeSolicitudConProducto(solicitudes, nombreProducto);
+
+    }
+    
 }

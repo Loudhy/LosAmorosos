@@ -330,8 +330,20 @@ public abstract class DBController {
         return daoFactory.getProductoDAO().listar();
     }
 
+    public static int insertarPresentacion(Presentacion presentacion){
+        return daoFactory.getPresentacionDAO().insertar(presentacion);
+    }
+    
+    public static int actualizarPresentacion(Presentacion presentacion){
+        return daoFactory.getPresentacionDAO().actualizar(presentacion);
+    }
+    
+    public static int eliminarPresentacion(int id){
+        return daoFactory.getPresentacionDAO().eliminar(id);
+    }
+    
     public static ArrayList<Presentacion>listarPresentaciones(int id){
-        return daoFactory.getProductoDAO().listarPresentaciones(id);
+        return daoFactory.getPresentacionDAO().listarPresentaciones(id);
     }
 
     public static ArrayList<Cliente_Vendedor> listarClientesVendedorPorCliente(int id_cliente){
@@ -342,5 +354,12 @@ public abstract class DBController {
     public static Cliente_Vendedor buscarClienteVendedorPorId(int id){
         return daoFactory.getClienteVendedorDAO().encontrarPorId(id);
     }
+    
+    public static ArrayList<LineaSolicitud> listarLineasSolicitudesProducto(String nombre){
+        return daoFactory.getSolicitudDAO().listarSolicitudesPorProducto(nombre);
+    }
 
+    public static Cliente buscarClientePorClienteVendedor(int id_cliente_vendedor){
+        return daoFactory.getClienteVendedorDAO().encontrarClientePorClienteVendedor(id_cliente_vendedor);
+    }
 }

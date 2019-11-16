@@ -44,7 +44,7 @@ public class ClienteMySQL implements ClienteDAO{
             cs.setBoolean("_ACTIVE", cliente.getActive());
             resultado = cs.executeUpdate();
             cliente.setId(cs.getInt("_ID_CLIENTE"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -67,7 +67,7 @@ public class ClienteMySQL implements ClienteDAO{
             cs.setString("_DIRECCION", cliente.getDireccion());
             cs.setInt("_PUNTOS", cliente.getPuntaje());
             resultado = cs.executeUpdate();           
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -103,7 +103,7 @@ public class ClienteMySQL implements ClienteDAO{
                 cliente.getProvincia().getDepartamento().setActive(true);
             }
 
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -119,7 +119,7 @@ public class ClienteMySQL implements ClienteDAO{
             cs = con.prepareCall("{call ELIMINAR_CLIENTE(?)}");
             cs.setInt("_ID_CLIENTE", id);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -153,7 +153,7 @@ public class ClienteMySQL implements ClienteDAO{
                 clientes.add(cliente);
             }
 
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -172,7 +172,7 @@ public class ClienteMySQL implements ClienteDAO{
             if (rs.next()){
                 pedido = new Pedido();
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -205,7 +205,7 @@ public class ClienteMySQL implements ClienteDAO{
                 clientes.add(cliente);
             }
 
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -237,7 +237,7 @@ public class ClienteMySQL implements ClienteDAO{
                 cliente.getProvincia().setActive(true);
                 cliente.getProvincia().getDepartamento().setActive(true);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}

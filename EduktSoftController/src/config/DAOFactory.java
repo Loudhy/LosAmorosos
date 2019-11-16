@@ -14,6 +14,7 @@ import dao.EmpleadoDAO;
 import dao.MetaMensualDAO;
 import dao.ObjetivoVendedorDAO;
 import dao.PedidoDAO;
+import dao.PresentacionDAO;
 import dao.ProductoDAO;
 import dao.ProvinciaDAO;
 import dao.UsuarioDAO;
@@ -36,6 +37,7 @@ public abstract class DAOFactory {
     public abstract PedidoDAO getPedidoDAO();
     public abstract ClienteVendedorDAO getClienteVendedorDAO();
     public abstract SolicitudDAO getSolicitudDAO();
+    public abstract PresentacionDAO getPresentacionDAO();
     
     public static DAOFactory getDAOFactory(){
         if (DBManager.url.contains("mysql"))

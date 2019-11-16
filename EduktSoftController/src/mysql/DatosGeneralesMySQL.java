@@ -13,12 +13,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.DatosGenerales;
 
 /**
@@ -35,6 +32,7 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
 
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_DATOS_GENERALES(?,?,?,?,?,?,?,?)} ");
             cs.setFloat("_IGV",datosGenerales.getPlazoDePago());
@@ -45,7 +43,7 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
             cs.setInt("_PLAZO_DE_PAGO", datosGenerales.getPlazoDePago());
             cs.setBoolean("_ACTIVE", datosGenerales.isActive());
             datosGenerales.setId(cs.getInt("_ID_DATOS_GENERALES"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -57,6 +55,7 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
     public DatosGenerales encontrarPorFecha(Date fecha) {
         DatosGenerales datosGenerales = null;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ENCONTRAR_DATOS_GENERALES_POR_FECHA(?)}");
             cs.setDate("_FECHA", (java.sql.Date) fecha);
@@ -73,7 +72,7 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
                 datosGenerales.setActive(rs.getBoolean("ACTIVE"));
             }
 
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -85,6 +84,7 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
     public DatosGenerales encontrarPorId(int id) {
         DatosGenerales datosGenerales = null;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_DATOS_GENERALES_POR_ID(?)}");
             cs.setInt("_ID_DATOS_GENERALES", id);
@@ -104,10 +104,8 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
                 datosGenerales.setActive(rs.getBoolean("ACTIVE"));
             }
 
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(DatosGeneralesMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

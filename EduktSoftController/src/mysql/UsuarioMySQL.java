@@ -28,7 +28,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     @Override
     public int insertar(Usuario usuario) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_USUARIO(?,?,?,?)} ");
             cs.setInt("_ID_EMPLEADO", usuario.getEmpleado().getId());
@@ -36,7 +36,7 @@ public class UsuarioMySQL implements UsuarioDAO {
             cs.setString("_CONTRASEÑA", usuario.getContraseña());
             resultado = cs.executeUpdate();
             usuario.setId(cs.getInt("_ID_USUARIO"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -54,7 +54,7 @@ public class UsuarioMySQL implements UsuarioDAO {
             cs.setString("_NOMBRE_USUARIO", usuario.getNombre());
             cs.setString("_CONTRASEÑA", usuario.getContraseña());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -70,7 +70,7 @@ public class UsuarioMySQL implements UsuarioDAO {
             cs = con.prepareCall("{call ELIMINAR_USUARIO(?)}");
             cs.setInt("_ID_USUARIO", id_usuario);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -114,7 +114,7 @@ public class UsuarioMySQL implements UsuarioDAO {
             ResultSet rs = cs.executeQuery();
             if (rs.next())
                 nombreArea = rs.getString("NOMBRE_AREA");
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -137,7 +137,7 @@ public class UsuarioMySQL implements UsuarioDAO {
                 usuario.setEmpleado(empleado);
                 usuario.setActive(true);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -156,7 +156,7 @@ public class UsuarioMySQL implements UsuarioDAO {
             while(rs.next()){
                 
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -175,7 +175,7 @@ public class UsuarioMySQL implements UsuarioDAO {
             ResultSet rs = cs.executeQuery();
             if (rs.next())
                 resultado = true;
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}

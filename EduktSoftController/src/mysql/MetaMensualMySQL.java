@@ -13,7 +13,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import model.MetaMensual;
@@ -30,7 +29,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
     @Override
     public int insertar(MetaMensual metaMensual) {
         int resultado = 0;
-        try{       
+        try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_META_MENSUAL(?,?,?,?,?,?)} ");
             cs.setDate("_FECHA_INICIO", new java.sql.Date(metaMensual.getFechaInicio().getTime()));
@@ -40,7 +39,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
             cs.setBoolean("_ACTIVE", metaMensual.isActive());
             resultado = cs.executeUpdate();
             metaMensual.setId(cs.getInt("_ID_META_MENSUAL"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -51,7 +50,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
     @Override
     public int actualizar(MetaMensual metaMensual) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_META_MENSUAL(?,?,?,?,?)} ");
             cs.setInt("_ID_META_MENSUAL", metaMensual.getId());
@@ -60,7 +59,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
             cs.setFloat("_CANTIDAD_OBJETIVO",metaMensual.getCantidadObjetivo());
             cs.setString("_DESCRIPCION_META_MENSUAL",metaMensual.getDescripcion());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -71,12 +70,12 @@ public class MetaMensualMySQL implements MetaMensualDAO {
     @Override
     public int eliminar(int id_meta_mensual) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_META_MENSUAL(?} ");
             cs.setInt("_ID_META_MENSUAL", id_meta_mensual);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -106,9 +105,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
                 metasMensuales.add(metaMensual);
             }
             
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -138,9 +135,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
                 metaMensual.setActive(rs.getBoolean("ACTIVE"));
             }
             
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}

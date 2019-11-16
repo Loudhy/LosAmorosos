@@ -27,14 +27,14 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     @Override
     public int insertar(Departamento departamento) {
         int resultado = 0;
-        try{       
+        try{ 
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_DEPARTAMENTO(?,?,?)} ");
             cs.setString("_NOMBRE_DEPARTAMENTO", departamento.getNombre());
             cs.setBoolean("_ACTIVE",departamento.isActive());
             resultado = cs.executeUpdate();
             departamento.setId(cs.getInt("_ID_DEPARTAMENTO"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -45,13 +45,13 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     @Override
     public int actualizar(Departamento departamento) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_DEPARTAMENTO(?,?)} ");
             cs.setInt("_ID_DEPARTAMENTO",departamento.getId());
             cs.setString("_NOMBRE_DEPARTAMENTO", departamento.getNombre());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -62,12 +62,12 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     @Override
     public int eliminar(int id_departamento) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_DEPARTAMENTO(?} ");
             cs.setInt("_ID_DEPARTAMENTO", id_departamento);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -111,7 +111,7 @@ public class DepartamentoMySQL implements DepartamentoDAO{
                 departamento.setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
                 departamento.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}

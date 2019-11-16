@@ -22,6 +22,8 @@ public interface ClienteVendedorDAO {
     Cliente_Vendedor buscarRelacion(Cliente cliente, Vendedor vendedor);
     ArrayList<Cliente> listarClientesPorVendedor(int id_vendedor);
     ArrayList<Cliente_Vendedor> listarPorCliente(int id_cliente);
+    Cliente encontrarClientePorClienteVendedor(int id_cliente_vendedor);
+    Vendedor encontrarVendedorPorClienteVendedor(int id_cliente_vendedor);
     ArrayList<Pedido> listarPedidosEnRangoDeFechas(Date fechaIni, Date fechaFin, Vendedor vendedor);
     int eliminar(int id_cliente_vendedor);
 }

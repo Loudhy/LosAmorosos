@@ -14,13 +14,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import model.Cliente;
-import model.Cliente_Vendedor;
-import model.Empleado;
 import model.EstadoLineaPedido;
 import model.EstadoPedido;
 import model.LineaPedido;
@@ -43,6 +40,7 @@ public class PedidoMySQL implements PedidoDAO{
             cs = con.prepareCall("{call INSERTAR_PEDIDO(?,?,?,?,?,?)} ");
             float total=0;
             for (LineaPedido aux: pedido.getLineasPedido()){
+                aux.setFechaAtencion(pedido.getFechaRegistro());
                 total += aux.getSubtotal();
             }
             pedido.setTotal(total);
@@ -53,7 +51,7 @@ public class PedidoMySQL implements PedidoDAO{
             cs.setBoolean("_ACTIVE",true);
             cs.executeUpdate();
             pedido.setId(cs.getInt("_ID_PEDIDO"));
-
+            
             for (LineaPedido aux: pedido.getLineasPedido()){
                 cs = con.prepareCall("{call INSERTAR_LINEA_PEDIDO(?,?,?,?,?,?,?,?)}");
                 cs.setInt("_CANTIDAD",aux.getCantidad());
@@ -66,7 +64,7 @@ public class PedidoMySQL implements PedidoDAO{
                 resultado=cs.executeUpdate();
                 aux.setId(cs.getInt("_ID_LINEA_PEDIDO"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -97,7 +95,7 @@ public class PedidoMySQL implements PedidoDAO{
                 cs.setInt("_CANTIDAD_A_ATENDER",aux.getCantidadPorAtender());
                 resultado=cs.executeUpdate();
             }
-        }catch(SQLException ex){
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -113,7 +111,7 @@ public class PedidoMySQL implements PedidoDAO{
             cs = con.prepareCall("{call ELIMINAR_PEDIDO(?)}");
             cs.setInt("_ID_PEDIDO",id_pedido);
             resultado=cs.executeUpdate();
-        }catch(SQLException ex){
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -133,7 +131,7 @@ public class PedidoMySQL implements PedidoDAO{
             cs.setDate("_FECHA_FIN", new java.sql.Date(fechaFin.getTime()));
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Pedido pedido = new Pedido();
+                Pedido pedido = new Pedido(true);
                 pedido.setId(rs.getInt("ID_PEDIDO"));
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
                 //pedido.getCliente_vendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
@@ -151,9 +149,7 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -171,7 +167,7 @@ public class PedidoMySQL implements PedidoDAO{
             cs.setInt("_ID_CLIENTE", cliente.getId());
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Pedido pedido = new Pedido();
+                Pedido pedido = new Pedido(true);
                 pedido.setId(rs.getInt("ID_PEDIDO"));
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
                 //pedido.getCliente_vendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
@@ -188,9 +184,7 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -214,9 +208,6 @@ public class PedidoMySQL implements PedidoDAO{
                 lineaPedido.setId(rs.getInt("ID_PEDIDO"));
                 lineaPedido.setSubtotal(rs.getFloat("SUBTOTAL"));
                 SimpleDateFormat formatoFecha = new SimpleDateFormat();
-                java.util.Date fechaAtencion = new java.util.Date(rs.getDate("FECHA_ATENCION").getTime());
-                String fechaAux = formatoFecha.format(fechaAtencion);
-                lineaPedido.setFechaAtencion(formatoFecha.parse(fechaAux));
                 lineaPedido.getProducto().setId(rs.getInt("ID_PRODUCTO"));
                 lineaPedido.getProducto().setNombre(rs.getString("NOMBRE_PRODUCTO"));
                 lineaPedido.getProducto().setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
@@ -227,10 +218,9 @@ public class PedidoMySQL implements PedidoDAO{
                 lineasPedido.add(lineaPedido);
             }
 
-        }catch(SQLException ex){
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
+        
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -266,9 +256,7 @@ public class PedidoMySQL implements PedidoDAO{
                 lineasPedido.add(lineaPedido);
             }
 
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -294,9 +282,7 @@ public class PedidoMySQL implements PedidoDAO{
                 linea.setFechaAtencion(formatoFecha.parse(fechaAux));
                 lineas.add(linea);
             }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -314,7 +300,7 @@ public class PedidoMySQL implements PedidoDAO{
             cs.setInt("_ID_VENDEDOR", vendedor.getId_vendedor());
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Pedido pedido = new Pedido();
+                Pedido pedido = new Pedido(true);              
                 pedido.setId(rs.getInt("ID_PEDIDO"));
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
                 pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
@@ -324,12 +310,11 @@ public class PedidoMySQL implements PedidoDAO{
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
-                pedido.setLineasPedido(listarLineasPedido(pedido));
+                ArrayList<LineaPedido> lineas = listarLineasPedido(pedido);
+                pedido.setLineasPedido(lineas);
                 pedidos.add(pedido);
             }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -340,13 +325,12 @@ public class PedidoMySQL implements PedidoDAO{
     @Override
     public ArrayList<Pedido> listarPorEstadoDePedido() {
         ArrayList<Pedido> pedidos = new ArrayList<>();
-
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDO_POR_ESTADO()}");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Pedido pedido = new Pedido();
+                Pedido pedido = new Pedido(true);
                 pedido.setId(rs.getInt("ID_PEDIDO"));
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
                 pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
@@ -356,12 +340,11 @@ public class PedidoMySQL implements PedidoDAO{
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
-                pedido.setLineasPedido(listarLineasPedido(pedido));
+                ArrayList<LineaPedido> lineas = listarLineasPedido(pedido);
+                pedido.setLineasPedido(lineas);
                 pedidos.add(pedido);
             }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -373,6 +356,7 @@ public class PedidoMySQL implements PedidoDAO{
     public Pedido encontrarPorId(int id) {
         Pedido pedido = null;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_PEDIDO_POR_ID(?)}");
             cs.setInt("_ID_PEDIDO", id);
@@ -380,7 +364,7 @@ public class PedidoMySQL implements PedidoDAO{
             while(rs.next()){
                 pedido = new Pedido();
                 pedido.setId(id);
-                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
+                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));              
                 pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
@@ -390,9 +374,7 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
             }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -402,17 +384,16 @@ public class PedidoMySQL implements PedidoDAO{
 
     @Override
     public ArrayList<Pedido> listar() {
-        ArrayList<Pedido> pedidos = new ArrayList<>();
-
+        ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call LISTAR_PEDIDOS()}");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 Pedido pedido = new Pedido();
-                pedido.setId(rs.getInt("ID_PEDIDO"));
-                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
-                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
+                pedido.setId(rs.getInt("ID_PEDIDO"));        
+                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));              
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));            
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -422,11 +403,9 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
-        }finally{
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());}
+        finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return pedidos;

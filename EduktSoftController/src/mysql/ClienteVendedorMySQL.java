@@ -17,6 +17,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Cliente;
 import model.Cliente_Vendedor;
 import model.EstadoPedido;
@@ -30,7 +32,7 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
     @Override
     public int insertar(Cliente_Vendedor cliente_vendedor) {
         int resultado = 0;
-        try{       
+        try{ 
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_CLIENTE_VENDEDOR(?,?,?,?)} ");
             cs.setInt("_ID_CLIENTE", cliente_vendedor.getCliente().getId());
@@ -38,7 +40,7 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
             cs.setBoolean("_ACTIVE", true);
             resultado = cs.executeUpdate();
             cliente_vendedor.setId_cliente_vendedor(cs.getInt("_ID_CLIENTE_VENDEDOR"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -69,7 +71,7 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
                 clientes.add(cliente);
             }
 
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -80,12 +82,12 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
     @Override
     public int eliminar(int id_cliente_vendedor) {
         int resultado = 0;
-        try{       
+        try{ 
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_CLIENTE_VENDEDOR(?)} ");
             cs.setInt("_ID_CLIENTE_VENDEDOR", id_cliente_vendedor);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -116,9 +118,7 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 
             }
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -141,7 +141,7 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
                 clienteVendedor.getVendedor().setId(rs.getInt("ID_VENDEDOR"));
                 clientesVendedor.add(clienteVendedor);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -163,7 +163,7 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
                 clienteVendedor.getCliente().setId(rs.getInt("ID_CLIENTE"));
                 clienteVendedor.getVendedor().setId(rs.getInt("ID_VENDEDOR"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -185,12 +185,44 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
                 clienteVendedor.getCliente().setId(rs.getInt("ID_CLIENTE"));
                 clienteVendedor.getVendedor().setId(rs.getInt("ID_VENDEDOR"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return clienteVendedor;
+    }
+
+    @Override
+    public Cliente encontrarClientePorClienteVendedor(int id_cliente_vendedor) {
+        Cliente cliente = new Cliente();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call ENCONTRAR_CLIENTE_POR_CLIENTE_VENDEDOR(?)}");
+            cs.setInt("_ID_CLIENTE_VENDEDOR",id_cliente_vendedor);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                cliente.setId(rs.getInt("ID_CLIENTE"));
+                cliente.setRuc(rs.getString("RUC"));
+                cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                cliente.setDireccion(rs.getString("DIRECCION"));
+                cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
+                cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
+                cliente.setPuntaje(rs.getInt("PUNTOS"));
+                cliente.setActive(rs.getBoolean("ACTIVE"));
+            }
+            
+            
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return cliente;
+    }
+
+    @Override
+    public Vendedor encontrarVendedorPorClienteVendedor(int id_cliente_vendedor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

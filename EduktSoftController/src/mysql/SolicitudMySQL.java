@@ -13,11 +13,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.EstadoLineaPedido;
 import model.EstadoLineaSolicitud;
 import model.EstadoSolicitud;
@@ -55,7 +52,7 @@ public class SolicitudMySQL implements SolicitudDAO{
                 resultado = cs.executeUpdate();
                 aux.setId(cs.getInt("_ID_LINEA_SOLICITUD"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -67,6 +64,7 @@ public class SolicitudMySQL implements SolicitudDAO{
     public int actualizar(Solicitud solicitud) {
         int resultado = 0;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_SOLICITUD(?,?,?,?)}");
             cs.setInt("_ID_SOLICITUD",solicitud.getId());
@@ -83,7 +81,7 @@ public class SolicitudMySQL implements SolicitudDAO{
                 cs.setString("_ESTADO_SOLICITUD",aux.getEstadoSolicitud().toString());
                 resultado = cs.executeUpdate();
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -98,7 +96,7 @@ public class SolicitudMySQL implements SolicitudDAO{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_SOLICITUD(?)}");
             cs.setInt("_ID_SOLICITUD", id_solicitud);
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -118,14 +116,16 @@ public class SolicitudMySQL implements SolicitudDAO{
                 LineaSolicitud linea = new LineaSolicitud();
                 linea.setId(rs.getInt("ID_LINEA_SOLICITUD"));
                 linea.setEstadoSolicitud(EstadoLineaSolicitud.valueOf(rs.getString("ESTADO_LINEA_SOLICITUD")));
+                linea.setCantidad(rs.getInt("CANTIDAD_A_ATENDER"));
                 linea.getLineaPedido().setCantidad(rs.getInt("CANTIDAD"));
                 linea.getLineaPedido().setCantidadPorAtender(rs.getInt("CANTIDAD_A_ATENDER"));
                 linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_PEDIDO")));
+                linea.getLineaPedido().getProducto().setId(rs.getInt("ID_PRODUCTO"));
                 linea.getLineaPedido().getProducto().setNombre(rs.getString("NOMBRE_PRODUCTO"));
                 linea.getLineaPedido().getProducto().setDescripcion(rs.getString("DESCRIPCION"));
                 lineas.add(linea);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -152,10 +152,8 @@ public class SolicitudMySQL implements SolicitudDAO{
                 solicitud.setLineasSolicitud(lineas);
                 solicitudes.add(solicitud);
             }
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception ex) {
+            
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -181,9 +179,7 @@ public class SolicitudMySQL implements SolicitudDAO{
                 solicitud.setLineasSolicitud(listarLineasSolicitud(solicitud));
                 solicitudes.add(solicitud);
             }
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -208,9 +204,7 @@ public class SolicitudMySQL implements SolicitudDAO{
                 solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
                 solicitud.setLineasSolicitud(listarLineasSolicitud(solicitud));
             }
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -224,7 +218,7 @@ public class SolicitudMySQL implements SolicitudDAO{
         Solicitud solicitud = null;
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call BUSCAR_SOLCITUD_POR_ID(?)}");
+            cs = con.prepareCall("{call BUSCAR_SOLICITUD_POR_ID(?)}");
             cs.setInt("_ID_SOLICITUD", id);
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
@@ -238,14 +232,34 @@ public class SolicitudMySQL implements SolicitudDAO{
                 ArrayList<LineaSolicitud> lineas = listarLineasSolicitud(solicitud);
                 solicitud.setLineasSolicitud(lineas);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(SolicitudMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return solicitud;
+    }
+
+    @Override
+    public ArrayList<LineaSolicitud> listarSolicitudesPorProducto(String nombreProd) {
+        ArrayList<LineaSolicitud> lineas = new ArrayList<LineaSolicitud>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_SOLICITUDES_POR_PRODUCTO(?)}");
+            cs.setString("_NOMBRE_PRODUCTO", nombreProd);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                LineaSolicitud linea = new LineaSolicitud();
+                linea.setId(rs.getInt("ID_SOLICITUD"));
+                linea.setCantidad(rs.getInt("CANTIDAD"));
+                lineas.add(linea);
+            }
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return lineas;
     }
 
     

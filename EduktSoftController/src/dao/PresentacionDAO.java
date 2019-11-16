@@ -7,14 +7,11 @@ package dao;
 
 import java.util.ArrayList;
 import model.Presentacion;
-import model.Producto;
 
 /**
  *
- * @author UsuarioA
+ * @author alulab14
  */
-public interface ProductoDAO extends CrudDAO<Producto>{
-    ArrayList<Producto> listarPorNombre(String filtro);
-    ArrayList<Producto> listarDisponibles();
-    Producto buscarProductoPorNombre(String nombre);
+public interface PresentacionDAO extends CrudDAO<Presentacion>{
+   ArrayList<Presentacion> listarPresentaciones(int id_producto);
 }

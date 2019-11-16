@@ -5,6 +5,7 @@
  */
 package mysql;
 
+import config.DBController;
 import config.DBManager;
 import dao.ProductoDAO;
 import java.sql.CallableStatement;
@@ -28,7 +29,7 @@ public class ProductoMySQL implements ProductoDAO{
     @Override
     public int insertar(Producto producto) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_PRODUCTO(?,?,?,?,?,?,?,?)} ");
             cs.setString("_NOMBRE_PRODUCTO",producto.getNombre());
@@ -47,8 +48,10 @@ public class ProductoMySQL implements ProductoDAO{
                 cs.setBoolean("_ACTIVE", true);
                 resultado=cs.executeUpdate();
                 m.setId(cs.getInt("_ID_PRESENTACION"));
+                m.setId_producto(producto.getId());
+                DBController.insertarPresentacion(m);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -59,7 +62,7 @@ public class ProductoMySQL implements ProductoDAO{
     @Override
     public int actualizar(Producto producto) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_PRODUCTO(?,?,?,?,?,?,?)} ");
             cs.setInt("_ID_PRODUCTO", producto.getId());
@@ -71,12 +74,9 @@ public class ProductoMySQL implements ProductoDAO{
             cs.setString("_DESCRIPCION",producto.getDescripcion());
             resultado = cs.executeUpdate();
             for(Presentacion m:producto.getPresentaciones()){
-                cs = con.prepareCall("{call ACTUALIZAR_PRESENTACION(?,?)} ");
-                cs.setInt("_ID_PRESENTACION",m.getId());
-                cs.setString("_DISEÑO",m.getDiseño());
-                resultado=cs.executeUpdate();
+                DBController.actualizarPresentacion(m);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -87,12 +87,12 @@ public class ProductoMySQL implements ProductoDAO{
     @Override
     public int eliminar(int id_producto) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_PRODUCTO(?) ");
             cs.setInt("_ID_PRODUCTO", id_producto);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -118,7 +118,7 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setActive(rs.getBoolean("ACTIVE"));
                 productos.add(producto);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -143,7 +143,7 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setDescripcion(rs.getString("DESCRIPCION"));
                 producto.setActive(true);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -169,7 +169,7 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
                 producto.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -197,7 +197,7 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setActive(rs.getBoolean("ACTIVE"));
                 productos.add(producto);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -225,7 +225,7 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setActive(true);
                 productos.add(producto);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -233,27 +233,7 @@ public class ProductoMySQL implements ProductoDAO{
         return productos;
     }
 
-    @Override
-    public ArrayList<Presentacion> listarPresentaciones(int id_producto) {
-        ArrayList<Presentacion> presentaciones = new ArrayList<Presentacion>();
-        try{
-            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_PRESENTACION(?)}");
-            cs.setInt("_ID_PRODUCTO", id_producto);
-            ResultSet rs = cs.executeQuery();
-            while (rs.next()){
-                Presentacion presentacion = new Presentacion();
-                presentacion.setDiseño(rs.getString("DISEÑO"));
-                presentacion.setActive(true);
-                presentaciones.add(presentacion);
-            }
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }finally{
-            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
-        }
-        return presentaciones;
-    }
+    
     
 }
 

@@ -11,6 +11,7 @@ public class Cliente_Vendedor {
     private boolean active;
     
     public Cliente_Vendedor(){
+
         this.cliente = new Cliente();
         this.vendedor = new Vendedor();
         this.pedidos = new ArrayList<Pedido>();

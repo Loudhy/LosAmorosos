@@ -28,7 +28,7 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     @Override
     public int insertar(Provincia provincia) {
         int resultado = 0;
-        try{       
+        try{   
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_PROVINCIA(?,?,?,?)} ");
             cs.setString("_NOMBRE_PROVINCIA", provincia.getNombre());
@@ -36,7 +36,7 @@ public class ProvinciaMySQL implements ProvinciaDAO {
             cs.setBoolean("_ACTIVE",provincia.isActive());
             resultado = cs.executeUpdate();
             provincia.setId(cs.getInt("_ID_PROVINCIA"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -46,14 +46,14 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     @Override
     public int actualizar(Provincia provincia) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_PROVINCIA(?,?,?)} ");
             cs.setInt("_ID_PROVINCIA",provincia.getId());
             cs.setString("_NOMBRE_PROVINCIA", provincia.getNombre());
             cs.setInt("_ID_DEPARTAMENTO", provincia.getDepartamento().getId());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -64,12 +64,12 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     @Override
     public int eliminar(int id_provincia) {
         int resultado = 0;
-        try{       
+        try{   
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_PROVINCIA(?) ");
             cs.setInt("_ID_PROVINCIA", id_provincia);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -93,7 +93,7 @@ public class ProvinciaMySQL implements ProvinciaDAO {
                 provincia.setActive(rs.getBoolean("ACTIVE"));
                 provincias.add(provincia);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -117,7 +117,7 @@ public class ProvinciaMySQL implements ProvinciaDAO {
                 provincia.getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
                 provincia.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -140,7 +140,7 @@ public class ProvinciaMySQL implements ProvinciaDAO {
                 provincia.setActive(rs.getBoolean("ACTIVE"));
                 provincias.add(provincia);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}

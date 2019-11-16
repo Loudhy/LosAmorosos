@@ -13,11 +13,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Area;
 import model.Empleado;
 import model.EstadoCivil;
@@ -33,7 +30,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     @Override
     public int insertar(Empleado empleado) {
         int resultado = 0;
-        try{       
+        try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
 
@@ -54,7 +51,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setBoolean("_ACTIVE", empleado.isActive());
             resultado = cs.executeUpdate();
             empleado.setId(cs.getInt("_ID_EMPLEADO"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -84,7 +81,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setBytes("_FOTO",empleado.getFoto());
             cs.setDate("_FECHA_INGRESO", new java.sql.Date(empleado.getFechaIngreso().getTime()));
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -100,7 +97,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs = con.prepareCall("{call ELIMINAR_EMPLEADO(?)}");
             cs.setInt("_ID_EMPLEADO", id_empleado);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -139,9 +136,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleados.add(empleado);
             }
             
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -181,9 +176,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleados.add(empleado);
             }
             
-        }catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -222,10 +215,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -262,10 +253,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -302,7 +291,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException | ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -342,7 +331,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException | ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}

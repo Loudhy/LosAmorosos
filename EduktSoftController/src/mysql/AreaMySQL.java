@@ -28,7 +28,7 @@ public class AreaMySQL implements AreaDAO {
     @Override
     public int insertar(Area area) {
         int resultado = 0;
-        try{       
+        try{    
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_AREA(?,?,?,?)} ");
             cs.setString("_NOMBRE_AREA", area.getNombre());
@@ -38,7 +38,7 @@ public class AreaMySQL implements AreaDAO {
             resultado = cs.executeUpdate();
             area.setId(cs.getInt("_ID_AREA"));
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -56,7 +56,7 @@ public class AreaMySQL implements AreaDAO {
             cs.setString("_NOMBRE_AREA",area.getNombre());
             cs.setInt("_CODIGO_AREA", area.getCodigo());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -73,7 +73,7 @@ public class AreaMySQL implements AreaDAO {
             cs = con.prepareCall("{call ELIMINAR_AREA(?)}");
             cs.setInt("_ID_AREA", id_area);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -97,7 +97,7 @@ public class AreaMySQL implements AreaDAO {
                 areas.add(area);
             }
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -109,6 +109,7 @@ public class AreaMySQL implements AreaDAO {
     public Area encontrarPorId(int id) {
         Area area = null;
         try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_AREA_POR_ID(?)}");
             cs.setInt("_ID_AREA", id);
@@ -121,7 +122,7 @@ public class AreaMySQL implements AreaDAO {
                 area.setActive(rs.getBoolean("ACTIVE"));
             }
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
