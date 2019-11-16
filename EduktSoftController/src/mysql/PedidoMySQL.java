@@ -53,7 +53,7 @@ public class PedidoMySQL implements PedidoDAO{
             pedido.setId(cs.getInt("_ID_PEDIDO"));
             
             for (LineaPedido aux: pedido.getLineasPedido()){
-                cs = con.prepareCall("{call INSERTAR_LINEA_PEDIDO(?,?,?,?,?,?,?,?,?)}");
+                cs = con.prepareCall("{call INSERTAR_LINEA_PEDIDO(?,?,?,?,?,?,?,?)}");
                 cs.setInt("_CANTIDAD",aux.getCantidad());
                 cs.setInt("_ID_PEDIDO", pedido.getId());
                 cs.setInt("_ID_PRODUCTO", aux.getProducto().getId());
@@ -61,7 +61,6 @@ public class PedidoMySQL implements PedidoDAO{
                 cs.setString("_ESTADO_LINEA_PEDIDO", aux.getEstadoLineaPedido().toString());
                 cs.setDate("_FECHA_ATENCION", new java.sql.Date(aux.getFechaAtencion().getTime()));
                 cs.setInt("_CANTIDAD_A_ATENDER",aux.getCantidadPorAtender());
-                cs.setBoolean("_ACTIVE", true);
                 resultado=cs.executeUpdate();
                 aux.setId(cs.getInt("_ID_LINEA_PEDIDO"));
             }
