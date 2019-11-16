@@ -6,6 +6,7 @@
 package eduktsoft;
 import administracion.LogginUsuarioService;
 import administracion.PasswordService;
+import comercial.ReporteProductosDisponibles;
 import config.DBController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,8 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        
+        ReporteProductosDisponibles reporte = new ReporteProductosDisponibles();
+        byte[] arreglo = reporte.devolverPdf();
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();

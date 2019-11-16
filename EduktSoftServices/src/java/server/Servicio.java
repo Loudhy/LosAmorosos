@@ -7,7 +7,11 @@ package server;
 
 import administracion.LogginUsuarioService;
 import administracion.PasswordService;
+import comercial.ReporteProductosDisponibles;
 import config.DBController;
+import config.DBManager;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -24,6 +28,11 @@ import model.Presentacion;
 import model.Producto;
 import model.Provincia;
 import model.Vendedor;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import ventas.MejoresProductosService;
 
 /**
@@ -182,7 +191,28 @@ public class Servicio {
     public int aprobarListasSolicitudConProducto(@WebParam(name = "solicitudes") ArrayList<Solicitud> solicitudes, String nombreProducto){
         aprobarSolicitudes aprobar = new aprobarSolicitudes();
         return  aprobar.aprobarLineasDeSolicitudConProducto(solicitudes, nombreProducto);
-
     }
     
+    @WebMethod(operationName = "generarPdfReporteDeProductosDisponibles")
+    public byte[] generarPdfReporteDeProductosDisponibles(){
+        byte[] arreglo = null;
+        try{
+            JasperReport reporte = 
+                    (JasperReport) 
+           JRLoader.loadObjectFromFile(
+     Servicio.class.getResource(
+     "/reports/ReporteProductosDisponibles.jasper").getFile());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = 
+        DriverManager.getConnection(
+          DBManager.url, DBManager.user, DBManager.password);
+            JasperPrint jp = 
+                    JasperFillManager.fillReport(reporte,null,con);
+            arreglo = JasperExportManager.exportReportToPdf(jp);
+            
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return arreglo;  
+    }
 }
