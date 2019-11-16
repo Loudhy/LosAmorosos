@@ -16,11 +16,12 @@ public class Presentacion {
     private String diseño;
     private boolean active;
     
-    public Presentacion(){
+
+    public Presentacion(){ 
         
     }
     
-    public Presentacion(String diseño){  
+    public Presentacion(String diseño){
         this.diseño = diseño;
         this.active = true;
     }
@@ -58,5 +59,4 @@ public class Presentacion {
         this.active = active;
     }
 
-    
 }

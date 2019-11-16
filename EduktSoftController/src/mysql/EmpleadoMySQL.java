@@ -32,7 +32,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         int resultado = 0;
         try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
+
             cs.setString("_DNI_EMPLEADO", empleado.getDni());
             cs.setString("_NOMBRE_EMPLEADO", empleado.getNombre());
             cs.setString("_APELLIDO_PATERNO", empleado.getApellidoPaterno());
@@ -70,6 +71,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setString("_APELLIDO_PATERNO", empleado.getApellidoPaterno());
             cs.setString("_APELLIDO_MATERNO",empleado.getApellidoMaterno());
             cs.setDate("_FECHA_NACIMIENTO", new java.sql.Date(empleado.getFechaNacimiento().getTime()));
+            cs.setString("_USUARIO", empleado.getUsuario().getNombre());
+            cs.setString("_CONTRASEÑA", empleado.getUsuario().getContraseña());
             cs.setString("_TELEFONO_EMPLEADO",empleado.getTelefono());
             cs.setString("_CORREO_EMPLEADO", empleado.getCorreo());
             cs.setString("_ESTADO_CIVIL", empleado.getEstadoCivil().name());

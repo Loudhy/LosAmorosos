@@ -14,6 +14,8 @@ public class Provincia {
     public Provincia(String nombre, Departamento departamento, String ubigeo){
         this.nombre = nombre;
         this.departamento = departamento;
+        this.active = true;
+
     }
        
     public int getId() {

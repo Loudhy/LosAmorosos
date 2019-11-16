@@ -25,6 +25,7 @@ public class Producto {
         this.descripcion = descripcion;
         this.presentaciones = new ArrayList<Presentacion>();
         this.active = true;
+        
     }
 
     public boolean isActive() {

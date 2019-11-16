@@ -21,7 +21,7 @@ public class Vendedor extends Empleado{
            telefono, correo, estado_civil,  sueldo,  area,  fecha_ingreso);
         clientes_vendedor = new ArrayList<Cliente_Vendedor>();
         objetivoVendedor = new ObjetivoVendedor();
-        this.setActive(true);
+        this.active = true;
     }        
 
     public boolean isActive() {

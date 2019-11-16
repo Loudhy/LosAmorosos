@@ -22,6 +22,7 @@ import model.Cliente;
 import model.Cliente_Vendedor;
 import model.Solicitud;
 import model.Empleado;
+import model.LineaPedido;
 import model.LineaSolicitud;
 import model.Pedido;
 import model.Presentacion;
@@ -99,8 +100,8 @@ public class Servicio {
         return DBController.eliminarPedido(id);
     }
     
-    @WebMethod(operationName = "listarPedido")
-    public ArrayList<Pedido> listarPedido(){
+    @WebMethod(operationName = "listarPedidoPorEstadoDePedido")
+    public ArrayList<Pedido> listarPedidoPorEstadoDePedido(){
         return DBController.listarPedidosPorEstadoDePedido();
     }
     
@@ -193,6 +194,7 @@ public class Servicio {
         return  aprobar.aprobarLineasDeSolicitudConProducto(solicitudes, nombreProducto);
     }
     
+
     @WebMethod(operationName = "generarPdfReporteDeProductosDisponibles")
     public byte[] generarPdfReporteDeProductosDisponibles(){
         byte[] arreglo = null;
@@ -214,5 +216,20 @@ public class Servicio {
             System.out.println(ex.getMessage());
         }
         return arreglo;  
+    }
+    @WebMethod(operationName = "listarPedidos")
+    public ArrayList<Pedido> listarPedidos(){
+        return DBController.listarPedidos();
+    }
+    
+    @WebMethod(operationName = "actualizarLineaASolicitado")
+    public int actualizarLineaPedidoSolicitado(@WebParam(name = "idLineaPedido")  int id_linea){
+        return DBController.actualizarLineaSolicitado(id_linea);
+    }
+    
+    @WebMethod(operationName = "listarLineasSolciitudes")
+    public ArrayList<LineaSolicitud> listarLineasSolciitudes(@WebParam(name = "solicitud") Solicitud solicitud){
+        return DBController.listarLineasDeSolicitud(solicitud);
+
     }
 }

@@ -362,4 +362,12 @@ public abstract class DBController {
     public static Cliente buscarClientePorClienteVendedor(int id_cliente_vendedor){
         return daoFactory.getClienteVendedorDAO().encontrarClientePorClienteVendedor(id_cliente_vendedor);
     }
+    
+    public static ArrayList<Pedido> listarPedidos(){
+        return daoFactory.getPedidoDAO().listar();
+    }
+    
+    public static int actualizarLineaSolicitado(int id_linea){
+        return daoFactory.getPedidoDAO().actualizarLineaPedidoSolicitado(id_linea);
+    }
 }
