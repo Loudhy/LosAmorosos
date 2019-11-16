@@ -14,8 +14,6 @@ import java.sql.Statement;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Area;
 
 /**
@@ -31,7 +29,6 @@ public class AreaMySQL implements AreaDAO {
     public int insertar(Area area) {
         int resultado = 0;
         try{    
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_AREA(?,?,?,?)} ");
             cs.setString("_NOMBRE_AREA", area.getNombre());
@@ -41,10 +38,8 @@ public class AreaMySQL implements AreaDAO {
             resultado = cs.executeUpdate();
             area.setId(cs.getInt("_ID_AREA"));
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AreaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -55,17 +50,14 @@ public class AreaMySQL implements AreaDAO {
     public int actualizar(Area area) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_AREA(?,?,?)}");
             cs.setInt("_ID_AREA", area.getId());
             cs.setString("_NOMBRE_AREA",area.getNombre());
             cs.setInt("_CODIGO_AREA", area.getCodigo());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AreaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -77,15 +69,12 @@ public class AreaMySQL implements AreaDAO {
     public int eliminar(int id_area) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_AREA(?)}");
             cs.setInt("_ID_AREA", id_area);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AreaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -96,7 +85,6 @@ public class AreaMySQL implements AreaDAO {
     public ArrayList<Area> listar() {
         ArrayList<Area> areas = new ArrayList<Area>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_AREA()}");
             ResultSet rs = cs.executeQuery();
@@ -109,10 +97,8 @@ public class AreaMySQL implements AreaDAO {
                 areas.add(area);
             }
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AreaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -136,10 +122,8 @@ public class AreaMySQL implements AreaDAO {
                 area.setActive(rs.getBoolean("ACTIVE"));
             }
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AreaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

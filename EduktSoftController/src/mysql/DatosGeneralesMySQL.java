@@ -13,12 +13,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.DatosGenerales;
 
 /**
@@ -46,10 +43,8 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
             cs.setInt("_PLAZO_DE_PAGO", datosGenerales.getPlazoDePago());
             cs.setBoolean("_ACTIVE", datosGenerales.isActive());
             datosGenerales.setId(cs.getInt("_ID_DATOS_GENERALES"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DatosGeneralesMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -77,10 +72,8 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
                 datosGenerales.setActive(rs.getBoolean("ACTIVE"));
             }
 
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DatosGeneralesMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -111,12 +104,8 @@ public class DatosGeneralesMySQL implements DatosGeneralesDAO{
                 datosGenerales.setActive(rs.getBoolean("ACTIVE"));
             }
 
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(DatosGeneralesMySQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DatosGeneralesMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

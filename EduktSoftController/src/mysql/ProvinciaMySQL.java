@@ -14,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Departamento;
 import model.Provincia;
 
@@ -31,7 +29,6 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     public int insertar(Provincia provincia) {
         int resultado = 0;
         try{   
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_PROVINCIA(?,?,?,?)} ");
             cs.setString("_NOMBRE_PROVINCIA", provincia.getNombre());
@@ -39,10 +36,8 @@ public class ProvinciaMySQL implements ProvinciaDAO {
             cs.setBoolean("_ACTIVE",provincia.isActive());
             resultado = cs.executeUpdate();
             provincia.setId(cs.getInt("_ID_PROVINCIA"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProvinciaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -52,17 +47,14 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     public int actualizar(Provincia provincia) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_PROVINCIA(?,?,?)} ");
             cs.setInt("_ID_PROVINCIA",provincia.getId());
             cs.setString("_NOMBRE_PROVINCIA", provincia.getNombre());
             cs.setInt("_ID_DEPARTAMENTO", provincia.getDepartamento().getId());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProvinciaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -73,15 +65,12 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     public int eliminar(int id_provincia) {
         int resultado = 0;
         try{   
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_PROVINCIA(?) ");
             cs.setInt("_ID_PROVINCIA", id_provincia);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProvinciaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -91,7 +80,6 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     public ArrayList<Provincia> listarPorDepartamento(Departamento departamento) {
         ArrayList<Provincia> provincias = new ArrayList<Provincia>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_PROVINCIA_POR_DEPARTAMENTO(?)}");
             cs.setInt("_ID_DEPARTAMENTO", departamento.getId());
@@ -105,10 +93,8 @@ public class ProvinciaMySQL implements ProvinciaDAO {
                 provincia.setActive(rs.getBoolean("ACTIVE"));
                 provincias.add(provincia);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProvinciaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -119,7 +105,6 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     public Provincia encontrarPorId(int id) {
         Provincia provincia = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_PROVINCIA_POR_ID()}");
             cs.setInt("_ID_PROVINCIA", id);
@@ -132,10 +117,8 @@ public class ProvinciaMySQL implements ProvinciaDAO {
                 provincia.getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
                 provincia.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProvinciaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -146,7 +129,6 @@ public class ProvinciaMySQL implements ProvinciaDAO {
     public ArrayList<Provincia> listar() {
         ArrayList<Provincia> provincias = new ArrayList<Provincia>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_PROVINCIAS()}");
             ResultSet rs = cs.executeQuery();
@@ -158,10 +140,8 @@ public class ProvinciaMySQL implements ProvinciaDAO {
                 provincia.setActive(rs.getBoolean("ACTIVE"));
                 provincias.add(provincia);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProvinciaMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

@@ -46,6 +46,7 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
+        
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();

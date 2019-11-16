@@ -15,8 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Presentacion;
 import model.Producto;
 
@@ -32,7 +30,6 @@ public class ProductoMySQL implements ProductoDAO{
     public int insertar(Producto producto) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_PRODUCTO(?,?,?,?,?,?,?,?)} ");
             cs.setString("_NOMBRE_PRODUCTO",producto.getNombre());
@@ -48,10 +45,8 @@ public class ProductoMySQL implements ProductoDAO{
                 m.setId_producto(producto.getId());
                 DBController.insertarPresentacion(m);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -62,7 +57,6 @@ public class ProductoMySQL implements ProductoDAO{
     public int actualizar(Producto producto) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_PRODUCTO(?,?,?,?,?,?,?)} ");
             cs.setInt("_ID_PRODUCTO", producto.getId());
@@ -76,10 +70,8 @@ public class ProductoMySQL implements ProductoDAO{
             for(Presentacion m:producto.getPresentaciones()){
                 DBController.actualizarPresentacion(m);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -90,15 +82,12 @@ public class ProductoMySQL implements ProductoDAO{
     public int eliminar(int id_producto) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_PRODUCTO(?) ");
             cs.setInt("_ID_PRODUCTO", id_producto);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -109,7 +98,6 @@ public class ProductoMySQL implements ProductoDAO{
     public ArrayList<Producto> listarDisponibles() {
         ArrayList<Producto> productos = new ArrayList<Producto>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_PRODUCTO_DISPONIBLE()}");
             ResultSet rs = cs.executeQuery();
@@ -124,10 +112,8 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setActive(rs.getBoolean("ACTIVE"));
                 productos.add(producto);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -138,7 +124,6 @@ public class ProductoMySQL implements ProductoDAO{
     public Producto buscarProductoPorNombre(String nombre) {
         Producto producto = new Producto();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_PRODUCTO_POR_NOMBRE(?)}");
             cs.setString("_NOMBRE_PRODUCTO", nombre);
@@ -152,10 +137,8 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setDescripcion(rs.getString("DESCRIPCION"));
                 producto.setActive(true);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -166,7 +149,6 @@ public class ProductoMySQL implements ProductoDAO{
     public Producto encontrarPorId(int id) {
         Producto producto = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_PRODUCTO_POR_ID(?)}");
             cs.setInt("_ID_PRODUCTO", id);
@@ -181,10 +163,8 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
                 producto.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -196,7 +176,6 @@ public class ProductoMySQL implements ProductoDAO{
     public ArrayList<Producto> listar() {
         ArrayList<Producto> productos = new ArrayList<Producto>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_PRODUCTOS()}");
             ResultSet rs = cs.executeQuery();
@@ -212,10 +191,8 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setActive(rs.getBoolean("ACTIVE"));
                 productos.add(producto);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -226,7 +203,6 @@ public class ProductoMySQL implements ProductoDAO{
     public ArrayList<Producto> listarPorNombre(String nombre){
         ArrayList<Producto> productos = new ArrayList<Producto>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_PRODUCTOS_POR_NOMBRE(?)}");
             cs.setString("_NOMBRE_PRODUCTO", nombre);
@@ -243,10 +219,8 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setActive(true);
                 productos.add(producto);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProductoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

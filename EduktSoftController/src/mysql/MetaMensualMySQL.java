@@ -13,11 +13,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.MetaMensual;
 
 /**
@@ -33,7 +30,6 @@ public class MetaMensualMySQL implements MetaMensualDAO {
     public int insertar(MetaMensual metaMensual) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_META_MENSUAL(?,?,?,?,?,?)} ");
             cs.setDate("_FECHA_INICIO", new java.sql.Date(metaMensual.getFechaInicio().getTime()));
@@ -43,10 +39,8 @@ public class MetaMensualMySQL implements MetaMensualDAO {
             cs.setBoolean("_ACTIVE", metaMensual.isActive());
             resultado = cs.executeUpdate();
             metaMensual.setId(cs.getInt("_ID_META_MENSUAL"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MetaMensualMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -57,7 +51,6 @@ public class MetaMensualMySQL implements MetaMensualDAO {
     public int actualizar(MetaMensual metaMensual) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_META_MENSUAL(?,?,?,?,?)} ");
             cs.setInt("_ID_META_MENSUAL", metaMensual.getId());
@@ -66,10 +59,8 @@ public class MetaMensualMySQL implements MetaMensualDAO {
             cs.setFloat("_CANTIDAD_OBJETIVO",metaMensual.getCantidadObjetivo());
             cs.setString("_DESCRIPCION_META_MENSUAL",metaMensual.getDescripcion());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MetaMensualMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -80,15 +71,12 @@ public class MetaMensualMySQL implements MetaMensualDAO {
     public int eliminar(int id_meta_mensual) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_META_MENSUAL(?} ");
             cs.setInt("_ID_META_MENSUAL", id_meta_mensual);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MetaMensualMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -99,7 +87,6 @@ public class MetaMensualMySQL implements MetaMensualDAO {
     public ArrayList<MetaMensual> listar() {
         ArrayList<MetaMensual> metasMensuales = new ArrayList<MetaMensual>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_META_MENSUAL()}");
             ResultSet rs = cs.executeQuery();
@@ -118,12 +105,8 @@ public class MetaMensualMySQL implements MetaMensualDAO {
                 metasMensuales.add(metaMensual);
             }
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MetaMensualMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -134,7 +117,6 @@ public class MetaMensualMySQL implements MetaMensualDAO {
     public MetaMensual encontrarPorId(int id) {
         MetaMensual metasMensual = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_META_MENSUAL_POR_ID(?)}");
             cs.setInt("_ID_META_MENSUAL", id);
@@ -153,12 +135,8 @@ public class MetaMensualMySQL implements MetaMensualDAO {
                 metaMensual.setActive(rs.getBoolean("ACTIVE"));
             }
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MetaMensualMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

@@ -14,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Presentacion;
 
 /**
@@ -30,7 +28,6 @@ public class PresentacionMySQL implements PresentacionDAO {
     public int insertar(Presentacion presentacion) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_PRESENTACION(?,?,?,?)} ");
             cs.setInt("_ID_PRODUCTO", presentacion.getId_producto());
@@ -38,10 +35,8 @@ public class PresentacionMySQL implements PresentacionDAO {
             cs.setBoolean("_ACTIVE", true);
             resultado=cs.executeUpdate();
             presentacion.setId(cs.getInt("_ID_PRESENTACION"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PresentacionMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -57,16 +52,13 @@ public class PresentacionMySQL implements PresentacionDAO {
     public int actualizar(Presentacion presentacion) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_PRESENTACION(?,?)} ");
             cs.setInt("_ID_PRESENTACION", presentacion.getId());
             cs.setString("_DISEÑO",presentacion.getDiseño());
             resultado=cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PresentacionMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -77,15 +69,12 @@ public class PresentacionMySQL implements PresentacionDAO {
     public int eliminar(int id) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_PRESENTACION(?)} ");
             cs.setInt("_ID_PRESENTACION", id);
             resultado=cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PresentacionMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -96,7 +85,6 @@ public class PresentacionMySQL implements PresentacionDAO {
     public ArrayList<Presentacion> listarPresentaciones(int id_producto) {
         ArrayList<Presentacion> presentaciones = new ArrayList<Presentacion>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_PRESENTACION(?)}");
             cs.setInt("_ID_PRODUCTO", id_producto);
@@ -107,10 +95,8 @@ public class PresentacionMySQL implements PresentacionDAO {
                 presentacion.setActive(true);
                 presentaciones.add(presentacion);
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PresentacionMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

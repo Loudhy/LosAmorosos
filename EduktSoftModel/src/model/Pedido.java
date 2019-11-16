@@ -21,11 +21,10 @@ public class Pedido {
         active = true;
     }
     
-    public Pedido(Date fechaRegistro){
-        this.fechaRegistro = fechaRegistro;
+    public Pedido(boolean active){
         lineasPedido = new ArrayList<LineaPedido>();
         clienteVendedor = new Cliente_Vendedor();
-        active = true;
+        this.active = active;
     }
         
     public float getTotal() {

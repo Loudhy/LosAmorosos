@@ -13,11 +13,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Area;
 import model.Empleado;
 import model.EstadoCivil;
@@ -34,7 +31,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public int insertar(Empleado empleado) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
             cs.setString("_DNI_EMPLEADO", empleado.getDni());
@@ -54,10 +50,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setBoolean("_ACTIVE", empleado.isActive());
             resultado = cs.executeUpdate();
             empleado.setId(cs.getInt("_ID_EMPLEADO"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -68,7 +62,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public int actualizar(Empleado empleado) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
             cs.setInt("_ID_EMPLEADO", empleado.getId());
@@ -85,10 +78,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setBytes("_FOTO",empleado.getFoto());
             cs.setDate("_FECHA_INGRESO", new java.sql.Date(empleado.getFechaIngreso().getTime()));
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -99,15 +90,12 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public int eliminar(int id_empleado) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_EMPLEADO(?)}");
             cs.setInt("_ID_EMPLEADO", id_empleado);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -118,7 +106,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public ArrayList<Empleado> listar() {
         ArrayList<Empleado> empleados = new ArrayList<Empleado>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_EMPLEADO()}");
             ResultSet rs = cs.executeQuery();
@@ -146,12 +133,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleados.add(empleado);
             }
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -162,7 +145,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public ArrayList<Empleado> listarPorArea(Area area) {
         ArrayList<Empleado> empleados = new ArrayList<Empleado>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_EMPLEADO_POR_AREA(?)}");
             cs.setInt("_ID_AREA", area.getId());
@@ -191,12 +173,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleados.add(empleado);
             }
             
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -207,7 +185,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public Empleado buscarEmpleadoPorApellidos(String apellido_paterno,String apellido_materno) {
         Empleado empleado = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_APELLIDOS(?,?)}");
             cs.setString("_APELIDO_PATERNO", apellido_paterno);
@@ -235,12 +212,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -251,7 +224,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public Empleado buscarEmpleadoPorCorreo(String correo) {
         Empleado empleado = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_CORREO(?)}");
             cs.setString("_CORREO", correo);
@@ -278,12 +250,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -294,7 +262,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public Empleado buscarEmpleadoPorDni(String dni) {
         Empleado empleado = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_DNI(?)}");
             cs.setString("_DNI", dni);
@@ -321,10 +288,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException | ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -335,7 +300,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
     public Empleado encontrarPorId(int id) {
         Empleado empleado = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_ID(?)}");
             cs.setInt("_ID_EMPLEADO", id);
@@ -364,10 +328,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
                 empleado.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException | ParseException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EmpleadoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

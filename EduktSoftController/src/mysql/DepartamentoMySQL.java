@@ -14,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Departamento;
 
 /**
@@ -30,17 +28,14 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     public int insertar(Departamento departamento) {
         int resultado = 0;
         try{ 
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_DEPARTAMENTO(?,?,?)} ");
             cs.setString("_NOMBRE_DEPARTAMENTO", departamento.getNombre());
             cs.setBoolean("_ACTIVE",departamento.isActive());
             resultado = cs.executeUpdate();
             departamento.setId(cs.getInt("_ID_DEPARTAMENTO"));
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DepartamentoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -51,16 +46,13 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     public int actualizar(Departamento departamento) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_DEPARTAMENTO(?,?)} ");
             cs.setInt("_ID_DEPARTAMENTO",departamento.getId());
             cs.setString("_NOMBRE_DEPARTAMENTO", departamento.getNombre());
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DepartamentoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -71,15 +63,12 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     public int eliminar(int id_departamento) {
         int resultado = 0;
         try{  
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_DEPARTAMENTO(?} ");
             cs.setInt("_ID_DEPARTAMENTO", id_departamento);
             resultado = cs.executeUpdate();
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DepartamentoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -90,7 +79,6 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     public ArrayList<Departamento> listar() {
         ArrayList<Departamento> departamentos = new ArrayList<Departamento>();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call LISTAR_DEPARTAMENTO()}");
             ResultSet rs = cs.executeQuery();
@@ -103,8 +91,6 @@ public class DepartamentoMySQL implements DepartamentoDAO{
             }
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DepartamentoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
@@ -115,7 +101,6 @@ public class DepartamentoMySQL implements DepartamentoDAO{
     public Departamento encontrarPorId(int id) {
         Departamento departamento = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_DEPARTAMENTO_POR_ID(?)}");
             cs.setInt("_ID_DEPARTAMENTO", id);
@@ -126,10 +111,8 @@ public class DepartamentoMySQL implements DepartamentoDAO{
                 departamento.setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
                 departamento.setActive(rs.getBoolean("ACTIVE"));
             }
-        }catch (SQLException ex) {
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DepartamentoMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }

@@ -95,6 +95,15 @@ public class Servicio {
         return DBController.listarPedidosPorEstadoDePedido();
     }
     
+    @WebMethod(operationName = "listarPedidosPorVendedor")
+    public ArrayList<Pedido> listarPedidoPorvendedor(@WebParam(name = "vendedor")Vendedor vendedor){
+        return DBController.listarPedidosPorVendedor(vendedor);
+    }
+    @WebMethod(operationName = "buscarClientePorPedido")
+    public Cliente buscarClientePorPedido(@WebParam(name = "Pedido") Pedido pedido){
+        return DBController.buscarClientePorClienteVendedor(pedido.getClienteVendedor().getId_cliente_vendedor());
+    }
+    
     @WebMethod(operationName = "insertarPedido")
     public int insertarPedido(@WebParam(name = "pedido") Pedido pedido){
         return DBController.insertarPedido(pedido);

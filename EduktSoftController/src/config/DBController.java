@@ -359,4 +359,7 @@ public abstract class DBController {
         return daoFactory.getSolicitudDAO().listarSolicitudesPorProducto(nombre);
     }
 
+    public static Cliente buscarClientePorClienteVendedor(int id_cliente_vendedor){
+        return daoFactory.getClienteVendedorDAO().encontrarClientePorClienteVendedor(id_cliente_vendedor);
+    }
 }
