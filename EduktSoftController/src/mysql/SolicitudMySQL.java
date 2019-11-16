@@ -64,7 +64,6 @@ public class SolicitudMySQL implements SolicitudDAO{
     public int actualizar(Solicitud solicitud) {
         int resultado = 0;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_SOLICITUD(?,?,?,?)}");
             cs.setInt("_ID_SOLICITUD",solicitud.getId());
@@ -72,15 +71,7 @@ public class SolicitudMySQL implements SolicitudDAO{
             cs.setDate("_FECHA_REGISTRO", new java.sql.Date(solicitud.getFechaRegistro().getTime()));
             cs.setInt("_ID_PEDIDO",solicitud.getPedido().getId());
             resultado = cs.executeUpdate();
-            for (LineaSolicitud aux: solicitud.getLineasSolicitud()){
-                cs = con.prepareCall("{call ACTUALIZAR_LINEA_SOLICITUD(?,?,?,?,?)}");
-                cs.setInt("_ID_LINEA_SOLICITUD",aux.getId());
-                cs.setInt("_ID_SOLICITUD",solicitud.getId());
-                cs.setInt("_ID_LINEA_PEDIDO",aux.getLineaPedido().getId());
-                cs.setInt("_CANTIDAD",aux.getLineaPedido().getCantidadPorAtender());
-                cs.setString("_ESTADO_SOLICITUD",aux.getEstadoSolicitud().toString());
-                resultado = cs.executeUpdate();
-            }
+            actualizarLineasDeSolicitud(solicitud.getLineasSolicitud());
         }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
@@ -88,6 +79,8 @@ public class SolicitudMySQL implements SolicitudDAO{
         }
         return resultado;    
     }
+    
+    
 
     @Override
     public int eliminar(int id_solicitud) {
@@ -117,8 +110,13 @@ public class SolicitudMySQL implements SolicitudDAO{
                 linea.setId(rs.getInt("ID_LINEA_SOLICITUD"));
                 linea.setEstadoSolicitud(EstadoLineaSolicitud.valueOf(rs.getString("ESTADO_LINEA_SOLICITUD")));
                 linea.setCantidad(rs.getInt("CANTIDAD_A_ATENDER"));
+                linea.getLineaPedido().setId(rs.getInt("ID_LINEA_PEDIDO"));
                 linea.getLineaPedido().setCantidad(rs.getInt("CANTIDAD"));
                 linea.getLineaPedido().setCantidadPorAtender(rs.getInt("CANTIDAD_A_ATENDER"));
+                java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_ATENCION").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaRegistro);
+                linea.getLineaPedido().setFechaAtencion(formatoFecha.parse(fechaAux));
                 linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_PEDIDO")));
                 linea.getLineaPedido().getProducto().setId(rs.getInt("ID_PRODUCTO"));
                 linea.getLineaPedido().getProducto().setNombre(rs.getString("NOMBRE_PRODUCTO"));
@@ -260,6 +258,27 @@ public class SolicitudMySQL implements SolicitudDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return lineas;
+    }
+
+    @Override
+    public int actualizarLineasDeSolicitud(ArrayList<LineaSolicitud> solicitudes) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            System.out.println("HOLA");
+            for (LineaSolicitud aux: solicitudes){
+                cs = con.prepareCall("{call ACTUALIZAR_LINEA_SOLICITUD(?,?,?,?)}");
+                System.out.println(aux.getEstadoSolicitud());
+                cs.setInt("_ID_LINEA_SOLICITUD",aux.getId());
+                cs.setInt("_ID_LINEA_PEDIDO",aux.getLineaPedido().getId());
+                cs.setInt("_CANTIDAD",aux.getLineaPedido().getCantidadPorAtender());
+                cs.setString("_ESTADO_SOLICITUD",aux.getEstadoSolicitud().toString());
+                resultado = cs.executeUpdate();
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return resultado;
     }
 
     

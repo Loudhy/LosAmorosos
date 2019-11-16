@@ -17,6 +17,7 @@ import model.Solicitud;
  */
 public interface SolicitudDAO extends CrudDAO<Solicitud> {
     ArrayList<LineaSolicitud> listarLineasSolicitud(Solicitud solicitud);
+    int actualizarLineasDeSolicitud(ArrayList<LineaSolicitud> solicitudes);
     ArrayList<Solicitud> listarSolicitudesPorEstado(EstadoSolicitud estado);
     Solicitud buscarSolicitudPorPedido(Pedido pedido);
     ArrayList<LineaSolicitud> listarSolicitudesPorProducto(String nombreProd);
