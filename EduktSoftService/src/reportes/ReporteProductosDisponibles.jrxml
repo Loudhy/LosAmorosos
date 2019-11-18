@@ -32,6 +32,9 @@
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["T:\\LosAmorosos\\EduktSoftService\\src\\reportes\\"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT * FROM PRODUCTO
 WHERE STOCK_EMPRESA > 0 AND ACTIVE = TRUE;]]>
@@ -88,7 +91,7 @@ WHERE STOCK_EMPRESA > 0 AND ACTIVE = TRUE;]]>
 		<band height="25" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="85">
+		<band height="206">
 			<staticText>
 				<reportElement x="183" y="0" width="114" height="20" uuid="590cb181-1fd7-434e-bef0-bd63b59cd64b"/>
 				<textElement>
@@ -135,10 +138,18 @@ WHERE STOCK_EMPRESA > 0 AND ACTIVE = TRUE;]]>
 				</textElement>
 				<text><![CDATA[Descripcion del producto:]]></text>
 			</staticText>
+			<subreport>
+				<reportElement x="32" y="83" width="485" height="50" uuid="0b55ff58-02b9-4e92-b80f-be8ce94760f4"/>
+				<subreportParameter name="_ID_PRODUCTO">
+					<subreportParameterExpression><![CDATA[$F{ID_PRODUCTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubreportePresentaciones.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="71" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>
