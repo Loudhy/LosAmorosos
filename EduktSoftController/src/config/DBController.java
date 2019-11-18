@@ -370,4 +370,8 @@ public abstract class DBController {
     public static int actualizarLineaSolicitado(int id_linea){
         return daoFactory.getPedidoDAO().actualizarLineaPedidoSolicitado(id_linea);
     }
+    
+    public static int actualizarLineaRechazado(int id_linea){
+        return daoFactory.getPedidoDAO().actualizarLineaPedidoRechazado(id_linea);
+    }
 }

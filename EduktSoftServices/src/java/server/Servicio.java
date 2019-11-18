@@ -199,4 +199,9 @@ public class Servicio {
     public ArrayList<LineaSolicitud> listarLineasSolciitudes(@WebParam(name = "solicitud") Solicitud solicitud){
         return DBController.listarLineasDeSolicitud(solicitud);
     }
+    
+    @WebMethod(operationName = "actualizarLineaARechazado")
+    public int actualizarLineaPedidoRechazado(@WebParam(name = "idLineaPedido")  int id_linea){
+        return DBController.actualizarLineaRechazado(id_linea);
+    }
 }
