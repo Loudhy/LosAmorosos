@@ -1,4 +1,5 @@
 /EduktSoftController/build/
+<<<<<<< HEAD
 /EduktSoftModel/dist/
 /EduktSoftModel/build/
 /EduktSoftService/build/
@@ -6,3 +7,10 @@
 /EduktSoftServices/build/
 /EduktSoftService/dist/
 /EduktSoft/build/
+=======
+/EduktSoftController/dist/
+/EduktSoftModel/dist/
+/EduktSoftModel/build/
+/EduktSoftService/build/
+/EduktSoftService/dist/
+>>>>>>> ee67154691fbfd7c5ed70c746342c615a67a9a42

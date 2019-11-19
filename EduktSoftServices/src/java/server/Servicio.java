@@ -259,4 +259,9 @@ public class Servicio {
     public int actualizarLineaPedidoRechazado(@WebParam(name = "idLineaPedido")  int id_linea){
         return DBController.actualizarLineaRechazado(id_linea);
     }
+    
+    @WebMethod(operationName = "actualizarLineaAAceptado")
+    public int actualizarLineaPedidoAceptado(@WebParam(name = "idLineaPedido")  int id_linea){
+        return DBController.actualizarLineaAceptado(id_linea);
+    }
 }
