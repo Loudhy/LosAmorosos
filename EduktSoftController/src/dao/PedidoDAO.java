@@ -28,4 +28,5 @@ public interface PedidoDAO extends CrudDAO<Pedido> {
     ArrayList<LineaPedido> listarLineasPedidoEnRangoFechas(Date fechaIni,Date fechaFin);
     ArrayList<LineaPedido> listarLineasPedidoPorProducto(Producto producto);
     int actualizarLineaPedidoSolicitado(int id_linea);
+    int actualizarLineaPedidoRechazado(int id_linea); 
 }

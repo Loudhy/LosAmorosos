@@ -235,14 +235,19 @@ public class Servicio {
         return DBController.listarLineasDeSolicitud(solicitud);
     }
     
+
     @WebMethod(operationName = "listarEmpleados")
     public ArrayList<Empleado> listarEmpleados(@WebParam(name = "area") Area area){
         return DBController.listarEmpleadosPorArea(area);
     }
     
     @WebMethod(operationName = "listarVendedores")
-    public ArrayList<Vendedor> listarVendedores(@WebParam(name = "area") Area area){
+    public ArrayList<Vendedor> listarVendedores(){
         listarVendedores lista = new listarVendedores();
-        return lista.listarEmpleadosDeAreaVentas(area);
+        return lista.listarEmpleadosDeAreaVentas();
+    }
+    @WebMethod(operationName = "actualizarLineaARechazado")
+    public int actualizarLineaPedidoRechazado(@WebParam(name = "idLineaPedido")  int id_linea){
+        return DBController.actualizarLineaRechazado(id_linea);
     }
 }

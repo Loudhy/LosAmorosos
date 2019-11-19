@@ -20,7 +20,8 @@ public class listarVendedores {
         
     }
     
-    public ArrayList<Vendedor> listarEmpleadosDeAreaVentas(Area area){
+    public ArrayList<Vendedor> listarEmpleadosDeAreaVentas(){
+        Area area = DBController.buscarAreaPorId(3);
         ArrayList<Empleado> empleados = DBController.listarEmpleadosPorArea(area);
         ArrayList<Vendedor> vendedores = new ArrayList<Vendedor>();
         for(Empleado empleado: empleados){

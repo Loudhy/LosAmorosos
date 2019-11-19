@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -302,7 +303,7 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setLineasPedido(lineas);
                 pedidos.add(pedido);
             }
-        }catch(Exception ex){
+        }catch(SQLException | ParseException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -332,7 +333,7 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setLineasPedido(lineas);
                 pedidos.add(pedido);
             }
-        }catch(Exception ex){
+        }catch(SQLException | ParseException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -362,7 +363,7 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
             }
-        }catch(Exception ex){
+        }catch(ClassNotFoundException | SQLException | ParseException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -394,7 +395,7 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
-        }catch(Exception ex){
+        }catch(SQLException | ParseException ex){
             System.out.println(ex.getMessage());}
         finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -410,7 +411,23 @@ public class PedidoMySQL implements PedidoDAO{
             cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO_SOLICITADO(?)}");
             cs.setInt("_ID_LINEA_PEDIDO",id_linea);            
             resultado=cs.executeUpdate();
-        }catch(Exception ex){
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
+
+    @Override
+    public int actualizarLineaPedidoRechazado(int id_linea) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO_RECHAZADO(?)}");
+            cs.setInt("_ID_LINEA_PEDIDO",id_linea);            
+            resultado=cs.executeUpdate();
+        }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
