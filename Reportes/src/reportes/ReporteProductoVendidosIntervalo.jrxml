@@ -3,47 +3,36 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="FECHA_INICIO" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_FIN" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT * FROM PEDIDO P
+		<![CDATA[SELECT PR.ID_PRODUCTO,SUM(LP.CANTIDAD_A_ATENDER) AS CANTIDAD_AGRUPADA,P.ID_PEDIDO,P.TOTAL_PEDIDO,LP.CANTIDAD,LP.SUBTOTAL,LP.CANTIDAD_A_ATENDER,PR.NOMBRE_PRODUCTO,PR.PRECIO_UNITARIO,PR.DESCRIPCION
+FROM PEDIDO P
 INNER JOIN LINEA_PEDIDO LP ON P.ID_PEDIDO = LP.ID_PEDIDO
 INNER JOIN PRODUCTO PR ON LP.ID_PRODUCTO = PR.ID_PRODUCTO
-WHERE (P.ESTADO_PEDIDO = 'Pagado') AND (P.FECHA_REGISTRO BETWEEN '2019-01-31' AND '2019-10-8') 
-GROUP BY PR.ID_PRODUCTO]]>
+WHERE (P.ESTADO_PEDIDO = 'Pagado') AND (P.FECHA_REGISTRO BETWEEN $P{FECHA_INICIO} AND $P{FECHA_FIN}) 
+GROUP BY PR.ID_PRODUCTO
+ORDER BY PR.ID_PRODUCTO;
+]]>
 	</queryString>
+	<field name="ID_PRODUCTO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CANTIDAD_AGRUPADA" class="java.math.BigDecimal"/>
 	<field name="ID_PEDIDO" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="TOTAL_PEDIDO" class="java.lang.Float">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="ID_CLIENTE_VENDEDOR" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ESTADO_PEDIDO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="FECHA_REGISTRO" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ACTIVE" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ID_LINEA_PEDIDO" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="CANTIDAD" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="ID_PRODUCTO" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="SUBTOTAL" class="java.lang.Float">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ESTADO_LINEA_PEDIDO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="FECHA_ATENCION" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="CANTIDAD_A_ATENDER" class="java.lang.Integer">
@@ -52,35 +41,66 @@ GROUP BY PR.ID_PRODUCTO]]>
 	<field name="NOMBRE_PRODUCTO" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="STOCK_EMPRESA" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="STOCK_VENDEDOR" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="PRECIO_UNITARIO" class="java.lang.Float">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="DESCRIPCION" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="FOTO" class="java.lang.Object">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="29" y="23" width="237" height="34" uuid="46730bc8-fbba-4243-bec2-6c3b1e928a68"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Productos Vendidos:]]></textFieldExpression>
+			</textField>
+		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="15" y="11" width="98" height="30" uuid="8b952281-c5a1-4a7d-a01e-742909fda66d"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Fecha Inicio:]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="11" width="100" height="20" uuid="ffc5b5d1-6344-4e71-87b6-55ef45dcd302"/>
+				<textFieldExpression><![CDATA[$P{FECHA_INICIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="11" width="80" height="30" uuid="3e758010-390f-4ddc-9a27-41bf462b96d8"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Fecha Fin:]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="382" y="11" width="100" height="20" uuid="8c53146d-429e-40e9-a422-77bd54b37670"/>
+				<textFieldExpression><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="61" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="29" y="19" width="147" height="20" uuid="d5a3e6a1-578c-4395-a394-6b71b6013a12"/>
+				<textFieldExpression><![CDATA[$F{NOMBRE_PRODUCTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="19" width="168" height="20" uuid="3e0d309f-1495-46d2-8be6-3c603b4b689b"/>
+				<textFieldExpression><![CDATA[$F{CANTIDAD_AGRUPADA}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>
