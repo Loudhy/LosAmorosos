@@ -137,9 +137,13 @@ public class Servicio {
         return DBController.listarClientesPorVendedor(id);
     }
 
-    @WebMethod(operationName = "listarClientesPorNombre")
-    public ArrayList<Cliente> listarClientesPorNombre(@WebParam(name = "nombre") String nombre){
-        return DBController.listarClientesPorNombre(nombre);
+    @WebMethod(operationName = "listarClientesPorFiltro")
+    public ArrayList<Cliente> listarClientes(@WebParam(name = "nombreRuc") String nombreRuc, @WebParam(name = "filtro") String filtro){
+        if (filtro.equals("NOMBRE")){
+            return DBController.listarClientesPorNombre(nombreRuc);
+        }
+        else
+            return DBController.listarClientesPorRUC(nombreRuc);
     }
 
     @WebMethod(operationName = "listarMejoresProductosDeCliente")
@@ -151,6 +155,11 @@ public class Servicio {
     @WebMethod(operationName = "listarSolicitudes")
     public Solicitud listarSolicitud(@WebParam(name = "id_solicitud") int id_solicitud){
         return DBController.buscarSolicitudPorId(id_solicitud);
+    }
+    
+    @WebMethod(operationName = "insertarSolicitud")
+    public int insertarSolicitud(@WebParam(name = "solicitud") Solicitud solicitud){
+        return DBController.insertarSolicitud(solicitud);
     }
 
     @WebMethod(operationName = "actualizarSolicitud")
@@ -164,7 +173,7 @@ public class Servicio {
     }
 
     @WebMethod(operationName = "buscarClientePorFiltro")
-    public Cliente buscarClientePorFiltro(@WebParam(name = "filtro") String filtro){
+    public ArrayList<Cliente> buscarClientePorFiltro(@WebParam(name = "filtro") String filtro){
         return DBController.buscarClientePorFiltro(filtro);
     }
 

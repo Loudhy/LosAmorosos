@@ -97,10 +97,7 @@ WHERE STOCK_EMPRESA > 0 AND ACTIVE = TRUE;]]>
 				<text><![CDATA[Nombre del Producto:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="165" y="0" width="149" height="20" uuid="8c2756ba-7045-4026-aff8-c96a92394d0f"/>
-				<textElement>
-					<font fontName="Calibri" size="10"/>
-				</textElement>
+				<reportElement x="169" y="0" width="159" height="20" uuid="8de15a33-dbd1-4ab9-8667-dc0241c502a0"/>
 				<textFieldExpression><![CDATA[$F{NOMBRE_PRODUCTO}]]></textFieldExpression>
 			</textField>
 		</band>

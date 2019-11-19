@@ -66,8 +66,13 @@ public class MejoresProductosService {
                    .map(e -> new Pair<>(e.getKey(), e.getValue()))
                    .collect(Collectors.toList());
         Collections.sort(lista,CANTIDAD);
+        
+        int limite = 3;
+        if(lista.size() < 3){
+            limite = lista.size();
+        }
        
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < limite; i++){
             Pair<Integer,Integer> par = lista.get(i);
             Producto producto = DBController.buscarProductoPorId(par.getKey());
             productos.add(producto);

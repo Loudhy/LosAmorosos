@@ -35,8 +35,9 @@ public class SolicitudMySQL implements SolicitudDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_SOLICITUD(?,?,?,?,?)}");
+            cs = con.prepareCall("{call INSERTAR_SOLICITUD(?,?,?,?,?,?)}");
             cs.setString("_ESTADO_SOLICITUD",solicitud.getEstadoSolicitud().toString());
+            cs.setString("_DESCRIPCION", solicitud.getDescripcion());
             cs.setDate("_FECHA_REGISTRO", new java.sql.Date(solicitud.getFechaRegistro().getTime()));
             cs.setInt("_ID_PEDIDO",solicitud.getPedido().getId());
             cs.setBoolean("_ACTIVE",true);
@@ -65,9 +66,10 @@ public class SolicitudMySQL implements SolicitudDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_SOLICITUD(?,?,?,?)}");
+            cs = con.prepareCall("{call ACTUALIZAR_SOLICITUD(?,?,?,?,?)}");
             cs.setInt("_ID_SOLICITUD",solicitud.getId());
             cs.setString("_ESTADO_SOLICITUD",solicitud.getEstadoSolicitud().toString());
+            cs.setString("_DESCRIPCION", solicitud.getDescripcion());
             cs.setDate("_FECHA_REGISTRO", new java.sql.Date(solicitud.getFechaRegistro().getTime()));
             cs.setInt("_ID_PEDIDO",solicitud.getPedido().getId());
             resultado = cs.executeUpdate();

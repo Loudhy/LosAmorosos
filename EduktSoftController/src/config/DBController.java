@@ -231,7 +231,7 @@ public abstract class DBController {
         return daoFactory.getClienteDAO().encontrarPorId(id_cliente);
     }
     
-    public static Cliente buscarClientePorFiltro(String filtro){
+    public static ArrayList<Cliente> buscarClientePorFiltro(String filtro){
         return daoFactory.getClienteDAO().buscarClientePorFiltro(filtro);
     }
 
@@ -253,6 +253,10 @@ public abstract class DBController {
 
     public static ArrayList<Cliente> listarClientesPorNombre(String nombre){
         return daoFactory.getClienteDAO().listarClientesPorNombre(nombre);
+    }
+    
+    public static ArrayList<Cliente> listarClientesPorRUC(String ruc){
+        return daoFactory.getClienteDAO().listarClientesPorRUC(ruc);
     }
 
     public static int insertarPedido(Pedido pedido){
