@@ -363,17 +363,13 @@ WHERE P.ID_PEDIDO = $P{ID_PEDIDO} AND LP.ESTADO_LINEA_PEDIDO = 'Aceptado';]]>
 				<textFieldExpression><![CDATA["S/."]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="415" y="59" width="100" height="20" uuid="ca6d21aa-09f4-4c1c-824b-ed2b94d03f7f"/>
+				<reportElement x="415" y="126" width="100" height="20" uuid="ca6d21aa-09f4-4c1c-824b-ed2b94d03f7f"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{SUMA_TOTAL}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="410" y="94" width="27" height="20" uuid="d30a7069-c262-4751-8653-938bc3b2c705"/>
 				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="418" y="126" width="100" height="20" uuid="a9e9a402-9db6-44b3-a07a-c0d9710e8a2f"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{TOTAL_PEDIDO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="272" y="126" width="95" height="20" uuid="05accad3-aa93-4946-bfc2-29aa7b78137f"/>
