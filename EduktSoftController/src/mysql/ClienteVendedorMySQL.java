@@ -53,7 +53,7 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            con.prepareCall("LISTAR_CLIENTES_POR_VENDEDOR(?)");
+            cs = con.prepareCall("{call LISTAR_CLIENTES_POR_VENDEDOR(?)}");
             cs.setInt("_ID_VENDEDOR", id_vendedor);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){

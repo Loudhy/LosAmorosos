@@ -349,6 +349,8 @@ public class Servicio {
         return DBController.actualizarPedido(pedido);
     }
     
+    
+    
     @WebMethod(operationName = "generarPdfReporteFactura")
     public byte[] generarPdfReporteFactura(@WebParam(name = "idPedido") int idPedido){
         byte[] arreglo = null;
