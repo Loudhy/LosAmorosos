@@ -48,10 +48,7 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        MejoresProductosService mejores = new MejoresProductosService();
-        
-        Cliente cliente = DBController.buscarClientePorId(4);
-        ArrayList<Producto> productos = mejores.listarTresMejoresProductosPorCliente(cliente);
+        ArrayList<Pedido> pedidos = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Pendiente);
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();

@@ -1,5 +1,5 @@
 package model;
 
 public enum EstadoPedido {
-    Atendido,Pendiente,Cancelado,Pagado,En_proceso
+    Aceptado,Pendiente,Rechazado,Pagado,En_proceso
 };

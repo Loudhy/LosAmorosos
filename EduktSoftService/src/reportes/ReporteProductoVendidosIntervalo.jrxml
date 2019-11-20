@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="30fbe4f8-8040-4e84-b7d7-e1bd4c092c85">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="52"/>
+	<parameter name="FECHA_INICIO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_FIN" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT PR.ID_PRODUCTO,SUM(LP.CANTIDAD_A_ATENDER) AS CANTIDAD_AGRUPADA,P.ID_PEDIDO,P.TOTAL_PEDIDO,LP.CANTIDAD,LP.SUBTOTAL,LP.CANTIDAD_A_ATENDER,PR.NOMBRE_PRODUCTO,PR.PRECIO_UNITARIO,PR.DESCRIPCION
+FROM PEDIDO P
+INNER JOIN LINEA_PEDIDO LP ON P.ID_PEDIDO = LP.ID_PEDIDO
+INNER JOIN PRODUCTO PR ON LP.ID_PRODUCTO = PR.ID_PRODUCTO
+WHERE (P.ESTADO_PEDIDO = 'Pagado') AND (P.FECHA_REGISTRO BETWEEN $P{FECHA_INICIO} AND $P{FECHA_FIN}) 
+GROUP BY PR.ID_PRODUCTO
+ORDER BY PR.ID_PRODUCTO;
+]]>
+	</queryString>
+	<field name="ID_PRODUCTO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CANTIDAD_AGRUPADA" class="java.math.BigDecimal"/>
+	<field name="ID_PEDIDO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TOTAL_PEDIDO" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CANTIDAD" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUBTOTAL" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CANTIDAD_A_ATENDER" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_PRODUCTO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRECIO_UNITARIO" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DESCRIPCION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="29" y="23" width="289" height="34" uuid="46730bc8-fbba-4243-bec2-6c3b1e928a68"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Productos Vendidos:"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="29" y="11" width="103" height="30" uuid="8b952281-c5a1-4a7d-a01e-742909fda66d"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Inicio:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="269" y="11" width="93" height="30" uuid="3e758010-390f-4ddc-9a27-41bf462b96d8"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Fin:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="132" y="11" width="89" height="30" uuid="12b28b83-02ab-4454-b8e9-dd1e63e3c022"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FECHA_INICIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="362" y="11" width="130" height="30" uuid="179e0283-4541-41e0-a198-f2e20a6aec86"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<textField>
+				<reportElement x="29" y="12" width="147" height="18" uuid="255ccf3f-ea80-4a5f-96a4-93901e4c3d7a"/>
+				<textElement>
+					<font size="14" isBold="false" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nombre del producto"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="10" width="135" height="20" uuid="6de1f698-3e7a-486d-9d5b-9afc50541398"/>
+				<textElement>
+					<font size="14" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cantidad Vendida"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="52" splitType="Stretch">
+			<textField>
+				<reportElement x="29" y="19" width="147" height="20" uuid="d5a3e6a1-578c-4395-a394-6b71b6013a12"/>
+				<textFieldExpression><![CDATA[$F{NOMBRE_PRODUCTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="19" width="48" height="20" uuid="3e0d309f-1495-46d2-8be6-3c603b4b689b"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{CANTIDAD_AGRUPADA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

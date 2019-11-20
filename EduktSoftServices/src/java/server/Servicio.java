@@ -14,6 +14,7 @@ import config.DBManager;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -25,6 +26,8 @@ import model.Cliente;
 import model.Cliente_Vendedor;
 import model.Solicitud;
 import model.Empleado;
+import model.EstadoLineaPedido;
+import model.EstadoPedido;
 import model.LineaPedido;
 import model.LineaSolicitud;
 import model.Pedido;
@@ -104,8 +107,8 @@ public class Servicio {
     }
     
     @WebMethod(operationName = "listarPedidoPorEstadoDePedido")
-    public ArrayList<Pedido> listarPedidoPorEstadoDePedido(){
-        return DBController.listarPedidosPorEstadoDePedido();
+    public ArrayList<Pedido> listarPedidoPorEstadoDePedido(@WebParam(name = "estadoPedido")EstadoPedido estado){
+        return DBController.listarPedidosPorEstadoDePedido(estado);
     }
     
     @WebMethod(operationName = "listarPedidosPorVendedor")
@@ -159,7 +162,14 @@ public class Servicio {
     
     @WebMethod(operationName = "insertarSolicitud")
     public int insertarSolicitud(@WebParam(name = "solicitud") Solicitud solicitud){
-        return DBController.insertarSolicitud(solicitud);
+        int resultado =  DBController.insertarSolicitud(solicitud);
+        ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
+        for(LineaSolicitud linea: solicitud.getLineasSolicitud()){
+            linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.Solicitado);
+            lineasPedido.add(linea.getLineaPedido());
+        }
+        resultado = DBController.actualizarLineasPedido(lineasPedido);
+        return resultado;
     }
 
     @WebMethod(operationName = "actualizarSolicitud")
@@ -229,6 +239,61 @@ public class Servicio {
         }
         return arreglo;  
     }
+    
+    @WebMethod(operationName = "generarPdfReporteDeVentas")
+    public byte[] generarPdfReporteDeVentas(@WebParam (name = "fechaIni") String fechaIni,
+            @WebParam (name = "fechaFin") String fechaFin){
+        byte[] arreglo = null;
+        try{
+            JasperReport reporte = 
+                    (JasperReport) 
+           JRLoader.loadObjectFromFile(
+     Servicio.class.getResource(
+     "/reports/ReporteVentas.jasper").getFile());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = 
+        DriverManager.getConnection(
+          DBManager.url, DBManager.user, DBManager.password);
+            HashMap hm = new HashMap();
+            hm.put("FECHA_INI", fechaIni);
+            hm.put("FECHA_FIN", fechaFin);
+            JasperPrint jp = 
+                    JasperFillManager.fillReport(reporte,hm,con);
+            arreglo = JasperExportManager.exportReportToPdf(jp);
+            
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return arreglo;  
+    }
+    
+    @WebMethod(operationName = "generarPdfReporteProductosVendidos")
+    public byte[] generarPdfReporteProductosVendidos(@WebParam(name = "fechaIni") String fechaIni,
+            @WebParam(name = "fechaFin") String fechaFin){
+        byte[] arreglo = null;
+        try{
+            JasperReport reporte = 
+                    (JasperReport) 
+           JRLoader.loadObjectFromFile(
+     Servicio.class.getResource(
+     "/reports/ReporteProductoVendidosIntervalo.jasper").getFile());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = 
+        DriverManager.getConnection(
+          DBManager.url, DBManager.user, DBManager.password);
+            HashMap hm = new HashMap();
+            hm.put("FECHA_INICIO", fechaIni);
+            hm.put("FECHA_FIN", fechaFin);
+            JasperPrint jp = 
+                    JasperFillManager.fillReport(reporte,hm,con);
+            arreglo = JasperExportManager.exportReportToPdf(jp);
+            
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return arreglo;
+    }
+
     @WebMethod(operationName = "listarPedidos")
     public ArrayList<Pedido> listarPedidos(){
         return DBController.listarPedidos();
@@ -263,5 +328,14 @@ public class Servicio {
     @WebMethod(operationName = "actualizarLineaAAceptado")
     public int actualizarLineaPedidoAceptado(@WebParam(name = "idLineaPedido")  int id_linea){
         return DBController.actualizarLineaAceptado(id_linea);
+    }
+    
+    @WebMethod(operationName = "rechazarPedido")
+    public int rechazarPedido(@WebParam(name = "pedido") Pedido pedido){
+        for(LineaPedido linea:pedido.getLineasPedido()){
+            linea.setEstadoLineaPedido(EstadoLineaPedido.Rechazado);
+        }
+        pedido.setEstadoPedido(EstadoPedido.Rechazado);
+        return DBController.actualizarPedido(pedido);
     }
 }

@@ -318,11 +318,12 @@ public class PedidoMySQL implements PedidoDAO{
     }
 
     @Override
-    public ArrayList<Pedido> listarPorEstadoDePedido() {
+    public ArrayList<Pedido> listarPorEstadoDePedido(EstadoPedido estado) {
         ArrayList<Pedido> pedidos = new ArrayList<>();
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call LISTAR_PEDIDO_POR_ESTADO()}");
+            cs = con.prepareCall("{call LISTAR_PEDIDO_POR_ESTADO(?)}");
+            cs.setString("_ESTADO_PEDIDO", estado.toString());
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 Pedido pedido = new Pedido(true);

@@ -279,8 +279,8 @@ public abstract class DBController {
         return daoFactory.getPedidoDAO().listarPorVendedor(vendedor);
     }
 
-    public static ArrayList<Pedido> listarPedidosPorEstadoDePedido(){
-        return daoFactory.getPedidoDAO().listarPorEstadoDePedido();
+    public static ArrayList<Pedido> listarPedidosPorEstadoDePedido(EstadoPedido estado){
+        return daoFactory.getPedidoDAO().listarPorEstadoDePedido(estado);
     }
 
     public static ArrayList<LineaPedido> listarLineasDePedido(Pedido pedido){

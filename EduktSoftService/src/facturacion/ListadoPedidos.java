@@ -25,7 +25,7 @@ public class ListadoPedidos {
             pedidos = DBController.listarPedidosPorVendedor(vendedor);
         }
         else if (filtro == "Estado"){
-            pedidos = DBController.listarPedidosPorEstadoDePedido();
+            pedidos = DBController.listarPedidosPorEstadoDePedido(estado);
         }
         return pedidos;
     }
