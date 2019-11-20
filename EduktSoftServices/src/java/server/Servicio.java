@@ -137,7 +137,9 @@ public class Servicio {
     
     @WebMethod(operationName = "insertarRelacionClienteVendedor")
     public int insertarClienteVendedor(@WebParam(name = "cliente") Cliente cliente, @WebParam(name = "vendedor") Vendedor vendedor){
-        Cliente_Vendedor relacion1 = new Cliente_Vendedor(cliente,vendedor);
+        Cliente_Vendedor relacion1 = new Cliente_Vendedor();
+        relacion1.setCliente(cliente);
+        relacion1.setVendedor(vendedor);
         return DBController.insertarClienteVendedor(relacion1);
     }
 
