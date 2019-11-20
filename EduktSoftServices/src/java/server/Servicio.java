@@ -134,6 +134,12 @@ public class Servicio {
     public int actualizarCliente(@WebParam(name = "cliente") Cliente cliente){
         return DBController.actualizarCliente(cliente);
     }
+    
+    @WebMethod(operationName = "insertarRelacionClienteVendedor")
+    public int insertarClienteVendedor(@WebParam(name = "cliente") Cliente cliente, @WebParam(name = "vendedor") Vendedor vendedor){
+        Cliente_Vendedor relacion1 = new Cliente_Vendedor(cliente,vendedor);
+        return DBController.insertarClienteVendedor(relacion1);
+    }
 
     @WebMethod(operationName = "listarCliente")
     public ArrayList<Cliente> listarClientesPorVendedor(@WebParam(name = "id_vendedor") int id){
@@ -226,12 +232,16 @@ public class Servicio {
            JRLoader.loadObjectFromFile(
      Servicio.class.getResource(
      "/reports/ReporteProductosDisponibles.jasper").getFile());
+            String rutaSubreporte = Servicio.class.getResource("/reports/SubreportePresentaciones.jasper").getPath();
+            
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = 
         DriverManager.getConnection(
           DBManager.url, DBManager.user, DBManager.password);
+            HashMap hm = new HashMap();
+            hm.put("SUBREPORT_DIR",rutaSubreporte);
             JasperPrint jp = 
-                    JasperFillManager.fillReport(reporte,null,con);
+                    JasperFillManager.fillReport(reporte,hm,con);
             arreglo = JasperExportManager.exportReportToPdf(jp);
             
         }catch(Exception ex){

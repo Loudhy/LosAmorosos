@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf9219f2-77c0-4a5a-9405-9c93a0bd33ee">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf9219f2-77c0-4a5a-9405-9c93a0bd33ee">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -33,7 +33,7 @@
 		</field>
 	</subDataset>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["T:\\LosAmorosos\\EduktSoftService\\src\\reportes\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT * FROM PRODUCTO
@@ -142,7 +142,7 @@ WHERE STOCK_EMPRESA > 0 AND ACTIVE = TRUE;]]>
 					<subreportParameterExpression><![CDATA[$F{ID_PRODUCTO}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubreportePresentaciones.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
 			</subreport>
 			<staticText>
 				<reportElement x="30" y="85" width="100" height="20" uuid="abb2edb1-5466-4e06-a8ff-b68236b4d6ad"/>
