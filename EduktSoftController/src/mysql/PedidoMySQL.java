@@ -326,18 +326,21 @@ public class PedidoMySQL implements PedidoDAO{
             cs.setString("_ESTADO_PEDIDO", estado.toString());
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Pedido pedido = new Pedido(true);
-                pedido.setId(rs.getInt("ID_PEDIDO"));
-                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
-                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
+                Pedido pedido = new Pedido();
+                pedido.setId(rs.getInt("ID_PEDIDO"));        
+                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));              
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));            
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
+                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                pedido.getClienteVendedor().getVendedor().setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
-                pedido.setActive(rs.getBoolean("ACTIVE"));
-                ArrayList<LineaPedido> lineas = listarLineasPedido(pedido);
-                pedido.setLineasPedido(lineas);
+                pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
         }catch(Exception ex){

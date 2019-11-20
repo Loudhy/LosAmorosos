@@ -391,10 +391,16 @@ public class EduktSoft {
 //        pedido1.setEstadoPedido(EstadoPedido.Pendiente);
 //        DBController.insertarPedido(pedido1);
         
-        ArrayList<LineaSolicitud> lineas = new ArrayList<LineaSolicitud>();
-        lineas = DBController.listarLineasSolicitudesProducto("MARACAS");
+//        ArrayList<LineaSolicitud> lineas = new ArrayList<LineaSolicitud>();
+//        lineas = DBController.listarLineasSolicitudesProducto("MARACAS");
+//        
+//        int a = 1;
+        ArrayList<Pedido> ped = new ArrayList<Pedido>();
+        ped = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Pendiente);
+        for(Pedido lin : ped){
+            System.out.println(lin.getId());
+        }
         
-        int a = 1;
         
     }
 }

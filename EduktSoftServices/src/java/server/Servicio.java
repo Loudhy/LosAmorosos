@@ -338,4 +338,29 @@ public class Servicio {
         pedido.setEstadoPedido(EstadoPedido.Rechazado);
         return DBController.actualizarPedido(pedido);
     }
+    
+    @WebMethod(operationName = "generarPdfReporteFactura")
+    public byte[] generarPdfReporteFactura(@WebParam(name = "idPedido") int idPedido){
+        byte[] arreglo = null;
+        try{
+            JasperReport reporte = 
+                    (JasperReport) 
+           JRLoader.loadObjectFromFile(
+     Servicio.class.getResource(
+     "/reports/ReporteFactura.jasper").getFile());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = 
+        DriverManager.getConnection(
+          DBManager.url, DBManager.user, DBManager.password);
+            HashMap hm = new HashMap();
+            hm.put("ID_PEDIDO", idPedido);
+            JasperPrint jp = 
+                    JasperFillManager.fillReport(reporte,hm,con);
+            arreglo = JasperExportManager.exportReportToPdf(jp);
+            
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return arreglo;
+    }
 }
