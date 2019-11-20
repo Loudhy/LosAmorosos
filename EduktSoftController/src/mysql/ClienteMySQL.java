@@ -44,6 +44,7 @@ public class ClienteMySQL implements ClienteDAO{
             cs.setBoolean("_ACTIVE", cliente.getActive());
             resultado = cs.executeUpdate();
             cliente.setId(cs.getInt("_ID_CLIENTE"));
+            resultado = cliente.getId();
         }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
