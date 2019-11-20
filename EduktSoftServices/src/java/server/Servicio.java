@@ -349,8 +349,6 @@ public class Servicio {
         return DBController.actualizarPedido(pedido);
     }
     
-    
-    
     @WebMethod(operationName = "generarPdfReporteFactura")
     public byte[] generarPdfReporteFactura(@WebParam(name = "idPedido") int idPedido){
         byte[] arreglo = null;
@@ -374,5 +372,15 @@ public class Servicio {
             System.out.println(ex.getMessage());
         }
         return arreglo;
+    }
+    
+    @WebMethod(operationName = "listarClienteVendedorPorFiltro")
+    public ArrayList<Cliente> listarClienteVendedorPorFiltro(@WebParam(name = "id_vendedor") int id,
+            @WebParam(name = "filtro") int filtro, @WebParam(name = "dato") String dato){
+        if(filtro == 0){
+            return DBController.listarClientesVendedorPorRUC(id, dato);
+        }  
+        else 
+            return DBController.listarClientesVendedorPorNombre(id, dato);      
     }
 }

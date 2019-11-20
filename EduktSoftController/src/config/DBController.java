@@ -389,4 +389,12 @@ public abstract class DBController {
     public static int actualizarLineaAceptado(int id_linea){
         return daoFactory.getPedidoDAO().actualizarLineaPedidoAceptado(id_linea);
     }
+    
+    public static ArrayList<Cliente> listarClientesVendedorPorRUC(int id_vendedor,String ruc){
+        return daoFactory.getClienteVendedorDAO().listarClientesPorVendedorRuc(id_vendedor, ruc);
+    }
+    
+    public static ArrayList<Cliente> listarClientesVendedorPorNombre(int id_vendedor,String razonSocial){
+        return daoFactory.getClienteVendedorDAO().listarClientesPorVendedorNombre(id_vendedor, razonSocial);
+    }
 }
