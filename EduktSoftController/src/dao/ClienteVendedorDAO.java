@@ -26,4 +26,6 @@ public interface ClienteVendedorDAO {
     Vendedor encontrarVendedorPorClienteVendedor(int id_cliente_vendedor);
     ArrayList<Pedido> listarPedidosEnRangoDeFechas(Date fechaIni, Date fechaFin, Vendedor vendedor);
     int eliminar(int id_cliente_vendedor);
+    ArrayList<Cliente> listarClientesPorVendedorRuc(int id_vendedor, String ruc);
+    ArrayList<Cliente> listarClientesPorVendedorNombre(int id_vendedor, String nombre);
 }

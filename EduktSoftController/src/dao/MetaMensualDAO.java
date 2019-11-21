@@ -14,4 +14,5 @@ import model.MetaMensual;
  */
 public interface MetaMensualDAO extends CrudDAO<MetaMensual>{
     ArrayList<MetaMensual> listar();
+    MetaMensual buscarMetaMensualActiva();
 }

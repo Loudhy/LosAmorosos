@@ -389,4 +389,24 @@ public abstract class DBController {
     public static int actualizarLineaAceptado(int id_linea){
         return daoFactory.getPedidoDAO().actualizarLineaPedidoAceptado(id_linea);
     }
+    
+    public static ArrayList<Cliente> listarClientesVendedorPorRUC(int id_vendedor,String ruc){
+        return daoFactory.getClienteVendedorDAO().listarClientesPorVendedorRuc(id_vendedor, ruc);
+    }
+    
+    public static ArrayList<Cliente> listarClientesVendedorPorNombre(int id_vendedor,String razonSocial){
+        return daoFactory.getClienteVendedorDAO().listarClientesPorVendedorNombre(id_vendedor, razonSocial);
+    }
+    
+    public static ArrayList<Empleado> listarTodosLosEmpleados(){
+        return daoFactory.getEmpleadoDAO().listarTodosLosEmpleados();
+    }
+    
+    public static int darDeAltaAEmpleado(int id_empleado){
+        return daoFactory.getEmpleadoDAO().darDeAltaAEmpleado(id_empleado);
+    }
+    
+    public static MetaMensual buscarMetaMensualActiva(){
+        return daoFactory.getMetaMensualDAO().buscarMetaMensualActiva();
+    }
 }

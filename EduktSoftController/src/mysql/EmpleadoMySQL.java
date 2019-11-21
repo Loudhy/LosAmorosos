@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import model.Area;
 import model.Empleado;
 import model.EstadoCivil;
@@ -33,7 +35,6 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
-
             cs.setString("_DNI_EMPLEADO", empleado.getDni());
             cs.setString("_NOMBRE_EMPLEADO", empleado.getNombre());
             cs.setString("_APELLIDO_PATERNO", empleado.getApellidoPaterno());
@@ -47,10 +48,12 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setFloat("_SUELDO", empleado.getSueldo());
             cs.setBytes("_FOTO", empleado.getFoto());
             cs.setInt("_ID_AREA",empleado.getArea().getId());
-            cs.setDate("_FECHA_INGRESO", new java.sql.Date(empleado.getFechaIngreso().getTime()));
-            cs.setBoolean("_ACTIVE", empleado.isActive());
+            Date today = Calendar.getInstance().getTime();
+            cs.setDate("_FECHA_INGRESO", new java.sql.Date(today.getTime()));
+            cs.setBoolean("_ACTIVE", true);
             resultado = cs.executeUpdate();
             empleado.setId(cs.getInt("_ID_EMPLEADO"));
+            resultado = empleado.getId();
         }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
@@ -338,6 +341,61 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         }
         
         return empleado;
+    }
+
+    @Override
+    public ArrayList<Empleado> listarTodosLosEmpleados() {
+        ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_TODOS_EMPLEADOS()}");
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Empleado empleado = new Empleado();
+                empleado.setId(rs.getInt("ID_EMPLEADO"));
+                empleado.setDni(rs.getString("DNI_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+                empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.setFoto(rs.getBytes("FOTO"));
+                empleado.getArea().setId(rs.getInt("ID_AREA"));
+                empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                empleado.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
+                empleado.setActive(rs.getBoolean("ACTIVE"));
+                empleados.add(empleado);
+            }
+            
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return empleados;
+    }
+
+    @Override
+    public int darDeAltaAEmpleado(int id_empleado) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LEVANTAR_EMPLEADO(?)}");
+            cs.setInt("_ID_EMPLEADO", id_empleado);
+            resultado = cs.executeUpdate();
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
     }
     
 }

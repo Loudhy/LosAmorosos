@@ -7,20 +7,24 @@ public class MetaMensual {
     
     private int id;
     private Date fechaInicio;
-    private Date fechaLimite;
+    private Date fechaFin;
     private float cantidadObjetivo;
     private String descripcion;
     private boolean active;
     private ArrayList<ObjetivoVendedor> objetivosVendedor;
     
-    public MetaMensual(){    
+    public MetaMensual(){  
+        objetivosVendedor = new ArrayList<ObjetivoVendedor>();
+        active = true;
     }
+    
     
     public MetaMensual(Date fechaInicio, Date fechaLimite, float cantidadObjetivo, String descripcion){
         this.fechaInicio = fechaInicio;
-        this.fechaLimite = fechaLimite;
+        this.fechaFin = fechaLimite;
         this.cantidadObjetivo = cantidadObjetivo;
         this.descripcion = descripcion;
+        active = true;
     }
     
     public boolean isActive() {
@@ -47,12 +51,12 @@ public class MetaMensual {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaLimite() {
-        return fechaLimite;
+    public Date getFechaFin() {
+        return fechaFin;
     }
 
-    public void setFechaLimite(Date fechaLimite) {
-        this.fechaLimite = fechaLimite;
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
     public float getCantidadObjetivo() {

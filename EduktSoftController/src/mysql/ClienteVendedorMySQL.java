@@ -224,6 +224,72 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
     public Vendedor encontrarVendedorPorClienteVendedor(int id_cliente_vendedor) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public ArrayList<Cliente> listarClientesPorVendedorRuc(int id_vendedor, String ruc) {
+       ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_CLIENTE_VENDEDOR_POR_RUC(?,?)}");
+            cs.setInt("_ID_VENDEDOR", id_vendedor);
+            cs.setString("_RUC", ruc);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("ID_CLIENTE"));
+                cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                cliente.setRuc(rs.getString("RUC"));
+                cliente.setDireccion(rs.getString("DIRECCION"));
+                cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
+                cliente.setPuntaje(rs.getInt("PUNTOS"));
+                cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
+                cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
+                cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
+                cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                clientes.add(cliente);
+            }
+
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return clientes;
+    }
+
+    @Override
+    public ArrayList<Cliente> listarClientesPorVendedorNombre(int id_vendedor, String nombre) {
+        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_CLIENTE_VENDEDOR_POR_NOMBRE(?,?)}");
+            cs.setInt("_ID_VENDEDOR", id_vendedor);
+            cs.setString("_RAZON_SOCIAL", nombre);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("ID_CLIENTE"));
+                cliente.setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                cliente.setRuc(rs.getString("RUC"));
+                cliente.setDireccion(rs.getString("DIRECCION"));
+                cliente.setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                cliente.setCorreo(rs.getString("CORREO_CLIENTE"));
+                cliente.setPuntaje(rs.getInt("PUNTOS"));
+                cliente.getProvincia().setId(rs.getInt("ID_PROVINCIA"));
+                cliente.getProvincia().setNombre(rs.getString("NOMBRE_PROVINCIA"));
+                cliente.getProvincia().getDepartamento().setId(rs.getInt("ID_DEPARTAMENTO"));
+                cliente.getProvincia().getDepartamento().setNombre(rs.getString("NOMBRE_DEPARTAMENTO"));
+                clientes.add(cliente);
+            }
+
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return clientes;
+    }
     
     
 }

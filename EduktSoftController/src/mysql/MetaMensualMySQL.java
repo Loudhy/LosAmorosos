@@ -33,12 +33,13 @@ public class MetaMensualMySQL implements MetaMensualDAO {
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_META_MENSUAL(?,?,?,?,?,?)} ");
             cs.setDate("_FECHA_INICIO", new java.sql.Date(metaMensual.getFechaInicio().getTime()));
-            cs.setDate("_FECHA_LIMITE", new java.sql.Date(metaMensual.getFechaLimite().getTime()));
+            cs.setDate("_FECHA_FIN", new java.sql.Date(metaMensual.getFechaFin().getTime()));
             cs.setFloat("_CANTIDAD_OBJETIVO",metaMensual.getCantidadObjetivo());
             cs.setString("_DESCRIPCION_META_MENSUAL",metaMensual.getDescripcion());
             cs.setBoolean("_ACTIVE", metaMensual.isActive());
             resultado = cs.executeUpdate();
             metaMensual.setId(cs.getInt("_ID_META_MENSUAL"));
+            resultado = metaMensual.getId();
         }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
@@ -55,7 +56,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
             cs = con.prepareCall("{call ACTUALIZAR_META_MENSUAL(?,?,?,?,?)} ");
             cs.setInt("_ID_META_MENSUAL", metaMensual.getId());
             cs.setDate("_FECHA_INICIO", new java.sql.Date(metaMensual.getFechaInicio().getTime()));
-            cs.setDate("_FECHA_LIMITE", new java.sql.Date(metaMensual.getFechaLimite().getTime()));
+            cs.setDate("_FECHA_FIN", new java.sql.Date(metaMensual.getFechaFin().getTime()));
             cs.setFloat("_CANTIDAD_OBJETIVO",metaMensual.getCantidadObjetivo());
             cs.setString("_DESCRIPCION_META_MENSUAL",metaMensual.getDescripcion());
             resultado = cs.executeUpdate();
@@ -96,9 +97,9 @@ public class MetaMensualMySQL implements MetaMensualDAO {
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaInicio);
                 metaMensual.setFechaInicio(formatoFecha.parse(fechaAux));
-                java.util.Date fechaLimite = new java.util.Date(rs.getDate("FECHA_LIMITE").getTime());
+                java.util.Date fechaLimite = new java.util.Date(rs.getDate("FECHA_FIN").getTime());
                 fechaAux = formatoFecha.format(fechaLimite);
-                metaMensual.setFechaLimite(formatoFecha.parse(fechaAux));
+                metaMensual.setFechaFin(formatoFecha.parse(fechaAux));
                 metaMensual.setCantidadObjetivo(rs.getFloat("CANTIDAD_OBJETIVO"));
                 metaMensual.setDescripcion(rs.getString("DESCRIPCION_META_MENSUAL"));
                 metaMensual.setActive(rs.getBoolean("ACTIVE"));
@@ -127,9 +128,9 @@ public class MetaMensualMySQL implements MetaMensualDAO {
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaInicio);
                 metaMensual.setFechaInicio(formatoFecha.parse(fechaAux));
-                java.util.Date fechaLimite = new java.util.Date(rs.getDate("FECHA_LIMITE").getTime());
+                java.util.Date fechaLimite = new java.util.Date(rs.getDate("FECHA_FIN").getTime());
                 fechaAux = formatoFecha.format(fechaLimite);
-                metaMensual.setFechaLimite(formatoFecha.parse(fechaAux));
+                metaMensual.setFechaFin(formatoFecha.parse(fechaAux));
                 metaMensual.setCantidadObjetivo(rs.getFloat("CANTIDAD_OBJETIVO"));
                 metaMensual.setDescripcion(rs.getString("DESCRIPCION_META_MENSUAL"));
                 metaMensual.setActive(rs.getBoolean("ACTIVE"));
@@ -141,6 +142,34 @@ public class MetaMensualMySQL implements MetaMensualDAO {
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return metasMensual;
+    }
+
+    @Override
+    public MetaMensual buscarMetaMensualActiva() {
+        MetaMensual metaMensual = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_META_MENSUAL_ACTIVA()}");
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                metaMensual = new MetaMensual();
+                java.util.Date fechaInicio = new java.util.Date(rs.getDate("FECHA_INICIO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaInicio);
+                metaMensual.setFechaInicio(formatoFecha.parse(fechaAux));
+                java.util.Date fechaLimite = new java.util.Date(rs.getDate("FECHA_FIN").getTime());
+                fechaAux = formatoFecha.format(fechaLimite);
+                metaMensual.setFechaFin(formatoFecha.parse(fechaAux));
+                metaMensual.setCantidadObjetivo(rs.getFloat("CANTIDAD_OBJETIVO"));
+                metaMensual.setDescripcion(rs.getString("DESCRIPCION_META_MENSUAL"));
+                metaMensual.setActive(rs.getBoolean("ACTIVE"));
+            }
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return metaMensual;
     }
     
 }

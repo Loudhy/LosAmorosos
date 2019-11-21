@@ -14,6 +14,8 @@ import config.DBManager;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 import javax.jws.WebService;
@@ -30,6 +32,7 @@ import model.EstadoLineaPedido;
 import model.EstadoPedido;
 import model.LineaPedido;
 import model.LineaSolicitud;
+import model.MetaMensual;
 import model.Pedido;
 import model.Presentacion;
 import model.Producto;
@@ -137,7 +140,9 @@ public class Servicio {
     
     @WebMethod(operationName = "insertarRelacionClienteVendedor")
     public int insertarClienteVendedor(@WebParam(name = "cliente") Cliente cliente, @WebParam(name = "vendedor") Vendedor vendedor){
-        Cliente_Vendedor relacion1 = new Cliente_Vendedor(cliente,vendedor);
+        Cliente_Vendedor relacion1 = new Cliente_Vendedor();
+        relacion1.setCliente(cliente);
+        relacion1.setVendedor(vendedor);
         return DBController.insertarClienteVendedor(relacion1);
     }
 
@@ -168,6 +173,8 @@ public class Servicio {
     
     @WebMethod(operationName = "insertarSolicitud")
     public int insertarSolicitud(@WebParam(name = "solicitud") Solicitud solicitud){
+        Date today = Calendar.getInstance().getTime();
+        solicitud.setFechaRegistro(today);
         int resultado =  DBController.insertarSolicitud(solicitud);
         ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
         for(LineaSolicitud linea: solicitud.getLineasSolicitud()){
@@ -349,8 +356,6 @@ public class Servicio {
         return DBController.actualizarPedido(pedido);
     }
     
-    
-    
     @WebMethod(operationName = "generarPdfReporteFactura")
     public byte[] generarPdfReporteFactura(@WebParam(name = "idPedido") int idPedido){
         byte[] arreglo = null;
@@ -374,5 +379,86 @@ public class Servicio {
             System.out.println(ex.getMessage());
         }
         return arreglo;
+    }
+    
+    @WebMethod(operationName = "listarClienteVendedorPorFiltro")
+    public ArrayList<Cliente> listarClienteVendedorPorFiltro(@WebParam(name = "id_vendedor") int id,
+            @WebParam(name = "filtro") int filtro, @WebParam(name = "dato") String dato){
+        if(filtro == 0){
+            return DBController.listarClientesVendedorPorRUC(id, dato);
+        }  
+        else 
+            return DBController.listarClientesVendedorPorNombre(id, dato);      
+    }
+    
+    @WebMethod(operationName = "generarPdfReporteDeIngresos")
+    public byte[] generarPdfReporteDeIngresos(@WebParam (name = "fechaIni") String fechaIni,
+            @WebParam (name = "fechaFin") String fechaFin){
+        byte[] arreglo = null;
+        try{
+            JasperReport reporte = 
+                    (JasperReport) 
+           JRLoader.loadObjectFromFile(
+     Servicio.class.getResource(
+     "/reports/ReporteIngresos.jasper").getFile());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = 
+        DriverManager.getConnection(
+          DBManager.url, DBManager.user, DBManager.password);
+            HashMap hm = new HashMap();
+            hm.put("FECHA_INI", fechaIni);
+            hm.put("FECHA_FIN", fechaFin);
+            JasperPrint jp = 
+                    JasperFillManager.fillReport(reporte,hm,con);
+            arreglo = JasperExportManager.exportReportToPdf(jp);
+            
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return arreglo;  
+    }
+    
+    @WebMethod(operationName = "insertarEmpleado")
+    public int insertarEmpleado(@WebParam(name = "empleado") Empleado empleado){
+        return DBController.insertarEmpleado(empleado);
+    }
+    
+    @WebMethod(operationName = "actualizarEmpleado")
+    public int actualizarEmpleado(@WebParam(name = "empleado")Empleado empleado){
+        return DBController.actualizarEmpleado(empleado);
+    }
+    
+    @WebMethod(operationName = "eliminarEmpleado")
+    public int eliminarEmpleado(@WebParam(name = "idEmpleado") int idEmpleado){
+        return DBController.eliminarEmpleado(idEmpleado);
+    }
+    
+    @WebMethod(operationName = "listarTodosLosEmpleados")
+    public ArrayList<Empleado> listarTodosLosEmpleados(){
+        return DBController.listarTodosLosEmpleados();
+    }
+    
+    @WebMethod(operationName = "darDeAltaAEmpleado")
+    public int darDeAltaAEmpleado(@WebParam(name = "idEmpleado") int idEmpleado){
+        return DBController.darDeAltaAEmpleado(idEmpleado);
+    }
+    
+    @WebMethod(operationName = "insertarMetaMensual")
+    public int insertarMetaMensual(@WebParam(name = "metaMensual")MetaMensual metaMensual){
+        ArrayList<MetaMensual> metas = DBController.listarMetasMensuales();
+        for (MetaMensual meta : metas){
+            DBController.eliminarMetaMensual(meta.getId());
+        }
+        return DBController.insertarMetaMensual(metaMensual);
+    }
+    
+    @WebMethod(operationName = "buscarMetaMensualActiva")
+    public MetaMensual buscarMetaMensualActiva(){
+        return DBController.buscarMetaMensualActiva();
+    }
+    
+    @WebMethod(operationName = "buscarEmpleadoPorCorreoONombreUsuario")
+    public Empleado buscarEmpleadoPorCorreoONombreUsuario(@WebParam(name = "correoNombre") String correoNombre){
+        return DBController.buscarEmpleadoPorCorreo(correoNombre);
     }
 }
