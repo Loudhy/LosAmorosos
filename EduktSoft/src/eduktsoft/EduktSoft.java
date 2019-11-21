@@ -7,6 +7,7 @@ package eduktsoft;
 import administracion.LogginUsuarioService;
 import administracion.PasswordService;
 import comercial.ReporteProductosDisponibles;
+import comercial.listarVendedores;
 import config.DBController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,7 +50,7 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        MetaMensual meta = DBController.buscarMetaMensualActiva();
+        /*MetaMensual meta = DBController.buscarMetaMensualActiva();
         MetaMensual meta2 = new MetaMensual();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         meta2.setFechaInicio(format1.parse("2019-11-20"));
@@ -57,7 +58,9 @@ public class EduktSoft {
         meta2.setDescripcion("META INTENTO");
         meta2.setCantidadObjetivo(12000);
         DBController.insertarMetaMensual(meta2);
-        MetaMensual meta3 = DBController.buscarMetaMensualActiva();
+        MetaMensual meta3 = DBController.buscarMetaMensualActiva();*/
+        listarVendedores lista = new listarVendedores();
+        ArrayList<Vendedor> vendedores = lista.listarEmpleadosDeAreaVentas();
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();

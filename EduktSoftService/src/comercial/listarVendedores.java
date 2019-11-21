@@ -27,6 +27,9 @@ public class listarVendedores {
         for(Empleado empleado: empleados){
             Vendedor vendedor = new Vendedor(empleado.getDni(),empleado.getNombre(),empleado.getApellidoPaterno(),
             empleado.getApellidoMaterno(),empleado.getFechaNacimiento(),empleado.getTelefono(),empleado.getCorreo(),empleado.getEstadoCivil(),empleado.getSueldo(), area, empleado.getFechaIngreso());
+            vendedor.setUsuario(empleado.getUsuario());
+            vendedor.setFoto(empleado.getFoto());
+            vendedor.setArea(area);
             vendedores.add(vendedor);
         }
         

@@ -156,13 +156,19 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setInt("_ID_AREA", area.getId());
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Empleado empleado = new Empleado();
+                Empleado empleado = new Empleado(true);
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
                 empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                empleado.setCorreo(rs.getString("CORREO_EMPLEADO"));
+                empleado.setTelefono(rs.getString("TELEFONO_EMPLEADO"));
+                empleado.getUsuario().setId(empleado.getId());
+                empleado.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
+                empleado.getUsuario().setContraseña(rs.getString("CONTRASEÑA"));
+                empleado.getUsuario().setActive(true);
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);

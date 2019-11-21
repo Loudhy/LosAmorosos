@@ -125,6 +125,13 @@ public class Servicio {
     
     @WebMethod(operationName = "insertarPedido")
     public int insertarPedido(@WebParam(name = "pedido") Pedido pedido){
+        for(LineaPedido aux:pedido.getLineasPedido()){
+            if(aux.getCantidad() < aux.getProducto().getStockVendedor()){
+                aux.setEstadoLineaPedido(EstadoLineaPedido.No_disponible);
+            }
+            else
+                aux.setEstadoLineaPedido(EstadoLineaPedido.Disponible);
+        }
         return DBController.insertarPedido(pedido);
     }
     
@@ -177,8 +184,10 @@ public class Servicio {
         solicitud.setFechaRegistro(today);
         int resultado =  DBController.insertarSolicitud(solicitud);
         ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
+        System.out.println(solicitud.getLineasSolicitud().size());
         for(LineaSolicitud linea: solicitud.getLineasSolicitud()){
             linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.Solicitado);
+            linea.getLineaPedido().setFechaAtencion(today);
             lineasPedido.add(linea.getLineaPedido());
         }
         resultado = DBController.actualizarLineasPedido(lineasPedido);

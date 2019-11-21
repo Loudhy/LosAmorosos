@@ -24,6 +24,12 @@ public class Empleado {
         this.area = new Area();
     }
     
+    public Empleado(boolean active){
+        this.active = active;
+        area = new Area();
+        usuario = new Usuario();
+    }
+    
     public Empleado(String dni, String nombre, String apellidoPaterno, String apellidoMaterno, Date fecha_nacimiento,
            String telefono, String correo, EstadoCivil estado_civil, float sueldo, Area area, Date fecha_ingreso){
         this.dni = dni;
