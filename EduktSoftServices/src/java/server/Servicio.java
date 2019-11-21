@@ -390,7 +390,6 @@ public class Servicio {
         else 
             return DBController.listarClientesVendedorPorNombre(id, dato);      
     }
-    
     @WebMethod(operationName = "generarPdfReporteDeIngresos")
     public byte[] generarPdfReporteDeIngresos(@WebParam (name = "fechaIni") String fechaIni,
             @WebParam (name = "fechaFin") String fechaFin){
@@ -461,4 +460,5 @@ public class Servicio {
     public Empleado buscarEmpleadoPorCorreoONombreUsuario(@WebParam(name = "correoNombre") String correoNombre){
         return DBController.buscarEmpleadoPorCorreo(correoNombre);
     }
+
 }
