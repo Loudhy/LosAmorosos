@@ -126,11 +126,13 @@ public class Servicio {
     @WebMethod(operationName = "insertarPedido")
     public int insertarPedido(@WebParam(name = "pedido") Pedido pedido){
         for(LineaPedido aux:pedido.getLineasPedido()){
-            if(aux.getCantidad() < aux.getProducto().getStockVendedor()){
+            if(aux.getCantidad() > aux.getProducto().getStockVendedor()){
                 aux.setEstadoLineaPedido(EstadoLineaPedido.No_disponible);
             }
-            else
+            else{
                 aux.setEstadoLineaPedido(EstadoLineaPedido.Disponible);
+            }                
+            
         }
         return DBController.insertarPedido(pedido);
     }
