@@ -6,11 +6,12 @@
 package dao;
 
 import model.ObjetivoVendedor;
+import model.Vendedor;
 
 /**
  *
  * @author alulab14
  */
 public interface ObjetivoVendedorDAO extends CrudDAO<ObjetivoVendedor>{
-    
+    ObjetivoVendedor buscarObjetivoVendedorPorVendedor(Vendedor vendedor);
 }

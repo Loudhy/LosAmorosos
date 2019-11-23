@@ -413,4 +413,8 @@ public abstract class DBController {
     public static Solicitud buscarSolicitudPorPedido(Pedido pedido){
         return daoFactory.getSolicitudDAO().buscarSolicitudPorPedido(pedido);
     }
+    
+    public static ObjetivoVendedor buscarObjetivoVendedorPorVendedor(Vendedor vendedor){
+        return daoFactory.getObjetivoVendedorDAO().buscarObjetivoVendedorPorVendedor(vendedor);
+    }
 }

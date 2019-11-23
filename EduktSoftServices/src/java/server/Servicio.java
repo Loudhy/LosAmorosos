@@ -33,6 +33,7 @@ import model.EstadoPedido;
 import model.LineaPedido;
 import model.LineaSolicitud;
 import model.MetaMensual;
+import model.ObjetivoVendedor;
 import model.Pedido;
 import model.Presentacion;
 import model.Producto;
@@ -522,6 +523,16 @@ public class Servicio {
     @WebMethod(operationName = "buscarEmpleadoPorCorreoONombreUsuario")
     public Empleado buscarEmpleadoPorCorreoONombreUsuario(@WebParam(name = "correoNombre") String correoNombre){
         return DBController.buscarEmpleadoPorCorreo(correoNombre);
+    }
+    
+    @WebMethod(operationName = "buscarObjetivoVendedorPorVendedor")
+    public ObjetivoVendedor buscarObjetivoVendedorPorVendedor(@WebParam(name = "vendedor") Vendedor vendedor){
+        return DBController.buscarObjetivoVendedorPorVendedor(vendedor);
+    }
+    
+    @WebMethod(operationName = "insertarObjetivoVendedor")
+    public int insertarObjetivoVendedor(@WebParam(name = "objetivoVendedor") ObjetivoVendedor objetivo){
+        return DBController.insertarObjetivoVendedor(objetivo);
     }
 
 }

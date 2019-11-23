@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.ObjetivoVendedor;
+import model.Vendedor;
 
 /**
  *
@@ -36,9 +37,10 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             cs.setFloat("_COMISION",objetivoVendedor.getComision());
             cs.setFloat("_BONO", objetivoVendedor.getBono());
             cs.setInt("_ID_VENDEDOR", objetivoVendedor.getVendedor().getId());
-            cs.setBoolean("_ACTIVE",objetivoVendedor.isActive());
+            cs.setBoolean("_ACTIVE",true);
             cs.executeUpdate();
             objetivoVendedor.setId(cs.getInt("_ID_OBJETIVO_VENDEDOR"));
+            resultado = objetivoVendedor.getId();
         }catch (Exception ex) {
             System.out.println(ex.getMessage());
         }finally{
@@ -131,6 +133,34 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return objetivos;
+    }
+
+    @Override
+    public ObjetivoVendedor buscarObjetivoVendedorPorVendedor(Vendedor vendedor) {
+        ObjetivoVendedor objetivo = null;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_OBJETIVO_VENDEDOR_POR_VENDEDOR(?)}");
+            cs.setInt("_ID_VENDEDOR", vendedor.getId());
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                objetivo = new ObjetivoVendedor();
+                objetivo.setId(rs.getInt("ID_OBJETIVO_VENDEDOR"));
+                objetivo.getMetaMensual().setId(rs.getInt("ID_META_MENSUAL"));
+                objetivo.setMonto(rs.getFloat("MONTO"));
+                objetivo.setVendedor(vendedor);
+                objetivo.setBono(rs.getFloat("BONO"));
+                objetivo.setComision(rs.getFloat("COMISION"));
+                objetivo.setProgreso(rs.getFloat("PROGRESO"));
+                objetivo.setActive(true);
+            }
+            
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return objetivo;
     }
     
 }
