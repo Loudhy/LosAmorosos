@@ -126,15 +126,25 @@ public class Servicio {
     @WebMethod(operationName = "insertarPedido")
     public int insertarPedido(@WebParam(name = "pedido") Pedido pedido){
         for(LineaPedido aux:pedido.getLineasPedido()){
-            if(aux.getCantidad() > aux.getProducto().getStockVendedor()){
+            if(aux.getCantidad() > aux.getProducto().getStockEmpresa())
                 aux.setEstadoLineaPedido(EstadoLineaPedido.No_disponible);
-            }
-            else{
-                aux.setEstadoLineaPedido(EstadoLineaPedido.Disponible);
-            }                
+            else
+                aux.setEstadoLineaPedido(EstadoLineaPedido.Disponible);           
+            
+            if((aux.getProducto().getStockVendedor() - aux.getCantidad()) >= 0)
+                    aux.getProducto().setStockVendedor((aux.getProducto().getStockVendedor() - aux.getCantidad()));
+            else
+                aux.getProducto().setStockVendedor(0);
+            DBController.actualizarProducto(aux.getProducto());
+            
             
         }
         return DBController.insertarPedido(pedido);
+    }
+    
+    @WebMethod(operationName = "eliminarRelacionClienteVendedor")
+    public int eliminarRelacionClienteVendedor(@WebParam(name = "id_clienteVendedor") int relacion){
+        return DBController.eliminarClienteVendedor(relacion);
     }
     
     @WebMethod(operationName = "insertarCliente")
@@ -186,18 +196,32 @@ public class Servicio {
         solicitud.setFechaRegistro(today);
         int resultado =  DBController.insertarSolicitud(solicitud);
         ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
-        System.out.println(solicitud.getLineasSolicitud().size());
         for(LineaSolicitud linea: solicitud.getLineasSolicitud()){
             linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.Solicitado);
             linea.getLineaPedido().setFechaAtencion(today);
             lineasPedido.add(linea.getLineaPedido());
         }
         resultado = DBController.actualizarLineasPedido(lineasPedido);
+
         return resultado;
     }
 
     @WebMethod(operationName = "actualizarSolicitud")
     public int actualizarSolicitud(@WebParam(name = "solicitud") Solicitud solicitud){
+        return DBController.actualizarSolicitud(solicitud);
+    }
+    
+    @WebMethod(operationName = "agregarLineasSolicitud")
+    public int actualizarLineasSolicitud(@WebParam(name = "solicitud") Solicitud solicitud,@WebParam(name = "lineas") ArrayList<LineaSolicitud> lineas){
+        ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
+        ArrayList<LineaSolicitud> lineasSolicitud =  solicitud.getLineasSolicitud();
+        for (LineaSolicitud linea: lineas){
+            lineasPedido.add(linea.getLineaPedido());
+             lineasSolicitud.add(linea);
+        }
+        this.actualizarLineasDePedido(lineasPedido, EstadoLineaPedido.Solicitado);
+        solicitud.setLineasSolicitud(lineasSolicitud);
+        
         return DBController.actualizarSolicitud(solicitud);
     }
 
@@ -348,6 +372,29 @@ public class Servicio {
         listarVendedores lista = new listarVendedores();
         return lista.listarEmpleadosDeAreaVentas();
     }
+    
+    @WebMethod(operationName = "actualizarLineasDePedido")
+    public int actualizarLineasDePedido(@WebParam(name = "lineasDePedido")ArrayList<LineaPedido> lineas, @WebParam(name = "filtro") EstadoLineaPedido estado){
+        Date today = Calendar.getInstance().getTime();
+        int cantidadTotal=0;
+        for(LineaPedido linea:lineas){
+            linea.setEstadoLineaPedido(estado);
+            linea.setFechaAtencion(today);
+            if(estado == EstadoLineaPedido.Aceptado)
+                linea.getProducto().setStockEmpresa(linea.getProducto().getStockEmpresa()-linea.getCantidad());
+            else if(estado == EstadoLineaPedido.Rechazado)
+                linea.getProducto().setStockVendedor(linea.getProducto().getStockVendedor()+linea.getCantidad());
+            if(estado == EstadoLineaPedido.Aceptado || estado == EstadoLineaPedido.Rechazado)
+                DBController.actualizarProducto(linea.getProducto());
+        }
+        return DBController.actualizarLineasPedido(lineas);      
+    }
+    
+    @WebMethod(operationName = "buscarSolicitudPorPedido")
+    public Solicitud buscarSolicitudPorPedido(@WebParam(name = "pedido") Pedido pedido){
+        return DBController.buscarSolicitudPorPedido(pedido);
+    }
+    
     @WebMethod(operationName = "actualizarLineaARechazado")
     public int actualizarLineaPedidoRechazado(@WebParam(name = "idLineaPedido")  int id_linea){
         return DBController.actualizarLineaRechazado(id_linea);
@@ -356,6 +403,11 @@ public class Servicio {
     @WebMethod(operationName = "actualizarLineaAAceptado")
     public int actualizarLineaPedidoAceptado(@WebParam(name = "idLineaPedido")  int id_linea){
         return DBController.actualizarLineaAceptado(id_linea);
+    }
+    
+    @WebMethod(operationName = "actualizarPedido")
+    public int actualizarPedido(@WebParam(name = "pedido") Pedido pedido){
+        return DBController.actualizarPedido(pedido);
     }
     
     @WebMethod(operationName = "rechazarPedido")

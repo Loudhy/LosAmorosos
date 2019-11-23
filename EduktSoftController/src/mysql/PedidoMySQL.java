@@ -79,9 +79,13 @@ public class PedidoMySQL implements PedidoDAO{
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_PEDIDO(?,?,?,?)}");
+            System.out.println(pedido.getId());
             cs.setInt("_ID_PEDIDO",pedido.getId());
+            System.out.println(pedido.getTotal());
             cs.setFloat("_TOTAL_PEDIDO", pedido.getTotal());
+            System.out.println(pedido.getEstadoPedido().toString());
             cs.setString("_ESTADO_PEDIDO",pedido.getEstadoPedido().toString());
+            System.out.println(pedido.getFechaRegistro());
             cs.setDate("_FECHA_REGISTRO",new java.sql.Date(pedido.getFechaRegistro().getTime()));
             resultado=cs.executeUpdate();
             actualizarLineasPedido(pedido.getLineasPedido());
@@ -89,6 +93,69 @@ public class PedidoMySQL implements PedidoDAO{
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
+    
+    @Override
+    public int actualizarLineaPedidoSolicitado(int id_linea) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO_SOLICITADO(?)}");
+            cs.setInt("_ID_LINEA_PEDIDO",id_linea);            
+            resultado=cs.executeUpdate();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
+
+    @Override
+    public int actualizarLineaPedidoRechazado(int id_linea) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO_RECHAZADO(?)}");
+            cs.setInt("_ID_LINEA_PEDIDO",id_linea);            
+            resultado=cs.executeUpdate();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
+
+    @Override
+    public int actualizarLineasPedido(ArrayList<LineaPedido> lineas) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+           
+            for (LineaPedido aux: lineas){
+                cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO(?,?,?,?,?,?,?)}");
+                System.out.println(aux.getId());
+                System.out.println(aux.getCantidad());
+                System.out.println(aux.getProducto().getId());
+                System.out.println(aux.getSubtotal());
+                System.out.println(aux.getEstadoLineaPedido());
+                System.out.println(aux.getFechaAtencion());
+                System.out.println(aux.getCantidadPorAtender());
+                
+                cs.setInt("_ID_LINEA_PEDIDO",aux.getId());
+                cs.setInt("_CANTIDAD",aux.getCantidad());
+                cs.setInt("_ID_PRODUCTO", aux.getProducto().getId());
+                cs.setFloat("_SUBTOTAL",aux.getSubtotal());
+                cs.setString("_ESTADO_LINEA_PEDIDO", aux.getEstadoLineaPedido().toString());
+                cs.setDate("_FECHA_ATENCION", new java.sql.Date(aux.getFechaAtencion().getTime()));
+                cs.setInt("_CANTIDAD_A_ATENDER",aux.getCantidadPorAtender());
+                resultado=cs.executeUpdate();
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
         }
         return resultado;
     }
@@ -414,68 +481,7 @@ public class PedidoMySQL implements PedidoDAO{
         return pedidos;
     }
 
-    @Override
-    public int actualizarLineaPedidoSolicitado(int id_linea) {
-        int resultado = 0;
-        try{
-            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO_SOLICITADO(?)}");
-            cs.setInt("_ID_LINEA_PEDIDO",id_linea);            
-            resultado=cs.executeUpdate();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }finally{
-            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
-        }
-        return resultado;
-    }
-
-    @Override
-    public int actualizarLineaPedidoRechazado(int id_linea) {
-        int resultado = 0;
-        try{
-            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO_RECHAZADO(?)}");
-            cs.setInt("_ID_LINEA_PEDIDO",id_linea);            
-            resultado=cs.executeUpdate();
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }finally{
-            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
-        }
-        return resultado;
-    }
-
-    @Override
-    public int actualizarLineasPedido(ArrayList<LineaPedido> lineas) {
-        int resultado = 0;
-        try{
-            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-           
-            for (LineaPedido aux: lineas){
-                cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO(?,?,?,?,?,?,?)}");
-                System.out.println(aux.getId());
-                System.out.println(aux.getCantidad());
-                System.out.println(aux.getProducto().getId());
-                System.out.println(aux.getSubtotal());
-                System.out.println(aux.getEstadoLineaPedido());
-                System.out.println(aux.getFechaAtencion());
-                System.out.println(aux.getCantidadPorAtender());
-                
-                cs.setInt("_ID_LINEA_PEDIDO",aux.getId());
-                cs.setInt("_CANTIDAD",aux.getCantidad());
-                cs.setInt("_ID_PRODUCTO", aux.getProducto().getId());
-                cs.setFloat("_SUBTOTAL",aux.getSubtotal());
-                cs.setString("_ESTADO_LINEA_PEDIDO", aux.getEstadoLineaPedido().toString());
-                cs.setDate("_FECHA_ATENCION", new java.sql.Date(aux.getFechaAtencion().getTime()));
-                cs.setInt("_CANTIDAD_A_ATENDER",aux.getCantidadPorAtender());
-                resultado=cs.executeUpdate();
-            }
-        }catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
-        return resultado;
-    }
+    
     
     @Override
     public int actualizarLineaPedidoAceptado(int id_linea) {

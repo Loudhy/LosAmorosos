@@ -14,6 +14,7 @@ import model.EstadoLineaPedido;
 import model.EstadoLineaSolicitud;
 import model.LineaPedido;
 import model.LineaSolicitud;
+import model.Producto;
 import model.Solicitud;
 
 /**
@@ -30,10 +31,12 @@ public class aprobarSolicitudes {
         System.out.println(nombreProducto);
         ArrayList<LineaSolicitud> lineasCambiadasSolicitud = new ArrayList<LineaSolicitud>();
         ArrayList<LineaPedido> lineasCambiadasPedido = new ArrayList<LineaPedido>();
+        Producto producto = null;
         for (Solicitud solicitud:solicitudes){
             for (LineaSolicitud lineaSolicitud: solicitud.getLineasSolicitud()){
                 if (Objects.equals(lineaSolicitud.getLineaPedido().getProducto().getNombre(),nombreProducto)){
-                    System.out.println("ENTRO");
+                    if (producto == null)
+                        producto = lineaSolicitud.getLineaPedido().getProducto();
                     numLineasCambiadas++;
                     lineaSolicitud.setEstadoSolicitud(EstadoLineaSolicitud.Aceptado);
                     Date today = Calendar.getInstance().getTime();
@@ -50,6 +53,8 @@ public class aprobarSolicitudes {
         System.out.println(resultado);
         resultado = DBController.actualizarLineasPedido(lineasCambiadasPedido);
         System.out.println(resultado);
+        producto.setStockEmpresa(0);
+        DBController.actualizarProducto(producto);
         
         return numLineasCambiadas;
     }

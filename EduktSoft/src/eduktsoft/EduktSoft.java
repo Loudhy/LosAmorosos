@@ -59,8 +59,9 @@ public class EduktSoft {
         meta2.setCantidadObjetivo(12000);
         DBController.insertarMetaMensual(meta2);
         MetaMensual meta3 = DBController.buscarMetaMensualActiva();*/
-        listarVendedores lista = new listarVendedores();
-        ArrayList<Vendedor> vendedores = lista.listarEmpleadosDeAreaVentas();
+
+        ProductosSolicitud p = new ProductosSolicitud();
+        ArrayList<ProductosSolicitud> aux = p.sacarCantidadAcumuladaDeSolicitud();
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();

@@ -42,12 +42,13 @@ public class SolicitudMySQL implements SolicitudDAO{
             cs.setInt("_ID_PEDIDO",solicitud.getPedido().getId());
             cs.setBoolean("_ACTIVE",true);
             resultado = cs.executeUpdate();
+            System.out.println("HOLA");
             solicitud.setId(cs.getInt("_ID_SOLICITUD"));
             for (LineaSolicitud aux: solicitud.getLineasSolicitud()){
                 cs = con.prepareCall("{call INSERTAR_LINEA_SOLICITUD(?,?,?,?,?,?)}");
                 cs.setInt("_ID_SOLICITUD",solicitud.getId());
                 cs.setInt("_ID_LINEA_PEDIDO",aux.getLineaPedido().getId());
-                cs.setInt("_CANTIDAD",aux.getLineaPedido().getCantidadPorAtender());
+                cs.setInt("_CANTIDAD",aux.getCantidad());
                 cs.setString("_ESTADO_SOLICITUD",aux.getEstadoSolicitud().toString());
                 cs.setBoolean("_ACTIVE", true);
                 resultado = cs.executeUpdate();
@@ -111,11 +112,11 @@ public class SolicitudMySQL implements SolicitudDAO{
                 LineaSolicitud linea = new LineaSolicitud();
                 linea.setId(rs.getInt("ID_LINEA_SOLICITUD"));
                 linea.setEstadoSolicitud(EstadoLineaSolicitud.valueOf(rs.getString("ESTADO_LINEA_SOLICITUD")));
-                linea.setCantidad(rs.getInt("CANTIDAD_A_ATENDER"));
+                linea.setCantidad(rs.getInt("CANTIDAD"));
                 linea.getLineaPedido().setId(rs.getInt("ID_LINEA_PEDIDO"));
-                linea.getLineaPedido().setCantidad(rs.getInt("CANTIDAD"));
+                linea.getLineaPedido().setCantidad(rs.getInt("CANTIDAD_A_ATENDER"));
                 linea.getLineaPedido().setCantidadPorAtender(rs.getInt("CANTIDAD_A_ATENDER"));
-
+                linea.getLineaPedido().setSubtotal(rs.getFloat("SUBTOTAL"));
                 linea.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_PEDIDO")));
                 linea.getLineaPedido().getProducto().setId(rs.getInt("ID_PRODUCTO"));
                 linea.getLineaPedido().getProducto().setNombre(rs.getString("NOMBRE_PRODUCTO"));
@@ -186,13 +187,14 @@ public class SolicitudMySQL implements SolicitudDAO{
 
     @Override
     public Solicitud buscarSolicitudPorPedido(Pedido pedido) {
-        Solicitud solicitud = new Solicitud();
+        Solicitud solicitud = null;
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
             cs = con.prepareCall("{call BUSCAR_SOLICITUD_POR_PEDIDO(?)}");
             cs.setInt("_ID_PEDIDO", pedido.getId());
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
+                solicitud = new Solicitud();
                 solicitud.setId(rs.getInt("ID_SOLICITUD"));
                 solicitud.setEstadoSolicitud(EstadoSolicitud.valueOf(rs.getString("ESTADO_SOLICITUD")));
                 java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());

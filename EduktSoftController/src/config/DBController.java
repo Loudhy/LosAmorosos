@@ -409,4 +409,8 @@ public abstract class DBController {
     public static MetaMensual buscarMetaMensualActiva(){
         return daoFactory.getMetaMensualDAO().buscarMetaMensualActiva();
     }
+    
+    public static Solicitud buscarSolicitudPorPedido(Pedido pedido){
+        return daoFactory.getSolicitudDAO().buscarSolicitudPorPedido(pedido);
+    }
 }
