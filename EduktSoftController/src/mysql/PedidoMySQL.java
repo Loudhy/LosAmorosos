@@ -193,19 +193,50 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
                 //pedido.getCliente_vendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
                 pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
-                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
-                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
-                pedido.getClienteVendedor().getCliente().setCorreo(rs.getString("CORREO_CLIENTE"));
-                pedido.getClienteVendedor().getCliente().setDireccion(rs.getString("DIRECCION"));
-                pedido.getClienteVendedor().getCliente().setTelefono(rs.getString("TELEFONO_CLIENTE"));
+                
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return pedidos;
+    }
+    
+    @Override
+    public ArrayList<Pedido> listarPorVendedorOrdenado(Vendedor vendedor, int orden) {
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_PEDIDOS_POR_VENDEDOR_ORDENADO(?,?)}");
+            cs.setInt("_ID_VENDEDOR",vendedor.getId());
+            cs.setInt("_ORDEN",orden);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                
+                Pedido pedido = new Pedido(true);              
+                pedido.setId(rs.getInt("ID_PEDIDO"));
+                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
+                pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                pedido.setActive(rs.getBoolean("ACTIVE"));
+                ArrayList<LineaPedido> lineas = listarLineasPedido(pedido);
+                pedido.setLineasPedido(lineas);
+                pedidos.add(pedido);
+            }
+            
         }catch(Exception ex){
             System.out.println(ex.getMessage());
         }finally{
@@ -498,5 +529,77 @@ public class PedidoMySQL implements PedidoDAO{
         }
         return resultado;
     }
+
+    @Override
+    public ArrayList<Pedido> listarPorVendedorPorEstadoPedido(Vendedor vendedor, EstadoPedido estado) {
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_PEDIDO_POR_VENDEDOR_POR_ESTADO_PEDIDO(?,?)}");
+            cs.setInt("_ID_VENDEDOR", vendedor.getId());
+            cs.setString("_ESTADO_PEDIDO", estado.toString());
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Pedido pedido = new Pedido();
+                pedido.setId(rs.getInt("ID_PEDIDO"));        
+                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));              
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));            
+                pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
+                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                pedido.getClienteVendedor().getVendedor().setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                pedido.setLineasPedido(listarLineasPedido(pedido));
+                pedidos.add(pedido);
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return pedidos;
+    }
+
+    @Override
+    public ArrayList<Pedido> listarPorVendedorPorCliente(Vendedor vendedor, String filtro) {
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_PEDIDO_POR_VENDEDOR_POR_CLIENTE(?,?)}");
+            cs.setInt("_ID_VENDEDOR", vendedor.getId());
+            cs.setString("_FILTRO", filtro);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Pedido pedido = new Pedido();
+                pedido.setId(rs.getInt("ID_PEDIDO"));        
+                pedido.setTotal(rs.getFloat("TOTAL_PEDIDO"));              
+                pedido.getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));            
+                pedido.setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
+                pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                pedido.getClienteVendedor().getVendedor().setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                pedido.setLineasPedido(listarLineasPedido(pedido));
+                pedidos.add(pedido);
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return pedidos;
+    }
+
+    
 
 }

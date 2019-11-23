@@ -14,6 +14,12 @@ public class ObjetivoVendedor {
         
     }
     
+    public ObjetivoVendedor(boolean active){
+        this.metaMensual = new MetaMensual();
+        this.vendedor = new Vendedor();
+        this.active = active;
+    }
+    
     public ObjetivoVendedor(MetaMensual metaMensual, float monto, float bono, float comision){
         this.metaMensual = metaMensual;
         this.monto = monto;

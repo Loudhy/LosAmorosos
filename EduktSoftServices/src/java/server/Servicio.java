@@ -512,6 +512,10 @@ public class Servicio {
         for (MetaMensual meta : metas){
             DBController.eliminarMetaMensual(meta.getId());
         }
+        ArrayList<ObjetivoVendedor> objetivos = DBController.listarObjetivosVendedores();
+        for(ObjetivoVendedor objetivo:objetivos){
+            DBController.eliminarObjetivoVendedor(objetivo.getId());
+        }
         return DBController.insertarMetaMensual(metaMensual);
     }
     
@@ -534,5 +538,32 @@ public class Servicio {
     public int insertarObjetivoVendedor(@WebParam(name = "objetivoVendedor") ObjetivoVendedor objetivo){
         return DBController.insertarObjetivoVendedor(objetivo);
     }
-
+    
+    @WebMethod(operationName = "actualizarObjetivoVendedor")
+    public int actualizarObjetivoVendedor(@WebParam(name = "objetivoVendedor") ObjetivoVendedor objetivo){
+        return DBController.actualizarObjetivoVendedor(objetivo);
+    }
+    
+    @WebMethod(operationName = "calcularProgresoDeVendedor")
+    public float calcularProgresoDeVendedor(@WebParam(name = "objetivoVendedor") ObjetivoVendedor objvendedor, @WebParam(name = "metaMensual") MetaMensual meta){
+        ArrayList<Pedido> pedidos = DBController.listarPedidosPorVendedorPorRangoDeFechas(objvendedor.getVendedor(), meta.getFechaInicio(), meta.getFechaFin());
+        float monto=0;
+        for(Pedido pedido:pedidos){
+            if(pedido.getEstadoPedido() == EstadoPedido.Pagado)
+                monto+=pedido.getTotal();
+        }
+        
+        float progreso = monto/objvendedor.getMonto();
+        return progreso;
+    }
+    
+    @WebMethod(operationName ="listarPedidosDeVendedorPorEstadoDePedido")
+    public ArrayList<Pedido>listarPedidosDeVendedorPorEstadoDePedido(@WebParam(name="vendedor") Vendedor vendedor,@WebParam(name = "estadoPedido") EstadoPedido estado){
+        return DBController.listarPedidosPorVendedorPorEstadoPedido(vendedor, estado);
+    }
+    
+    @WebMethod(operationName = "listarPedidosPorVendedorPorCliente")
+    public ArrayList<Pedido>listarPedidosPorVendedorPorCliente(@WebParam(name ="vendedor") Vendedor vendedor, @WebParam(name = "cliente") String filtro){
+        return DBController.listarPedidosPorVendedorPorCliente(vendedor,filtro);
+    }
 }

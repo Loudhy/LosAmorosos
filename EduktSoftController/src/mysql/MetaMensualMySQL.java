@@ -153,6 +153,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
                 metaMensual = new MetaMensual();
+                metaMensual.setId(rs.getInt("ID_META_MENSUAL"));
                 java.util.Date fechaInicio = new java.util.Date(rs.getDate("FECHA_INICIO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaInicio);

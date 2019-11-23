@@ -417,4 +417,20 @@ public abstract class DBController {
     public static ObjetivoVendedor buscarObjetivoVendedorPorVendedor(Vendedor vendedor){
         return daoFactory.getObjetivoVendedorDAO().buscarObjetivoVendedorPorVendedor(vendedor);
     }
+    
+    public static ArrayList<ObjetivoVendedor> listarObjetivosVendedores(){
+        return daoFactory.getObjetivoVendedorDAO().listar();
+    }
+    
+    public static int eliminarObjetivoVendedor(int id){
+        return daoFactory.getObjetivoVendedorDAO().eliminar(id);
+    }
+    
+    public static ArrayList<Pedido> listarPedidosPorVendedorPorEstadoPedido(Vendedor vendedor, EstadoPedido estado){
+        return daoFactory.getPedidoDAO().listarPorVendedorPorEstadoPedido(vendedor, estado);
+    }
+    
+    public static ArrayList<Pedido> listarPedidosPorVendedorPorCliente(Vendedor vendedor, String filtro){
+        return daoFactory.getPedidoDAO().listarPorVendedorPorCliente(vendedor,filtro);
+    }
 }

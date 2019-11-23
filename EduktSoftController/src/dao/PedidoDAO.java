@@ -21,7 +21,10 @@ import model.Vendedor;
 public interface PedidoDAO extends CrudDAO<Pedido> {
     int actualizarLineasPedido(ArrayList<LineaPedido> lineas);
     ArrayList<Pedido> listarPorVendedor(Vendedor vendedor);
+    ArrayList<Pedido> listarPorVendedorOrdenado(Vendedor vendedor, int orden);
+    ArrayList<Pedido> listarPorVendedorPorEstadoPedido(Vendedor vendedor, EstadoPedido estado);
     ArrayList<Pedido> listarPorVendedorPorRangoDeFechas(Vendedor vendedor,Date fechaIni,Date fechaFin);
+    ArrayList<Pedido> listarPorVendedorPorCliente(Vendedor vendedor, String filtro);
     ArrayList<Pedido> listarPorCliente(Cliente cliente);
     ArrayList<Pedido> listarPorEstadoDePedido(EstadoPedido estado);
     ArrayList<LineaPedido> listarLineasPedido(Pedido pedido);

@@ -31,11 +31,12 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_OBJETIVO_VENDEDOR(?,?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call INSERTAR_OBJETIVO_VENDEDOR(?,?,?,?,?,?,?,?)} ");
             cs.setInt("_ID_META_MENSUAL", objetivoVendedor.getMetaMensual().getId());
             cs.setFloat("_MONTO",objetivoVendedor.getMonto());
             cs.setFloat("_COMISION",objetivoVendedor.getComision());
             cs.setFloat("_BONO", objetivoVendedor.getBono());
+            cs.setFloat("_PROGRESO",objetivoVendedor.getProgreso());
             cs.setInt("_ID_VENDEDOR", objetivoVendedor.getVendedor().getId());
             cs.setBoolean("_ACTIVE",true);
             cs.executeUpdate();
@@ -60,7 +61,7 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             cs.setFloat("_MONTO", objetivoVendedor.getMonto());
             cs.setFloat("_COMISION",objetivoVendedor.getComision());
             cs.setFloat("_BONO", objetivoVendedor.getBono());
-            cs.setInt("_ID_VENDEDOR", objetivoVendedor.getVendedor().getId());
+            cs.setFloat("_PROGRESO", objetivoVendedor.getProgreso());
             resultado = cs.executeUpdate();           
         }catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -144,7 +145,7 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             cs.setInt("_ID_VENDEDOR", vendedor.getId());
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                objetivo = new ObjetivoVendedor();
+                objetivo = new ObjetivoVendedor(true);
                 objetivo.setId(rs.getInt("ID_OBJETIVO_VENDEDOR"));
                 objetivo.getMetaMensual().setId(rs.getInt("ID_META_MENSUAL"));
                 objetivo.setMonto(rs.getFloat("MONTO"));
