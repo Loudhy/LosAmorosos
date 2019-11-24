@@ -326,6 +326,10 @@ public abstract class DBController {
     public static ArrayList<Solicitud> listarSolicitudes(){
         return daoFactory.getSolicitudDAO().listar();
     }
+    
+    public static DatosGenerales buscarDatosGeneralesPorId(int id){
+        return daoFactory.getDatosGeneralesDAO().encontrarPorId(id);
+    }
 
     public static ArrayList<Solicitud> listarSolicitudesPorEstadoDeSolicitud(EstadoSolicitud estadoSolicitud){
         return daoFactory.getSolicitudDAO().listarSolicitudesPorEstado(estadoSolicitud);
@@ -333,6 +337,9 @@ public abstract class DBController {
 
     //Logica de negocio
 
+    public static ArrayList<Pedido> listarPedidosPorVendedorPorClientePorEstado(Vendedor venedor, String filtro, EstadoPedido estado){
+        return daoFactory.getPedidoDAO().listarPedidosPorVendedorPorClientePorEstadoDePedido(venedor, filtro, estado);
+    }
     public static boolean validarLoginDeUsuario(String nombre, String contraseña){
         return daoFactory.getUsuarioDAO().validarUsuario(nombre, contraseña);
     }
@@ -401,6 +408,10 @@ public abstract class DBController {
         return daoFactory.getClienteVendedorDAO().listarClientesPorVendedorRuc(id_vendedor, ruc);
     }
     
+    public static ArrayList<Pedido> listarPedidosPorFiltroDeCliente(String filtro){
+        return daoFactory.getPedidoDAO().listarPedidosPorFiltroDeCliente(filtro);
+    }
+    
     public static ArrayList<Cliente> listarClientesVendedorPorNombre(int id_vendedor,String razonSocial){
         return daoFactory.getClienteVendedorDAO().listarClientesPorVendedorNombre(id_vendedor, razonSocial);
     }
@@ -444,4 +455,14 @@ public abstract class DBController {
     public static ArrayList<Empleado> listarTodosEmpleadosPorNombre(String nombre){
         return daoFactory.getEmpleadoDAO().listarEmpleadosPorNombre(nombre);
     }
+    
+    public static int actualizarPedidoConFacturacion(Pedido pedido){
+        return daoFactory.getPedidoDAO().actualizarFechaFacturacion(pedido);
+    }
+    
+    public static int actualizarPedidoConPago(Pedido pedido){
+        return daoFactory.getPedidoDAO().actualizarFechaPagado(pedido);
+    }
 }
+
+

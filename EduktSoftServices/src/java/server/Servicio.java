@@ -13,6 +13,7 @@ import config.DBController;
 import config.DBManager;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +27,7 @@ import logistica.aprobarSolicitudes;
 import model.Area;
 import model.Cliente;
 import model.Cliente_Vendedor;
+import model.DatosGenerales;
 import model.Solicitud;
 import model.Empleado;
 import model.EstadoLineaPedido;
@@ -87,6 +89,10 @@ public class Servicio {
     
     @WebMethod(operationName = "actualizarProducto")
     public int actualizarProducto(@WebParam(name = "producto") Producto producto){
+        Producto producto2 = DBController.buscarProductoPorId(producto.getId());
+        if (producto.getFoto() == null){
+            producto.setFoto(producto2.getFoto());
+        }
         return DBController.actualizarProducto(producto);
     }
 
@@ -136,7 +142,7 @@ public class Servicio {
                     aux.getProducto().setStockVendedor((aux.getProducto().getStockVendedor() - aux.getCantidad()));
             else
                 aux.getProducto().setStockVendedor(0);
-            DBController.actualizarProducto(aux.getProducto());
+            this.actualizarProducto(aux.getProducto());
             
             
         }
@@ -218,7 +224,7 @@ public class Servicio {
         ArrayList<LineaSolicitud> lineasSolicitud =  solicitud.getLineasSolicitud();
         for (LineaSolicitud linea: lineas){
             lineasPedido.add(linea.getLineaPedido());
-             lineasSolicitud.add(linea);
+            lineasSolicitud.add(linea);
         }
         this.actualizarLineasDePedido(lineasPedido, EstadoLineaPedido.Solicitado);
         solicitud.setLineasSolicitud(lineasSolicitud);
@@ -585,4 +591,58 @@ public class Servicio {
             return DBController.listarEmpleadosNoActivos();
     }
     
+    @WebMethod(operationName = "actualizarPedidoConFechas")
+    public int actualizarPedidoConFechas(@WebParam(name = "pedido")Pedido pedido, @WebParam(name = "opcion") int opcion){
+        float monto=0;
+        Date today = Calendar.getInstance().getTime();
+        if(opcion == 1){
+            for(LineaPedido linea:pedido.getLineasPedido()){
+                if(linea.getEstadoLineaPedido() == EstadoLineaPedido.Aceptado)
+                    monto+=linea.getSubtotal();
+            }       
+            pedido.setFechaFacturacion(today);
+            pedido.setFacturado(monto);
+            DBController.actualizarPedidoConFacturacion(pedido);
+        }
+        else{
+            pedido.setFechaPago(today);
+            DBController.actualizarPedidoConPago(pedido);
+            DatosGenerales datos = DBController.buscarDatosGeneralesPorId(1);
+            int dias = (int)(pedido.getFechaFacturacion().getTime() - today.getTime());
+            ArrayList<Cliente> clienteAux = DBController.buscarClientePorFiltro(pedido.getClienteVendedor().getCliente().getRuc());
+            Cliente cliente = clienteAux.get(0);
+            if (dias <= datos.getPlazoDePago()){
+                
+               if (cliente.getPuntaje() < 100){
+                   if (cliente.getPuntaje() +5 <= 100)
+                       cliente.setPuntaje(cliente.getPuntaje()+5);
+                   else
+                       cliente.setPuntaje(100);
+                   DBController.actualizarCliente(cliente);
+               }
+                    
+            }
+            else{
+                if (cliente.getPuntaje() > 0){
+                    if (cliente.getPuntaje()-7 >= 0)
+                        cliente.setPuntaje(cliente.getPuntaje()-7);
+                    else
+                        cliente.setPuntaje(0);
+                    DBController.actualizarCliente(cliente);
+                }
+                
+            }
+        }       
+        return DBController.actualizarPedido(pedido);     
+    }
+    
+    @WebMethod(operationName = "listarPedidoPorVendedorPorClientePorEstadoDePedido")
+    public ArrayList<Pedido> listarPedidosPorVendedorPorClientePorEstadoDePedido(@WebParam(name="vendedor") Vendedor vendedor, @WebParam(name="cliente") String filtro, @WebParam(name="estado") EstadoPedido estado){
+        return DBController.listarPedidosPorVendedorPorClientePorEstado(vendedor, filtro, estado);
+    }
+    
+    @WebMethod(operationName = "listarPedidoPorFiltroDeCliente")
+    public ArrayList<Pedido> listarPedidosPorFiltroDeCliente(@WebParam(name ="filtro") String filtro){
+        return DBController.listarPedidosPorFiltroDeCliente(filtro);
+    }
 }

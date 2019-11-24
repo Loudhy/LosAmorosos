@@ -164,6 +164,7 @@ public class ProductoMySQL implements ProductoDAO{
                 producto.setId(id);
                 producto.setNombre(rs.getString("NOMBRE_PRODUCTO"));
                 producto.setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
+                producto.setFoto(rs.getBytes("FOTO"));
                 producto.setDescripcion(rs.getString("DESCRIPCION"));
                 producto.setStockEmpresa(rs.getInt("STOCK_EMPRESA"));
                 producto.setStockVendedor(rs.getInt("STOCK_VENDEDOR"));

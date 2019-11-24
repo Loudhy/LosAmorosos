@@ -51,6 +51,10 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
+        Producto producto = DBController.buscarProductoPorId(1);
+        if(producto.getFoto() == null){
+            int a = 0;
+        }
         /*MetaMensual meta = DBController.buscarMetaMensualActiva();
         MetaMensual meta2 = new MetaMensual();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");

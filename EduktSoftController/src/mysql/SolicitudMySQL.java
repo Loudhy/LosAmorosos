@@ -200,6 +200,8 @@ public class SolicitudMySQL implements SolicitudDAO{
                 java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaRegistro);
+                solicitud.setPedido(pedido);
+                solicitud.setDescripcion(rs.getString("DESCRIPCION"));
                 solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
                 solicitud.setLineasSolicitud(listarLineasSolicitud(solicitud));
             }
