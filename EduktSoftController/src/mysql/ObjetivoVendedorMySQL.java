@@ -5,6 +5,7 @@
  */
 package mysql;
 
+import config.DBController;
 import config.DBManager;
 import dao.ObjetivoVendedorDAO;
 import java.sql.CallableStatement;
@@ -147,7 +148,8 @@ public class ObjetivoVendedorMySQL implements ObjetivoVendedorDAO{
             while(rs.next()){
                 objetivo = new ObjetivoVendedor(true);
                 objetivo.setId(rs.getInt("ID_OBJETIVO_VENDEDOR"));
-                objetivo.getMetaMensual().setId(rs.getInt("ID_META_MENSUAL"));
+                
+                objetivo.setMetaMensual(DBController.buscarMetaMensualPorId(rs.getInt("ID_META_MENSUAL")));
                 objetivo.setMonto(rs.getFloat("MONTO"));
                 objetivo.setVendedor(vendedor);
                 objetivo.setBono(rs.getFloat("BONO"));

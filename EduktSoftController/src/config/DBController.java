@@ -90,8 +90,15 @@ public abstract class DBController {
         return daoFactory.getEmpleadoDAO().eliminar(id_empleado);
     }
 
+    public static MetaMensual buscarMetaMensualPorId(int id){
+        return daoFactory.getMetaMensualDAO().encontrarPorId(id);
+    }
     public static ArrayList<Empleado> listarEmpleados(){
         return daoFactory.getEmpleadoDAO().listar();
+    }
+    
+    public static ArrayList<Empleado> listarEmpleadosNoActivos(){
+        return daoFactory.getEmpleadoDAO().listarEmpleadosNoActivos();
     }
 
     public static ArrayList<Empleado> listarEmpleadosPorArea(Area area){
@@ -432,5 +439,9 @@ public abstract class DBController {
     
     public static ArrayList<Pedido> listarPedidosPorVendedorPorCliente(Vendedor vendedor, String filtro){
         return daoFactory.getPedidoDAO().listarPorVendedorPorCliente(vendedor,filtro);
+    }
+    
+    public static ArrayList<Empleado> listarTodosEmpleadosPorNombre(String nombre){
+        return daoFactory.getEmpleadoDAO().listarEmpleadosPorNombre(nombre);
     }
 }

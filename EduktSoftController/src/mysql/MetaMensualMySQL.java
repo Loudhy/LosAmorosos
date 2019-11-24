@@ -116,14 +116,15 @@ public class MetaMensualMySQL implements MetaMensualDAO {
 
     @Override
     public MetaMensual encontrarPorId(int id) {
-        MetaMensual metasMensual = null;
+        MetaMensual metaMensual = new MetaMensual();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call BUSCAR_META_MENSUAL_POR_ID(?)}");
             cs.setInt("_ID_META_MENSUAL", id);
             ResultSet rs = cs.executeQuery();
             while (rs.next()){
-                MetaMensual metaMensual = new MetaMensual();
+                
+                metaMensual.setId(id);
                 java.util.Date fechaInicio = new java.util.Date(rs.getDate("FECHA_INICIO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaInicio);
@@ -141,7 +142,7 @@ public class MetaMensualMySQL implements MetaMensualDAO {
         }finally{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        return metasMensual;
+        return metaMensual;
     }
 
     @Override

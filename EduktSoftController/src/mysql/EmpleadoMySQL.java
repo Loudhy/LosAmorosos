@@ -116,7 +116,45 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs = con.prepareCall("{call LISTAR_EMPLEADO()}");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Empleado empleado = new Empleado();
+                Empleado empleado = new Empleado(true);
+                empleado.setId(rs.getInt("ID_EMPLEADO"));
+                empleado.setDni(rs.getString("DNI_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+                empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                empleado.setFoto(rs.getBytes("FOTO"));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.getArea().setId(rs.getInt("ID_AREA"));
+                empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                empleado.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
+                empleado.setActive(rs.getBoolean("ACTIVE"));
+                empleados.add(empleado);
+            }
+            
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return empleados;
+    }
+    
+    public ArrayList<Empleado> listarEmpleadosNoActivos(){
+        ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_EMPLEADO_NO_ACTIVOS()}");
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Empleado empleado = new Empleado(true);
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
@@ -203,7 +241,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setString("_APELLIDO_MATERNO",apellido_materno);
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
-                empleado = new Empleado();
+                empleado = new Empleado(true);
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
@@ -241,7 +279,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setString("_CORREO", correo);
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
-                empleado = new Empleado();
+                empleado = new Empleado(true);
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
@@ -279,7 +317,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setString("_DNI", dni);
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
-                empleado = new Empleado();
+                empleado = new Empleado(true);
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
@@ -317,7 +355,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs.setInt("_ID_EMPLEADO", id);
             ResultSet rs = cs.executeQuery();
             if (rs.next()){
-                empleado = new Empleado();
+                empleado = new Empleado(true);
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
@@ -357,7 +395,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             cs = con.prepareCall("{call LISTAR_TODOS_EMPLEADOS()}");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Empleado empleado = new Empleado();
+                Empleado empleado = new Empleado(true);
                 empleado.setId(rs.getInt("ID_EMPLEADO"));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
@@ -369,6 +407,9 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
                 empleado.setFoto(rs.getBytes("FOTO"));
+                empleado.getUsuario().setId(empleado.getId());
+                empleado.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
+                empleado.getUsuario().setContraseña(rs.getString("CONTRASEÑA"));
                 empleado.getArea().setId(rs.getInt("ID_AREA"));
                 empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
                 empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
@@ -402,6 +443,50 @@ public class EmpleadoMySQL implements EmpleadoDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return resultado;
+    }
+
+    @Override
+    public ArrayList<Empleado> listarEmpleadosPorNombre(String nombre) {
+        ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_TODOS_EMPLEADOS_POR_NOMBRE(?)}");
+            cs.setString("_NOMBRE", nombre);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Empleado empleado = new Empleado(true);
+                empleado.setId(rs.getInt("ID_EMPLEADO"));
+                empleado.setDni(rs.getString("DNI_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+                empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.setFoto(rs.getBytes("FOTO"));
+                empleado.getUsuario().setId(empleado.getId());
+                empleado.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
+                empleado.getUsuario().setContraseña(rs.getString("CONTRASEÑA"));
+                empleado.getArea().setId(rs.getInt("ID_AREA"));
+                empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                empleado.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
+                empleado.setActive(rs.getBoolean("ACTIVE"));
+                empleados.add(empleado);
+                
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        
+        return empleados;
     }
     
 }

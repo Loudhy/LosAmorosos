@@ -38,6 +38,7 @@ import model.EstadoCivil;
 import model.EstadoLineaPedido;
 import model.EstadoLineaSolicitud;
 import model.MetaMensual;
+import model.ObjetivoVendedor;
 import model.Presentacion;
 import ventas.MejoresProductosService;
 /**
@@ -59,9 +60,10 @@ public class EduktSoft {
         meta2.setCantidadObjetivo(12000);
         DBController.insertarMetaMensual(meta2);
         MetaMensual meta3 = DBController.buscarMetaMensualActiva();*/
+        MetaMensual meta = DBController.buscarMetaMensualPorId(2);
         Vendedor vendedor = new Vendedor();
         vendedor.setId(1);
-        ArrayList<Pedido> pedidos = DBController.listarPedidosPorVendedorPorEstadoPedido(vendedor, EstadoPedido.Pagado);
+        ObjetivoVendedor objetivo = DBController.buscarObjetivoVendedorPorVendedor(vendedor);
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();
@@ -408,11 +410,11 @@ public class EduktSoft {
 //        lineas = DBController.listarLineasSolicitudesProducto("MARACAS");
 //        
 //        int a = 1;
-        ArrayList<Pedido> ped = new ArrayList<Pedido>();
-        ped = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Pendiente);
-        for(Pedido lin : ped){
-            System.out.println(lin.getId());
-        }
+        //ArrayList<Pedido> ped = new ArrayList<Pedido>();
+        //ped = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Pendiente);
+        //for(Pedido lin : ped){
+          //  System.out.println(lin.getId());
+        //}
         
         
     }

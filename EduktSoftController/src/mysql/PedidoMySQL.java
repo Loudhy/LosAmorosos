@@ -433,6 +433,8 @@ public class PedidoMySQL implements PedidoDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
                 pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                pedido.getClienteVendedor().getVendedor().setId(rs.getInt("ID_EMPLEADO"));
+                pedido.getClienteVendedor().getVendedor().setId_vendedor(pedido.getClienteVendedor().getVendedor().getId());
                 pedido.getClienteVendedor().getVendedor().setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
                 pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
@@ -496,6 +498,8 @@ public class PedidoMySQL implements PedidoDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
                 pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
+                pedido.getClienteVendedor().getVendedor().setId(rs.getInt("ID_EMPLEADO"));
+                pedido.getClienteVendedor().getVendedor().setId_vendedor(pedido.getClienteVendedor().getVendedor().getId());
                 pedido.getClienteVendedor().getVendedor().setNombre(rs.getString("NOMBRE_EMPLEADO"));
                 pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
                 pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
@@ -549,9 +553,7 @@ public class PedidoMySQL implements PedidoDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
                 pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
-                pedido.getClienteVendedor().getVendedor().setNombre(rs.getString("NOMBRE_EMPLEADO"));
-                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
-                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
+                pedido.getClienteVendedor().setVendedor(vendedor);
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
@@ -584,9 +586,7 @@ public class PedidoMySQL implements PedidoDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 pedido.getClienteVendedor().getCliente().setRuc(rs.getString("RUC"));
                 pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
-                pedido.getClienteVendedor().getVendedor().setNombre(rs.getString("NOMBRE_EMPLEADO"));
-                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
-                pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
+                pedido.getClienteVendedor().setVendedor(vendedor);
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
                 pedido.setLineasPedido(listarLineasPedido(pedido));

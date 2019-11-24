@@ -15,7 +15,9 @@ import model.Empleado;
  */
 public interface EmpleadoDAO extends CrudDAO<Empleado>{
     ArrayList<Empleado> listarTodosLosEmpleados();
+    ArrayList<Empleado> listarEmpleadosPorNombre(String nombre);
     ArrayList<Empleado> listarPorArea(Area area);
+    ArrayList<Empleado> listarEmpleadosNoActivos();
     Empleado buscarEmpleadoPorDni(String dni);
     Empleado buscarEmpleadoPorApellidos(String apellido_paterno,String apellido_materno);
     Empleado buscarEmpleadoPorCorreo(String correo);

@@ -566,4 +566,23 @@ public class Servicio {
     public ArrayList<Pedido>listarPedidosPorVendedorPorCliente(@WebParam(name ="vendedor") Vendedor vendedor, @WebParam(name = "cliente") String filtro){
         return DBController.listarPedidosPorVendedorPorCliente(vendedor,filtro);
     }
+    
+    @WebMethod(operationName = "listarAreas")
+    public ArrayList<Area> listarAreas(){
+        return DBController.listarAreas();
+    }
+    
+    @WebMethod(operationName = "listarTodosEmpleadosPorNombre")
+    public ArrayList<Empleado> listarTodosEmpleadosPorNombre(@WebParam(name = "nombre") String nombre){
+        return DBController.listarTodosEmpleadosPorNombre(nombre);
+    }
+    
+    @WebMethod(operationName = "listarEmpleadosPorEstados")
+    public ArrayList<Empleado> listarEmpleadosPorEstados(@WebParam(name = "active") int active){
+        if (active == 1)
+            return DBController.listarEmpleados();
+        else
+            return DBController.listarEmpleadosNoActivos();
+    }
+    
 }
