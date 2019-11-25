@@ -645,4 +645,10 @@ public class Servicio {
     public ArrayList<Pedido> listarPedidosPorFiltroDeCliente(@WebParam(name ="filtro") String filtro){
         return DBController.listarPedidosPorFiltroDeCliente(filtro);
     }
+    
+    @WebMethod(operationName = "listarVendedoresPorFiltro")
+    public ArrayList<Vendedor> listarVendedoresPorFiltro(@WebParam(name = "filtro") String filtro,@WebParam(name = "index") int index){
+        listarVendedores lista = new listarVendedores();
+        return lista.listarEmpleadosDeAreaVentasPorFiltro(filtro, index);
+    }
 }

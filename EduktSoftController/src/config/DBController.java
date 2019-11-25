@@ -463,6 +463,14 @@ public abstract class DBController {
     public static int actualizarPedidoConPago(Pedido pedido){
         return daoFactory.getPedidoDAO().actualizarFechaPagado(pedido);
     }
+    
+    public static ArrayList<Empleado> listarEmpleadosPorAreaPorFiltro(Area area,String filtro){
+        return daoFactory.getEmpleadoDAO().listarEmpleadosPorAreaPorFiltro(area, filtro);
+    }
+    
+    public static ArrayList<Empleado> listarEmpleadosPorAreaPorDni(Area area, String dni){
+        return daoFactory.getEmpleadoDAO().listarEmpleadosPorAreaPorDni(area, dni);
+    }
 }
 
 

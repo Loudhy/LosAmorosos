@@ -199,6 +199,17 @@ public class PedidoMySQL implements PedidoDAO{
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
@@ -265,6 +276,17 @@ public class PedidoMySQL implements PedidoDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
@@ -398,6 +420,17 @@ public class PedidoMySQL implements PedidoDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
                 pedido.setActive(rs.getBoolean("ACTIVE"));
                 ArrayList<LineaPedido> lineas = listarLineasPedido(pedido);
                 pedido.setLineasPedido(lineas);
@@ -442,6 +475,17 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
@@ -509,6 +553,17 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.getClienteVendedor().getVendedor().setApellidoPaterno(rs.getString("APELLIDO_MATERNO"));
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
@@ -562,6 +617,17 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.getClienteVendedor().setVendedor(vendedor);
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
@@ -597,6 +663,17 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.getClienteVendedor().setVendedor(vendedor);
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
@@ -669,6 +746,17 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.getClienteVendedor().setVendedor(vendedor);
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }
@@ -701,7 +789,20 @@ public class PedidoMySQL implements PedidoDAO{
                 pedido.getClienteVendedor().getCliente().setRazonSocial(rs.getString("RAZON_SOCIAL"));
                 pedido.getClienteVendedor().getCliente().setPuntaje(rs.getInt("PUNTOS"));
                 String fechaAux = formatoFecha.format(fechaNacimiento);
+                
                 pedido.setFechaRegistro(formatoFecha.parse(fechaAux));
+                if(rs.getDate("FECHA_FACTURACION") != null){
+                    fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaNacimiento);
+                    pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    if(rs.getDate("FECHA_PAGO") != null){
+                        fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                        fechaAux = formatoFecha.format(fechaNacimiento);
+                        pedido.setFechaPago(formatoFecha.parse(fechaAux));
+                    }
+                }
+                
                 pedido.setLineasPedido(listarLineasPedido(pedido));
                 pedidos.add(pedido);
             }

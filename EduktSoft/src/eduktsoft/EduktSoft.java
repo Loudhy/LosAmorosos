@@ -51,10 +51,16 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        Producto producto = DBController.buscarProductoPorId(1);
-        if(producto.getFoto() == null){
-            int a = 0;
-        }
+        Vendedor vendedor = new Vendedor();
+        vendedor.setId(1);
+        vendedor.setId_vendedor(1);
+        ArrayList<Pedido> pedidos;
+        //pedidos = DBController.listarPedidosPorVendedor(vendedor);
+        //pedidos = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Pendiente);
+       // pedidos = DBController.listarPedidosPorVendedorPorCliente(vendedor, "El");
+        //pedidos = DBController.listarPedidosPorVendedorPorClientePorEstado(vendedor, "El", EstadoPedido.En_proceso);
+        //pedidos = DBController.listarPedidosPorVendedor(vendedor);
+        pedidos = DBController.listarPedidos();
         /*MetaMensual meta = DBController.buscarMetaMensualActiva();
         MetaMensual meta2 = new MetaMensual();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -65,7 +71,7 @@ public class EduktSoft {
         DBController.insertarMetaMensual(meta2);
         MetaMensual meta3 = DBController.buscarMetaMensualActiva();*/
         MetaMensual meta = DBController.buscarMetaMensualPorId(2);
-        Vendedor vendedor = new Vendedor();
+        //Vendedor vendedor = new Vendedor();
         vendedor.setId(1);
         ObjetivoVendedor objetivo = DBController.buscarObjetivoVendedorPorVendedor(vendedor);
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);

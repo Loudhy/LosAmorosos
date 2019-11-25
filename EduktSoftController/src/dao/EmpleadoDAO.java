@@ -18,6 +18,8 @@ public interface EmpleadoDAO extends CrudDAO<Empleado>{
     ArrayList<Empleado> listarEmpleadosPorNombre(String nombre);
     ArrayList<Empleado> listarPorArea(Area area);
     ArrayList<Empleado> listarEmpleadosNoActivos();
+    ArrayList<Empleado> listarEmpleadosPorAreaPorFiltro(Area area, String filtro);
+    ArrayList<Empleado> listarEmpleadosPorAreaPorDni(Area area, String dni);
     Empleado buscarEmpleadoPorDni(String dni);
     Empleado buscarEmpleadoPorApellidos(String apellido_paterno,String apellido_materno);
     Empleado buscarEmpleadoPorCorreo(String correo);
