@@ -136,7 +136,7 @@ public class PedidoMySQL implements PedidoDAO{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
            
             for (LineaPedido aux: lineas){
-                cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO(?,?,?,?,?,?,?)}");
+                cs = con.prepareCall("{call ACTUALIZAR_LINEA_PEDIDO(?,?,?,?,?,?,?,?)}");
                 System.out.println(aux.getId());
                 System.out.println(aux.getCantidad());
                 System.out.println(aux.getProducto().getId());
@@ -152,6 +152,7 @@ public class PedidoMySQL implements PedidoDAO{
                 cs.setString("_ESTADO_LINEA_PEDIDO", aux.getEstadoLineaPedido().toString());
                 cs.setDate("_FECHA_ATENCION", new java.sql.Date(aux.getFechaAtencion().getTime()));
                 cs.setInt("_CANTIDAD_A_ATENDER",aux.getCantidadPorAtender());
+                cs.setBoolean("_ACTIVE",aux.isActive());
                 resultado=cs.executeUpdate();
             }
         }catch(Exception ex){

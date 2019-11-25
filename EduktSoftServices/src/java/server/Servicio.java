@@ -133,18 +133,17 @@ public class Servicio {
     @WebMethod(operationName = "insertarPedido")
     public int insertarPedido(@WebParam(name = "pedido") Pedido pedido){
         for(LineaPedido aux:pedido.getLineasPedido()){
-            if(aux.getCantidad() > aux.getProducto().getStockEmpresa())
+            Producto producto = DBController.buscarProductoPorId(aux.getProducto().getId());
+            if(aux.getCantidad() > producto.getStockEmpresa())
                 aux.setEstadoLineaPedido(EstadoLineaPedido.No_disponible);
             else
                 aux.setEstadoLineaPedido(EstadoLineaPedido.Disponible);           
             
-            if((aux.getProducto().getStockVendedor() - aux.getCantidad()) >= 0)
-                    aux.getProducto().setStockVendedor((aux.getProducto().getStockVendedor() - aux.getCantidad()));
+            if((producto.getStockVendedor() - aux.getCantidad()) >= 0)
+                   producto.setStockVendedor((producto.getStockVendedor() - aux.getCantidad()));
             else
-                aux.getProducto().setStockVendedor(0);
-            this.actualizarProducto(aux.getProducto());
-            
-            
+                producto.setStockVendedor(0);
+            this.actualizarProducto(aux.getProducto());           
         }
         return DBController.insertarPedido(pedido);
     }
@@ -387,10 +386,16 @@ public class Servicio {
         for(LineaPedido linea:lineas){
             linea.setEstadoLineaPedido(estado);
             linea.setFechaAtencion(today);
-            if(estado == EstadoLineaPedido.Aceptado)
+            if(estado == EstadoLineaPedido.Aceptado){
+                linea.setEstadoLineaPedido(estado);
                 linea.getProducto().setStockEmpresa(linea.getProducto().getStockEmpresa()-linea.getCantidad());
-            else if(estado == EstadoLineaPedido.Rechazado)
+            }
+                
+            else if(estado == EstadoLineaPedido.Rechazado){
+                linea.setEstadoLineaPedido(estado);
                 linea.getProducto().setStockVendedor(linea.getProducto().getStockVendedor()+linea.getCantidad());
+            }
+                
             if(estado == EstadoLineaPedido.Aceptado || estado == EstadoLineaPedido.Rechazado)
                 DBController.actualizarProducto(linea.getProducto());
         }
@@ -411,6 +416,8 @@ public class Servicio {
     public int actualizarLineaPedidoAceptado(@WebParam(name = "idLineaPedido")  int id_linea){
         return DBController.actualizarLineaAceptado(id_linea);
     }
+    
+    
     
     @WebMethod(operationName = "actualizarPedido")
     public int actualizarPedido(@WebParam(name = "pedido") Pedido pedido){

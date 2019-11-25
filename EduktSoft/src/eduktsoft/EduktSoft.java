@@ -51,6 +51,11 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
+        
+        Producto producto = DBController.buscarProductoPorId(8);
+        Area area = new Area();
+        area.setId(3);
+        ArrayList<Empleado> empleados = DBController.listarEmpleadosPorAreaPorDni(area, "7");
         Vendedor vendedor = new Vendedor();
         vendedor.setId(1);
         vendedor.setId_vendedor(1);
