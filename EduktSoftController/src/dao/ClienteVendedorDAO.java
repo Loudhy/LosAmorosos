@@ -28,4 +28,6 @@ public interface ClienteVendedorDAO {
     int eliminar(int id_cliente_vendedor);
     ArrayList<Cliente> listarClientesPorVendedorRuc(int id_vendedor, String ruc);
     ArrayList<Cliente> listarClientesPorVendedorNombre(int id_vendedor, String nombre);
+    int eliminarConIds(int id_cliente, int id_vendedor);
+    int validarEliminacion(int id_cliente, int id_vendedor);
 }

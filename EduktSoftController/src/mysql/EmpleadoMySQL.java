@@ -295,6 +295,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
                 empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
                 empleado.setSueldo(rs.getFloat("SUELDO"));
+                empleado.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
+                empleado.getUsuario().setContraseña(rs.getString("CONTRASEÑA"));
                 java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
                 fechaAux = formatoFecha.format(fechaIngreso);
                 empleado.setFechaIngreso(formatoFecha.parse(fechaAux));

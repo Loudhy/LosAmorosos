@@ -480,7 +480,7 @@ public class PedidoMySQL implements PedidoDAO{
                     fechaNacimiento = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
                     fechaAux = formatoFecha.format(fechaNacimiento);
                     pedido.setFechaFacturacion(formatoFecha.parse(fechaAux));
-                    pedido.setFacturado(rs.getFloat("MONTO_FACTURACION"));
+                    pedido.setFacturado(rs.getFloat("MONTO_FACTURADO"));
                     if(rs.getDate("FECHA_PAGO") != null){
                         fechaNacimiento = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
                         fechaAux = formatoFecha.format(fechaNacimiento);

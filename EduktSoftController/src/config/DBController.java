@@ -289,6 +289,14 @@ public abstract class DBController {
     public static ArrayList<Pedido> listarPedidosPorEstadoDePedido(EstadoPedido estado){
         return daoFactory.getPedidoDAO().listarPorEstadoDePedido(estado);
     }
+    
+    public static int eliminarClienteVendedorConClienteYVendedor(int id_cliente, int id_vendedor){
+        return daoFactory.getClienteVendedorDAO().eliminarConIds(id_cliente, id_vendedor);
+    }
+    
+    public static int validarEliminacionDeClienteVendedor(int id_cliente, int id_vendedor){
+        return daoFactory.getClienteVendedorDAO().validarEliminacion(id_cliente, id_vendedor);
+    }
 
     public static ArrayList<LineaPedido> listarLineasDePedido(Pedido pedido){
         return daoFactory.getPedidoDAO().listarLineasPedido(pedido);

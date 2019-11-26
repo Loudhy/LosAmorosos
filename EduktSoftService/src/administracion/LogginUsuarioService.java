@@ -14,9 +14,15 @@ import model.Usuario;
 
 public class LogginUsuarioService {
     public Empleado buscarUsuario(String correo,String contraseña){
+        Empleado empleado = DBController.buscarEmpleadoPorCorreo(correo);
         if (DBController.validarLoginDeUsuario(correo, contraseña)){
-            return DBController.buscarEmpleadoPorCorreo(correo);
+            if(empleado.getUsuario().getNombre().equals(correo) && empleado.getUsuario().getContraseña().equals(contraseña)) 
+                return empleado;
+            else
+                empleado = null;
         }
-        else return null;
+        else
+            empleado = null;
+        return empleado;
     }
 }

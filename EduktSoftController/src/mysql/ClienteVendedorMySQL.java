@@ -84,8 +84,25 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
         int resultado = 0;
         try{ 
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_CLIENTE_VENDEDOR(?)} ");
+            cs = con.prepareCall("{call ELIMINAR_CLIENTE_VENDEDOR(?)} ");
             cs.setInt("_ID_CLIENTE_VENDEDOR", id_cliente_vendedor);
+            resultado = cs.executeUpdate();
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
+    
+    @Override
+    public int eliminarConIds(int id_cliente, int id_vendedor) {
+        int resultado = 0;
+        try{ 
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call ELIMINAR_CLIENTE_VENDEDOR_CON_CLIENTE_Y_VENDEDOR(?,?)} ");
+            cs.setInt("_ID_CLIENTE", id_cliente);
+            cs.setInt("_ID_VENDEDOR", id_vendedor);
             resultado = cs.executeUpdate();
         }catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -289,6 +306,27 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
             try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return clientes;
+    }
+
+    @Override
+    public int validarEliminacion(int id_cliente, int id_vendedor) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call VALIDAR_ELIMINACION(?,?)}");
+            cs.setInt("_ID_CLIENTE", id_cliente);
+            cs.setInt("_ID_VENDEDOR", id_vendedor);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next())
+                return 0;
+            else
+                return 1;
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
     }
     
     

@@ -67,6 +67,11 @@ public class Servicio {
         return passwordService.enviarCorreo(correo);
     }
     
+    @WebMethod(operationName = "validarEliminacion")
+    public int validarEliminacion(@WebParam(name = "id_cliente") int id_cliente, @WebParam(name = "id_vendedor") int id_vendedor){
+        return DBController.validarEliminacionDeClienteVendedor(id_cliente, id_vendedor);
+    }
+    
     @WebMethod(operationName = "buscarSolicitudPorId")
     public Solicitud buscarSolicitudPorId(@WebParam(name = "id")int id){
         return DBController.buscarSolicitudPorId(id);
@@ -150,8 +155,8 @@ public class Servicio {
     }
     
     @WebMethod(operationName = "eliminarRelacionClienteVendedor")
-    public int eliminarRelacionClienteVendedor(@WebParam(name = "id_clienteVendedor") int relacion){
-        return DBController.eliminarClienteVendedor(relacion);
+    public int eliminarRelacionClienteVendedor(@WebParam(name = "id_cliente") int id_cliente, @WebParam(name = "id_vendedor") int id_vendedor){
+        return DBController.eliminarClienteVendedorConClienteYVendedor(id_cliente, id_vendedor);
     }
     
     @WebMethod(operationName = "insertarCliente")
@@ -185,6 +190,8 @@ public class Servicio {
         else
             return DBController.listarClientesPorRUC(nombreRuc);
     }
+    
+    
 
     @WebMethod(operationName = "listarMejoresProductosDeCliente")
     public ArrayList<Producto> listarMejoresProductosDeCliente(@WebParam(name = "cliente") Cliente cliente){
@@ -247,6 +254,18 @@ public class Servicio {
     public ArrayList<ProductosSolicitud> listarProductosDeSolicitudes(){
         ProductosSolicitud prod = new ProductosSolicitud();
         return prod.sacarCantidadAcumuladaDeSolicitud();
+    }
+    
+    @WebMethod(operationName = "listarProductosDeSolicitudPorId")
+    public ArrayList<ProductosSolicitud> listarProductosDeSolicitudesPorId(int id){
+        ProductosSolicitud prod = new ProductosSolicitud();
+        return prod.sacarCantidadAcumuladaPorId(id);
+    }
+    
+    @WebMethod(operationName = "listarProductosDeSolicitudPorNombre")
+    public ArrayList<ProductosSolicitud> listarProductosDeSolicitudesPorNombre(String nombre){
+        ProductosSolicitud prod = new ProductosSolicitud();
+        return prod.sacarCantidadAcumuladaPorNombre(nombre);
     }
     
     @WebMethod(operationName = "buscarRelacionClienteVendedor")
@@ -567,7 +586,7 @@ public class Servicio {
                 monto+=pedido.getTotal();
         }
         
-        float progreso = monto/objvendedor.getMonto();
+        float progreso = monto;
         return progreso;
     }
     
@@ -667,4 +686,6 @@ public class Servicio {
         listarVendedores lista = new listarVendedores();
         return lista.listarEmpleadosDeAreaVentasPorFiltro(filtro, index);
     }
+    
+    
 }

@@ -60,6 +60,35 @@ public class ProductosSolicitud {
         return productosAcumulados;
     }
     
+    public ArrayList<ProductosSolicitud> sacarCantidadAcumuladaPorId(int id){
+        ArrayList<ProductosSolicitud> productosAcumulados = this.sacarCantidadAcumuladaDeSolicitud();
+        ArrayList<ProductosSolicitud> nuevos = new ArrayList<ProductosSolicitud>();
+        if (productosAcumulados.size() !=0)
+            for (ProductosSolicitud producto : productosAcumulados){
+                if(producto.codigo == id)
+                    nuevos.add(producto);
+            }
+        
+        return nuevos;
+    }
+    
+    public ArrayList<ProductosSolicitud> sacarCantidadAcumuladaPorNombre(String filtro){
+        ArrayList<ProductosSolicitud> productosAcumulados = this.sacarCantidadAcumuladaDeSolicitud();
+        ArrayList<ProductosSolicitud> nuevos = new ArrayList<ProductosSolicitud>();
+        String filtro2;
+         if (productosAcumulados.size() !=0)
+             for (ProductosSolicitud producto : productosAcumulados){
+                 filtro2 = filtro+".*";
+                 filtro2 = filtro2.toUpperCase();
+                 filtro = filtro + ".*";
+                 filtro = filtro.toLowerCase();
+                 if (producto.nombre.matches(filtro) || producto.nombre.matches(filtro2))
+                     nuevos.add(producto);
+             }
+         
+         return nuevos;
+    }
+    
     public int getCodigo() {
         return codigo;
     }

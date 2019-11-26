@@ -19,7 +19,6 @@ import model.Departamento;
 import model.Empleado;
 import static model.EstadoCivil.Soltero;
 import static model.EstadoLineaPedido.Solicitado;
-import model.EstadoPedido;
 import model.LineaPedido;
 import model.Pedido;
 import model.Producto;
@@ -37,6 +36,7 @@ import model.Area;
 import model.EstadoCivil;
 import model.EstadoLineaPedido;
 import model.EstadoLineaSolicitud;
+import model.EstadoPedido;
 import model.MetaMensual;
 import model.ObjetivoVendedor;
 import model.Presentacion;
@@ -52,14 +52,19 @@ public class EduktSoft {
      */
     public static void main(String[] args) throws ParseException {
         
-        Producto producto = DBController.buscarProductoPorId(8);
+        int resultado = DBController.validarEliminacionDeClienteVendedor(33, 1);
+        //DBController.eliminarClienteVendedorConClienteYVendedor(34, 1);
+        //ArrayList<Pedido> pedidos = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.En_proceso);
+        //ProductosSolicitud producto = new ProductosSolicitud();
+        //ArrayList<ProductosSolicitud> productos2 = producto.sacarCantidadAcumuladaPorNombre("rompe");
+        /*Producto producto = DBController.buscarProductoPorId(8);
         Area area = new Area();
         area.setId(3);
         ArrayList<Empleado> empleados = DBController.listarEmpleadosPorAreaPorDni(area, "7");
         Vendedor vendedor = new Vendedor();
         vendedor.setId(1);
         vendedor.setId_vendedor(1);
-        ArrayList<Pedido> pedidos;
+        ArrayList<Pedido> pedidos;/*
         //pedidos = DBController.listarPedidosPorVendedor(vendedor);
         //pedidos = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Pendiente);
        // pedidos = DBController.listarPedidosPorVendedorPorCliente(vendedor, "El");
@@ -75,10 +80,10 @@ public class EduktSoft {
         meta2.setCantidadObjetivo(12000);
         DBController.insertarMetaMensual(meta2);
         MetaMensual meta3 = DBController.buscarMetaMensualActiva();*/
-        MetaMensual meta = DBController.buscarMetaMensualPorId(2);
+        //MetaMensual meta = DBController.buscarMetaMensualPorId(2);
         //Vendedor vendedor = new Vendedor();
-        vendedor.setId(1);
-        ObjetivoVendedor objetivo = DBController.buscarObjetivoVendedorPorVendedor(vendedor);
+        //vendedor.setId(1);
+        //ObjetivoVendedor objetivo = DBController.buscarObjetivoVendedorPorVendedor(vendedor);
         //Solicitud solicitud = DBController.buscarSolicitudPorId(1);
         //ProductosSolicitud productosSoli = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> prod = productosSoli.sacarCantidadAcumuladaDeSolicitud();
