@@ -5,6 +5,7 @@
  */
 package mysql;
 
+import config.DBController;
 import config.DBManager;
 import dao.SolicitudDAO;
 import java.sql.CallableStatement;
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import model.EstadoLineaPedido;
 import model.EstadoLineaSolicitud;
+import model.EstadoPedido;
 import model.EstadoSolicitud;
 import model.LineaSolicitud;
 import model.Pedido;
@@ -230,6 +232,24 @@ public class SolicitudMySQL implements SolicitudDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaRegistro);
                 solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
+                solicitud.setDescripcion(rs.getString("DESCRIPCION"));
+                solicitud.getPedido().setId(rs.getInt("ID_PEDIDO"));
+                solicitud.getPedido().setTotal(rs.getFloat("TOTAL_PEDIDO"));
+                solicitud.getPedido().getClienteVendedor().setId_cliente_vendedor(rs.getInt("ID_CLIENTE_VENDEDOR"));
+                solicitud.getPedido().setEstadoPedido(EstadoPedido.valueOf(rs.getString("ESTADO_PEDIDO")));
+                if(rs.getDate("FECHA_FACTURACION") != null){                  
+                    fechaRegistro = new java.util.Date(rs.getDate("FECHA_FACTURACION").getTime());
+                    fechaAux = formatoFecha.format(fechaRegistro);
+                    solicitud.getPedido().setFechaFacturacion(formatoFecha.parse(fechaAux)); 
+                    solicitud.getPedido().setFacturado(rs.getFloat("MONTO_FACTURADO"));             
+                }
+                if(rs.getDate("FECHA_PAGO") != null){
+                    fechaRegistro = new java.util.Date(rs.getDate("FECHA_PAGO").getTime());
+                    fechaAux = formatoFecha.format(fechaRegistro);
+                    solicitud.getPedido().setFechaPago(formatoFecha.parse(fechaAux));
+                }
+                
+                solicitud.getPedido().setLineasPedido(DBController.listarLineasDePedido(solicitud.getPedido()));
                 ArrayList<LineaSolicitud> lineas = listarLineasSolicitud(solicitud);
                 solicitud.setLineasSolicitud(lineas);
             }
@@ -252,6 +272,7 @@ public class SolicitudMySQL implements SolicitudDAO{
             while (rs.next()){
                 LineaSolicitud linea = new LineaSolicitud();
                 linea.setId(rs.getInt("ID_SOLICITUD"));
+                linea.getLineaPedido().getProducto().setFoto(rs.getBytes("FOTO"));
                 linea.setCantidad(rs.getInt("CANTIDAD"));
                 lineas.add(linea);
             }
@@ -268,7 +289,6 @@ public class SolicitudMySQL implements SolicitudDAO{
         int resultado = 0;
         try{
             con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
-            System.out.println("HOLA");
             for (LineaSolicitud aux: solicitudes){
                 cs = con.prepareCall("{call ACTUALIZAR_LINEA_SOLICITUD(?,?,?,?)}");
                 System.out.println(aux.getEstadoSolicitud());
@@ -283,6 +303,7 @@ public class SolicitudMySQL implements SolicitudDAO{
         }
         return resultado;
     }
+
 
     
 }

@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cliente;
 import model.Cliente_Vendedor;
+import model.EstadoCivil;
 import model.EstadoPedido;
 import model.Pedido;
 import model.Vendedor;
@@ -231,15 +232,52 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
             }
             
             
-        }catch(Exception ex){
+        }catch (Exception ex) {
             System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
         }
         return cliente;
     }
 
     @Override
     public Vendedor encontrarVendedorPorClienteVendedor(int id_cliente_vendedor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Vendedor vendedor = new Vendedor(true);
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call BUSCAR_EMPLEADO_POR_CLIENTE_VENDEDOR(?)}");
+            cs.setInt("_ID_CLIENTE_VENDEDOR", id_cliente_vendedor);
+            ResultSet rs = cs.executeQuery();
+            if(rs.next()){
+                vendedor.setId(rs.getInt("ID_EMPLEADO"));
+                vendedor.setId_vendedor(vendedor.getId());
+                vendedor.setDni(rs.getString("DNI_EMPLEADO"));
+                vendedor.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                vendedor.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                vendedor.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+                vendedor.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                vendedor.setFoto(rs.getBytes("FOTO"));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                vendedor.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                vendedor.getArea().setId(rs.getInt("ID_AREA"));
+                //vendedor.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                vendedor.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                vendedor.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                vendedor.setFechaIngreso(formatoFecha.parse(fechaAux));
+                vendedor.setActive(rs.getBoolean("ACTIVE"));
+            }
+            else
+                vendedor = null;
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return vendedor;
     }
 
     @Override

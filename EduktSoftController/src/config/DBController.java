@@ -42,6 +42,9 @@ public abstract class DBController {
         return daoFactory.getAreaDAO().actualizar(area);
     }
 
+    public static Vendedor encontrarVendedorPorClienteVendedor(int id_cliente_vendedor){
+        return daoFactory.getClienteVendedorDAO().encontrarVendedorPorClienteVendedor(id_cliente_vendedor);
+    }
 
     public static int eliminarArea(int id_area){
         return daoFactory.getAreaDAO().eliminar(id_area);
@@ -277,6 +280,10 @@ public abstract class DBController {
     public static int eliminarPedido(int id){
         return daoFactory.getPedidoDAO().eliminar(id);
     }
+    
+    public static Pedido buscarPedidoPorId(int id){
+        return daoFactory.getPedidoDAO().encontrarPorId(id);
+    }
 
     public static ArrayList<Pedido> listarPedidosPorCliente(Cliente cliente){
         return daoFactory.getPedidoDAO().listarPorCliente(cliente);
@@ -478,6 +485,12 @@ public abstract class DBController {
     
     public static ArrayList<Empleado> listarEmpleadosPorAreaPorDni(Area area, String dni){
         return daoFactory.getEmpleadoDAO().listarEmpleadosPorAreaPorDni(area, dni);
+    }
+    
+    
+    
+    public static int eliminarLineasDePedido(ArrayList<LineaPedido> lineas){
+        return daoFactory.getPedidoDAO().eliminarLineasPedido(lineas);
     }
 }
 

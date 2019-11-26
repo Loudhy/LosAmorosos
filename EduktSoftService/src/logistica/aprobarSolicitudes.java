@@ -44,6 +44,7 @@ public class aprobarSolicitudes {
                     lineaSolicitud.getLineaPedido().setEstadoLineaPedido(EstadoLineaPedido.Aceptado);
                     lineaSolicitud.getLineaPedido().setCantidadPorAtender(0);
                     lineasCambiadasSolicitud.add(lineaSolicitud);
+                    lineaSolicitud.getLineaPedido().setActive(true);
                     lineasCambiadasPedido.add(lineaSolicitud.getLineaPedido());
                 }
             }

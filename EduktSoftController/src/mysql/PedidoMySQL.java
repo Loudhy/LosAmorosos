@@ -815,6 +815,24 @@ public class PedidoMySQL implements PedidoDAO{
         return pedidos;
     }
 
+    @Override
+    public int eliminarLineasPedido(ArrayList<LineaPedido> lineas) {
+        int resultado = 0;
+        try{
+            for(LineaPedido linea:lineas){
+                con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+                cs = con.prepareCall("{call ELIMINAR_LINEA_PEDIDO(?)}");
+                cs.setInt("_ID_LINEA_PEDIDO", linea.getId());
+                resultado = cs.executeUpdate();
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
+
     
 
 }

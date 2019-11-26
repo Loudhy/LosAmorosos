@@ -13,6 +13,12 @@ public class Vendedor extends Empleado{
     public Vendedor(){
     }
     
+    public Vendedor(boolean active){
+        super(active);
+        objetivoVendedor = new ObjetivoVendedor();
+        this.active = active;
+    }
+    
     
     
      public Vendedor(String dni, String nombre, String apellidoPaterno, String apellidoMaterno, Date fecha_nacimiento,

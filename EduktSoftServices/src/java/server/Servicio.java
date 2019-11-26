@@ -635,6 +635,9 @@ public class Servicio {
         else{
             pedido.setFechaPago(today);
             pedido.setEstadoPedido(EstadoPedido.Pagado);
+            Vendedor vendedor = DBController.encontrarVendedorPorClienteVendedor(pedido.getClienteVendedor().getId_cliente_vendedor());
+            vendedor.setSueldo(vendedor.getSueldo()+pedido.getFacturado());
+            DBController.actualizarEmpleado(vendedor);
             DBController.actualizarPedidoConPago(pedido);
             DatosGenerales datos = DBController.buscarDatosGeneralesPorId(1);
             int dias = (int)(pedido.getFechaFacturacion().getTime() - today.getTime());
@@ -687,5 +690,20 @@ public class Servicio {
         return lista.listarEmpleadosDeAreaVentasPorFiltro(filtro, index);
     }
     
+    @WebMethod(operationName = "rechazarLineasSolicitud")
+    public int rechazarLineasSolicitud(@WebParam(name = "lineas") ArrayList<LineaSolicitud> lineas){
+        return DBController.actualizarLineasSolicitud(lineas);
+    }
+    
+    @WebMethod(operationName = "eliminarLineasDePedido")
+    public int eliminarLineasDePedido(@WebParam(name = "pedido") Pedido pedido){
+        ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
+        for (LineaPedido linea:pedido.getLineasPedido()){
+            if(!linea.isActive())
+                lineas.add(linea);
+        }
+        
+        return DBController.eliminarLineasDePedido(lineas);
+    }
     
 }

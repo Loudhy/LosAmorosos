@@ -52,8 +52,11 @@ public class EduktSoft {
      */
     public static void main(String[] args) throws ParseException {
         
-        int resultado = DBController.validarEliminacionDeClienteVendedor(33, 1);
-        //DBController.eliminarClienteVendedorConClienteYVendedor(34, 1);
+        //Vendedor vendedor = DBController.encontrarVendedorPorClienteVendedor(1);
+        //int resultado = DBController.actualizarEmpleado(vendedor);
+        Pedido pedido = DBController.buscarPedidoPorId(5);
+        int resultado = DBController.eliminarLineasDePedido(pedido.getLineasPedido());
+    //DBController.eliminarClienteVendedorConClienteYVendedor(34, 1);
         //ArrayList<Pedido> pedidos = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.En_proceso);
         //ProductosSolicitud producto = new ProductosSolicitud();
         //ArrayList<ProductosSolicitud> productos2 = producto.sacarCantidadAcumuladaPorNombre("rompe");
