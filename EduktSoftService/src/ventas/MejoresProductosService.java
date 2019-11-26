@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import javafx.util.Pair;
 import model.Cliente;
+import model.EstadoPedido;
 import model.LineaPedido;
 import model.Producto;
 import model.Pedido;
@@ -42,12 +43,17 @@ public class MejoresProductosService {
 
     public ArrayList<Producto> listarTresMejoresProductosPorCliente(Cliente cliente){
         ArrayList<Pedido> pedidos = DBController.listarPedidosPorCliente(cliente);
-        if (pedidos.size() == 0){
+        ArrayList<Pedido> pedidosPagados = new ArrayList<Pedido>();
+        for(Pedido aux:pedidos){
+            if (aux.getEstadoPedido() == EstadoPedido.Pagado)
+                pedidosPagados.add(aux);
+        }
+        if (pedidosPagados.size() == 0){
             return null;
         }
         Map<Integer, Integer> mapa = new HashMap<Integer, Integer>();
         ArrayList<Producto> productos = new ArrayList<Producto>();
-        for(Pedido pedido: pedidos ){
+        for(Pedido pedido: pedidosPagados ){
             ArrayList<LineaPedido> lineasPedido = pedido.getLineasPedido();
             for (LineaPedido lineaPedido:lineasPedido){
                 if(mapa.containsKey(lineaPedido.getProducto().getId())){

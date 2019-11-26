@@ -132,6 +132,7 @@ public class Servicio {
     
     @WebMethod(operationName = "insertarPedido")
     public int insertarPedido(@WebParam(name = "pedido") Pedido pedido){
+        
         for(LineaPedido aux:pedido.getLineasPedido()){
             Producto producto = DBController.buscarProductoPorId(aux.getProducto().getId());
             if(aux.getCantidad() > producto.getStockEmpresa())
@@ -143,7 +144,7 @@ public class Servicio {
                    producto.setStockVendedor((producto.getStockVendedor() - aux.getCantidad()));
             else
                 producto.setStockVendedor(0);
-            this.actualizarProducto(aux.getProducto());           
+            this.actualizarProducto(producto);           
         }
         return DBController.insertarPedido(pedido);
     }
@@ -609,10 +610,12 @@ public class Servicio {
             }       
             pedido.setFechaFacturacion(today);
             pedido.setFacturado(monto);
+            pedido.setEstadoPedido(EstadoPedido.Aceptado);
             DBController.actualizarPedidoConFacturacion(pedido);
         }
         else{
             pedido.setFechaPago(today);
+            pedido.setEstadoPedido(EstadoPedido.Pagado);
             DBController.actualizarPedidoConPago(pedido);
             DatosGenerales datos = DBController.buscarDatosGeneralesPorId(1);
             int dias = (int)(pedido.getFechaFacturacion().getTime() - today.getTime());
@@ -639,7 +642,13 @@ public class Servicio {
                 }
                 
             }
-        }       
+        }
+        ArrayList<LineaPedido> lineasRechazadas = new ArrayList<LineaPedido>();
+        for (LineaPedido linea:pedido.getLineasPedido()){
+            if (linea.getEstadoLineaPedido() == EstadoLineaPedido.Rechazado)
+                lineasRechazadas.add(linea);
+        }
+        this.actualizarLineasDePedido(lineasRechazadas, EstadoLineaPedido.Rechazado);
         return DBController.actualizarPedido(pedido);     
     }
     
