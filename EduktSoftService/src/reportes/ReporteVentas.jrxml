@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3d0b4d64-5d22-438c-985a-1b0e1d9c3cc4">
-	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="13"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="FECHA_INI" class="java.lang.String"/>
 	<parameter name="FECHA_FIN" class="java.lang.String"/>
+	<parameter name="LOGO_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT E.ID_EMPLEADO, E.NOMBRE_EMPLEADO, E.APELLIDO_PATERNO, E.APELLIDO_MATERNO, E.DNI_EMPLEADO, E.CORREO_EMPLEADO, E.FOTO , ROUND(SUM(P.TOTAL_PEDIDO),2)AS VENTA FROM PEDIDO P,EMPLEADO E, CLIENTE_VENDEDOR CV WHERE E.ID_AREA = 3 AND E.ID_EMPLEADO = CV.ID_VENDEDOR AND CV.ID_CLIENTE_VENDEDOR = P.ID_CLIENTE_VENDEDOR
-AND P.ESTADO_PEDIDO = 'Pagado' AND DATE($P{FECHA_INI})<=P.FECHA_REGISTRO  AND DATE($P{FECHA_FIN})>= P.FECHA_REGISTRO AND E.ACTIVE = 1
+		<![CDATA[SELECT E.ID_EMPLEADO, E.NOMBRE_EMPLEADO, E.APELLIDO_PATERNO, E.APELLIDO_MATERNO, E.DNI_EMPLEADO,
+E.CORREO_EMPLEADO , E.FOTO, TRUNCATE(SUM(P.MONTO_FACTURADO),2)AS VENTA FROM PEDIDO P,EMPLEADO E,
+CLIENTE_VENDEDOR CV WHERE E.ID_AREA = 3 AND E.ID_EMPLEADO = CV.ID_VENDEDOR AND
+CV.ID_CLIENTE_VENDEDOR = P.ID_CLIENTE_VENDEDOR AND P.ESTADO_PEDIDO = 'Pagado' AND
+(P.FECHA_PAGO BETWEEN $P{FECHA_INI} AND $P{FECHA_FIN}) AND E.ACTIVE = 1
 GROUP BY E.ID_EMPLEADO
 ORDER BY VENTA;]]>
 	</queryString>
@@ -37,114 +41,212 @@ ORDER BY VENTA;]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="91" splitType="Stretch">
+		<band height="279" splitType="Stretch">
 			<textField>
-				<reportElement x="168" y="18" width="263" height="20" uuid="2fab45cf-fa1a-480e-9e53-78aeeaf5c9f3"/>
-				<textFieldExpression><![CDATA["REPORTE DE VENTAS DE CADA VENDEDOR"]]></textFieldExpression>
+				<reportElement x="76" y="14" width="422" height="32" uuid="2fab45cf-fa1a-480e-9e53-78aeeaf5c9f3"/>
+				<textElement>
+					<font size="20" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REPORTE DE VENTAS POR EMPLEADO"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="396" y="48" width="100" height="20" uuid="ae6ae1ac-c83a-46d8-b1d8-90b45b85d81d"/>
-				<textFieldExpression><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="58" y="48" width="90" height="20" uuid="c892a604-0803-4286-9bc9-d8ae66b52f16"/>
+				<reportElement x="59" y="209" width="90" height="20" uuid="c892a604-0803-4286-9bc9-d8ae66b52f16"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Fecha Inicio: "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="306" y="48" width="90" height="20" uuid="33efab78-4237-472d-8023-97bfccc2dafd"/>
+				<reportElement x="309" y="209" width="90" height="20" uuid="33efab78-4237-472d-8023-97bfccc2dafd"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Fecha Fin: "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="148" y="48" width="100" height="20" uuid="693f6093-c189-47f0-b25d-3b79932a3aba"/>
+				<reportElement x="23" y="239" width="226" height="20" uuid="2baf19d5-ff1a-46c4-8f34-bf0c3c40aab0"/>
+				<textElement>
+					<font size="14" isBold="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Información del vendedor"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="270" width="555" height="1" uuid="3b446985-3e47-430c-8037-93e7991dcc0f"/>
+			</line>
+			<textField>
+				<reportElement x="23" y="175" width="141" height="22" uuid="77f4cc08-49a0-4858-a55c-be97a0fc44cf"/>
+				<textElement>
+					<font size="14" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rango de fechas:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="209" width="133" height="20" uuid="7f42c738-0321-4119-b0e3-8df8e51b0fca"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{FECHA_INI}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="399" y="209" width="138" height="20" uuid="2f0e49d9-2ebc-46a5-95c2-bb4f52b6bc10"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="126" width="189" height="20" uuid="47fc0c2d-909c-427f-8788-1cb6f793da43"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["didacticosSAC@edukt.com"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="61" width="189" height="20" uuid="35e6949d-24b7-4f69-ba67-b75af72669e5"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Calle Las Azucenas 2104"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="232" y="126" width="66" height="20" uuid="d16ec4bd-9a0a-4a2a-af44-857edc84da44"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Email: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="232" y="91" width="66" height="20" uuid="b947cd43-559e-4525-a6c7-536b7af89f3b"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Telefono: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="91" width="167" height="20" uuid="b8ea69a1-7702-4a9a-9e0d-c98658c1fb1c"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["539-5085"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="61" width="79" height="20" uuid="9f85fb4d-3b38-434d-afad-cd1cd6307909"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direccion: "]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="163" width="555" height="1" uuid="4d32a18a-010a-4b7c-9155-baeab01d6e27"/>
+			</line>
+			<image>
+				<reportElement x="45" y="61" width="153" height="85" uuid="337910a9-18c6-4072-88c0-7e61d41ae1c6"/>
+				<imageExpression><![CDATA[$P{LOGO_DIR}]]></imageExpression>
+			</image>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="28" splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band height="61" splitType="Stretch">
-			<textField>
-				<reportElement x="209" y="31" width="126" height="20" uuid="11a71e7f-64f4-4250-a8be-1e8918274e35"/>
-				<textElement>
-					<font size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Informe del vendedor"]]></textFieldExpression>
-			</textField>
-		</band>
-	</columnHeader>
 	<detail>
-		<band height="215" splitType="Stretch">
+		<band height="199" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="190" width="555" height="1" uuid="ec7bef55-fec2-419a-81b9-1490afcd4fa5"/>
+			</line>
+			<staticText>
+				<reportElement x="185" y="20" width="84" height="20" uuid="833df539-b37f-442f-9722-f0d4f7de7580"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[          Nombre:]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="60" y="128" width="49" height="20" uuid="e1203208-807a-45a2-a082-9b764900df3a"/>
-				<textFieldExpression><![CDATA["Nombre:"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="40" y="148" width="69" height="20" uuid="9e4a4667-3233-4d7d-ae8b-1d0b70ebdb80"/>
-				<textFieldExpression><![CDATA["Ap. Paterno:"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="40" y="168" width="69" height="20" uuid="c69e8b66-6a22-4771-8f22-1cc575dbc02b"/>
-				<textFieldExpression><![CDATA["Ap. Materno:"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="296" y="50" width="39" height="20" uuid="503cce2b-f955-4223-bbea-36d64b63d121"/>
-				<textFieldExpression><![CDATA["    DNI:"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="281" y="70" width="54" height="20" uuid="d7e620df-8176-4c41-a026-8ac60a132d4c"/>
-				<textFieldExpression><![CDATA["    Correo:"]]></textFieldExpression>
+				<reportElement x="282" y="20" width="154" height="20" uuid="7c8c5c7c-33ff-45f1-bcf4-3d7a5bc7def4"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMBRE_EMPLEADO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="306" y="148" width="60" height="20" uuid="ea2655ff-4cf3-46ff-a9bb-cfa9cd20b5b7"/>
+				<reportElement x="164" y="40" width="105" height="20" uuid="3fd9b15a-fccc-447a-9973-d4e48028b03c"/>
 				<textElement>
-					<font size="13"/>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[           Ap. Paterno:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="282" y="40" width="154" height="20" uuid="9ebf726f-1bb1-458d-b1fc-533eb1aa23a8"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APELLIDO_PATERNO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="164" y="60" width="105" height="20" uuid="b4d0648e-e2fc-4709-8586-16fdbd6513a0"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[          Ap. Materno:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="282" y="60" width="154" height="20" uuid="d271ec4f-ca22-4995-b5b6-7d7fb2fa258c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APELLIDO_MATERNO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="164" y="80" width="105" height="20" uuid="e4cf9de5-1a66-45ef-8dee-e95d74583c75"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[                        DNI:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="282" y="80" width="154" height="20" uuid="9fe27a98-dba3-4e46-816e-aabf1f0bbf3c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DNI_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="164" y="100" width="105" height="20" uuid="a1f6a1ce-6578-4cee-8b13-5af3d2691017"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[                   Correo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="282" y="100" width="273" height="20" uuid="ecf06faf-90a3-4b9d-a681-e486317713c1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CORREO_EMPLEADO}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="23" y="22" width="126" height="155" uuid="6bdf6515-7f53-4567-a10b-c3958cdaa6a0"/>
+				<imageExpression><![CDATA[$F{FOTO}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="264" y="157" width="66" height="20" uuid="e3242512-a427-4492-8166-17902967e2a6"/>
+				<textElement>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[VENTA:]]></text>
 			</staticText>
-			<line>
-				<reportElement x="0" y="9" width="555" height="1" uuid="3b446985-3e47-430c-8037-93e7991dcc0f"/>
-			</line>
-			<line>
-				<reportElement x="0" y="210" width="555" height="1" uuid="ec7bef55-fec2-419a-81b9-1490afcd4fa5"/>
-			</line>
 			<textField>
-				<reportElement x="109" y="128" width="100" height="20" uuid="ed83aab7-462b-4e2a-8dec-c725f241a6f0"/>
-				<textFieldExpression><![CDATA[$F{NOMBRE_EMPLEADO}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="109" y="148" width="100" height="20" uuid="021d460e-5b57-476a-9223-1e55c96eedc1"/>
-				<textFieldExpression><![CDATA[$F{APELLIDO_PATERNO}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="109" y="168" width="100" height="20" uuid="f8efdd5d-8127-4086-b21b-5858f64252ca"/>
-				<textFieldExpression><![CDATA[$F{APELLIDO_MATERNO}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="335" y="50" width="100" height="20" uuid="461da08a-e967-40d7-8102-9d8a2c80981d"/>
-				<textFieldExpression><![CDATA[$F{DNI_EMPLEADO}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="335" y="70" width="161" height="20" uuid="54125d8a-bca5-4f40-8b27-51215948b9c9"/>
-				<textFieldExpression><![CDATA[$F{CORREO_EMPLEADO}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="366" y="148" width="130" height="20" uuid="ed9def9c-4f72-4d4e-9145-db418457d3eb"/>
+				<reportElement x="350" y="157" width="171" height="20" uuid="4d2100f7-1232-47ae-9b64-2f08fbccf43f"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{VENTA}]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="40" y="27" width="169" height="85" uuid="9e4f8268-b3cb-4ac5-8707-585e8b13b4d4"/>
-				<imageExpression><![CDATA[$F{FOTO}]]></imageExpression>
-			</image>
+			<staticText>
+				<reportElement x="330" y="157" width="20" height="20" uuid="bb67a841-6fbc-4fed-9a75-7cfaa7377d90"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S/.]]></text>
+			</staticText>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="54" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="43" splitType="Stretch"/>
-	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>
 	</summary>

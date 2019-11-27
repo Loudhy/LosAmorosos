@@ -118,6 +118,15 @@ public class Servicio {
 
     @WebMethod(operationName = "eliminarPedido")
     public int eliminarPedido(int id){
+        Pedido pedido = DBController.buscarPedidoPorId(id);
+        for(LineaPedido linea:pedido.getLineasPedido()){
+            if (linea.getProducto().getFoto() == null){
+                Producto producto = DBController.buscarProductoPorId(linea.getProducto().getId());
+                linea.getProducto().setFoto(producto.getFoto());
+            }
+            linea.getProducto().setStockVendedor(linea.getProducto().getStockVendedor() + linea.getCantidad());
+            DBController.actualizarProducto(linea.getProducto());
+        }
         return DBController.eliminarPedido(id);
     }
     
@@ -149,7 +158,10 @@ public class Servicio {
                    producto.setStockVendedor((producto.getStockVendedor() - aux.getCantidad()));
             else
                 producto.setStockVendedor(0);
-            this.actualizarProducto(producto);           
+            Producto producto2 = DBController.buscarProductoPorId(producto.getId());
+            if (producto.getFoto() == null)
+                producto.setFoto(producto2.getFoto());
+            DBController.actualizarProducto(producto);           
         }
         return DBController.insertarPedido(pedido);
     }
@@ -301,12 +313,13 @@ public class Servicio {
      Servicio.class.getResource(
      "/reports/ReporteProductosDisponibles.jasper").getFile());
             String rutaSubreporte = Servicio.class.getResource("/reports/SubreportePresentaciones.jasper").getPath();
-            
+            String rutaLogo = Servicio.class.getResource("/reports/Logo.jpg").getPath();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = 
         DriverManager.getConnection(
           DBManager.url, DBManager.user, DBManager.password);
             HashMap hm = new HashMap();
+            hm.put("LOGO_DIR",rutaLogo);
             hm.put("SUBREPORT_DIR",rutaSubreporte);
             JasperPrint jp = 
                     JasperFillManager.fillReport(reporte,hm,con);
@@ -333,8 +346,10 @@ public class Servicio {
         DriverManager.getConnection(
           DBManager.url, DBManager.user, DBManager.password);
             HashMap hm = new HashMap();
+            String rutaLogo = Servicio.class.getResource("/reports/Logo.jpg").getPath();
             hm.put("FECHA_INI", fechaIni);
             hm.put("FECHA_FIN", fechaFin);
+            hm.put("LOGO_DIR",rutaLogo);
             JasperPrint jp = 
                     JasperFillManager.fillReport(reporte,hm,con);
             arreglo = JasperExportManager.exportReportToPdf(jp);
@@ -360,6 +375,8 @@ public class Servicio {
         DriverManager.getConnection(
           DBManager.url, DBManager.user, DBManager.password);
             HashMap hm = new HashMap();
+            String rutaLogo = Servicio.class.getResource("/reports/Logo.jpg").getPath();
+            hm.put("LOGO_DIR",rutaLogo);
             hm.put("FECHA_INICIO", fechaIni);
             hm.put("FECHA_FIN", fechaFin);
             JasperPrint jp = 
@@ -403,12 +420,20 @@ public class Servicio {
     public int actualizarLineasDePedido(@WebParam(name = "lineasDePedido")ArrayList<LineaPedido> lineas, @WebParam(name = "filtro") EstadoLineaPedido estado){
         Date today = Calendar.getInstance().getTime();
         int cantidadTotal=0;
+        
         for(LineaPedido linea:lineas){
             linea.setEstadoLineaPedido(estado);
             linea.setFechaAtencion(today);
+            
+            if (linea.getProducto().getFoto() == null){
+                Producto producto = DBController.buscarProductoPorId(linea.getProducto().getId());
+                linea.getProducto().setFoto(producto.getFoto());
+            }
+                
             if(estado == EstadoLineaPedido.Aceptado){
                 linea.setEstadoLineaPedido(estado);
                 linea.getProducto().setStockEmpresa(linea.getProducto().getStockEmpresa()-linea.getCantidad());
+                
             }
                 
             else if(estado == EstadoLineaPedido.Rechazado){
@@ -416,8 +441,10 @@ public class Servicio {
                 linea.getProducto().setStockVendedor(linea.getProducto().getStockVendedor()+linea.getCantidad());
             }
                 
-            if(estado == EstadoLineaPedido.Aceptado || estado == EstadoLineaPedido.Rechazado)
+            if(estado == EstadoLineaPedido.Aceptado || estado == EstadoLineaPedido.Rechazado){
                 DBController.actualizarProducto(linea.getProducto());
+            }
+                
         }
         return DBController.actualizarLineasPedido(lineas);      
     }
@@ -468,6 +495,8 @@ public class Servicio {
           DBManager.url, DBManager.user, DBManager.password);
             HashMap hm = new HashMap();
             hm.put("ID_PEDIDO", idPedido);
+            String rutaLogo = Servicio.class.getResource("/reports/Logo.jpg").getPath();
+            hm.put("LOGO_DIR",rutaLogo);
             JasperPrint jp = 
                     JasperFillManager.fillReport(reporte,hm,con);
             arreglo = JasperExportManager.exportReportToPdf(jp);
@@ -636,9 +665,22 @@ public class Servicio {
             pedido.setFechaPago(today);
             pedido.setEstadoPedido(EstadoPedido.Pagado);
             Vendedor vendedor = DBController.encontrarVendedorPorClienteVendedor(pedido.getClienteVendedor().getId_cliente_vendedor());
-            vendedor.setSueldo(vendedor.getSueldo()+pedido.getFacturado());
+            ObjetivoVendedor objetivo = DBController.buscarObjetivoVendedorPorVendedor(vendedor);
+            if(objetivo == null)
+                vendedor.setSueldo(vendedor.getSueldo()+pedido.getFacturado());
+            else{
+                if (objetivo.getProgreso() > objetivo.getMonto()){
+                    vendedor.setSueldo((vendedor.getSueldo()+pedido.getFacturado())*objetivo.getComision()+(objetivo.getProgreso()-objetivo.getMonto())*objetivo.getBono());
+                }
+                else
+                    vendedor.setSueldo((vendedor.getSueldo()+pedido.getFacturado())*objetivo.getComision());
+                objetivo.setProgreso(objetivo.getProgreso()+pedido.getFacturado());
+                DBController.actualizarObjetivoVendedor(objetivo);
+            }
             DBController.actualizarEmpleado(vendedor);
             DBController.actualizarPedidoConPago(pedido);
+            
+            
             DatosGenerales datos = DBController.buscarDatosGeneralesPorId(1);
             int dias = (int)(pedido.getFechaFacturacion().getTime() - today.getTime());
             ArrayList<Cliente> clienteAux = DBController.buscarClientePorFiltro(pedido.getClienteVendedor().getCliente().getRuc());
@@ -699,8 +741,14 @@ public class Servicio {
     public int eliminarLineasDePedido(@WebParam(name = "pedido") Pedido pedido){
         ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
         for (LineaPedido linea:pedido.getLineasPedido()){
-            if(!linea.isActive())
+            if(!linea.isActive()){
+                Producto producto = DBController.buscarProductoPorId(linea.getProducto().getId());
+                producto.setStockVendedor(linea.getProducto().getStockVendedor()+linea.getCantidad());
+                DBController.actualizarProducto(producto);
                 lineas.add(linea);
+               
+            }
+                
         }
         
         return DBController.eliminarLineasDePedido(lineas);

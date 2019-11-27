@@ -2,23 +2,26 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="30fbe4f8-8040-4e84-b7d7-e1bd4c092c85">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="52"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="FECHA_INICIO" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="FECHA_FIN" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LOGO_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT PR.ID_PRODUCTO,SUM(LP.CANTIDAD_A_ATENDER) AS CANTIDAD_AGRUPADA,P.ID_PEDIDO,P.TOTAL_PEDIDO,LP.CANTIDAD,LP.SUBTOTAL,LP.CANTIDAD_A_ATENDER,PR.NOMBRE_PRODUCTO,PR.PRECIO_UNITARIO,PR.DESCRIPCION
+		<![CDATA[SELECT PR.FOTO,PR.ID_PRODUCTO,SUM(LP.CANTIDAD_A_ATENDER) AS CANTIDAD_AGRUPADA,P.ID_PEDIDO,P.TOTAL_PEDIDO,LP.CANTIDAD,LP.SUBTOTAL,LP.CANTIDAD_A_ATENDER,PR.NOMBRE_PRODUCTO,PR.PRECIO_UNITARIO,PR.DESCRIPCION
 FROM PEDIDO P
 INNER JOIN LINEA_PEDIDO LP ON P.ID_PEDIDO = LP.ID_PEDIDO
 INNER JOIN PRODUCTO PR ON LP.ID_PRODUCTO = PR.ID_PRODUCTO
 WHERE (P.ESTADO_PEDIDO = 'Pagado') AND (P.FECHA_REGISTRO BETWEEN $P{FECHA_INICIO} AND $P{FECHA_FIN}) 
 GROUP BY PR.ID_PRODUCTO
-ORDER BY PR.ID_PRODUCTO;
-]]>
+ORDER BY PR.ID_PRODUCTO;]]>
 	</queryString>
+	<field name="FOTO" class="java.io.InputStream">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="ID_PRODUCTO" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -51,77 +54,144 @@ ORDER BY PR.ID_PRODUCTO;
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="264" splitType="Stretch">
 			<textField>
-				<reportElement x="29" y="23" width="289" height="34" uuid="46730bc8-fbba-4243-bec2-6c3b1e928a68"/>
+				<reportElement x="95" y="10" width="331" height="34" uuid="46730bc8-fbba-4243-bec2-6c3b1e928a68"/>
 				<textElement>
-					<font size="24" isBold="true"/>
+					<font size="20" isBold="true" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Productos Vendidos:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Lista de productos vendidos:"]]></textFieldExpression>
 			</textField>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="60" splitType="Stretch">
 			<textField>
-				<reportElement x="29" y="11" width="103" height="30" uuid="8b952281-c5a1-4a7d-a01e-742909fda66d"/>
+				<reportElement x="19" y="211" width="103" height="30" uuid="8b952281-c5a1-4a7d-a01e-742909fda66d"/>
 				<textElement>
-					<font size="16"/>
+					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha Inicio:"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="269" y="11" width="93" height="30" uuid="3e758010-390f-4ddc-9a27-41bf462b96d8"/>
+				<reportElement x="302" y="211" width="93" height="30" uuid="3e758010-390f-4ddc-9a27-41bf462b96d8"/>
 				<textElement>
-					<font size="16"/>
+					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha Fin:"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="132" y="11" width="89" height="30" uuid="12b28b83-02ab-4454-b8e9-dd1e63e3c022"/>
+				<reportElement x="122" y="211" width="153" height="30" uuid="12b28b83-02ab-4454-b8e9-dd1e63e3c022"/>
 				<textElement>
-					<font size="16"/>
+					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{FECHA_INICIO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="362" y="11" width="130" height="30" uuid="179e0283-4541-41e0-a198-f2e20a6aec86"/>
+				<reportElement x="395" y="211" width="146" height="30" uuid="179e0283-4541-41e0-a198-f2e20a6aec86"/>
 				<textElement>
-					<font size="16"/>
+					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
 			</textField>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="39" splitType="Stretch">
 			<textField>
-				<reportElement x="29" y="12" width="147" height="18" uuid="255ccf3f-ea80-4a5f-96a4-93901e4c3d7a"/>
+				<reportElement x="252" y="88" width="66" height="20" uuid="77ef5107-fb21-4780-be4c-3b07f130659f"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Telefono: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="252" y="123" width="66" height="20" uuid="05b7be23-62b2-40bc-89bd-be25b45122c6"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Email: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="58" width="189" height="20" uuid="84cfd87f-05b5-4577-a6c0-97ecd46c1427"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Calle Las Azucenas 2104"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="123" width="189" height="20" uuid="89a083d4-470e-4217-922d-ff973e91cf99"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["didacticosSAC@edukt.com"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="88" width="167" height="20" uuid="44c307aa-9fe1-4935-93e7-d4bc5cf7f09a"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["539-5085"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="252" y="58" width="66" height="20" uuid="f0eb8352-d41b-483c-853e-b0b1151cf4b1"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Direccion: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="22" y="167" width="190" height="30" uuid="02e251fd-dce9-4689-a56e-8031df537a9a"/>
+				<textElement>
+					<font size="16" isBold="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rango de fechas:"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="154" width="555" height="1" uuid="b4e8faf1-710a-4816-ab02-7c581be3ad69"/>
+			</line>
+			<image>
+				<reportElement x="39" y="58" width="163" height="85" uuid="ef78f574-66d2-440c-8930-f258bf10c26e"/>
+				<imageExpression><![CDATA[$P{LOGO_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="47" splitType="Stretch">
+			<textField>
+				<reportElement x="182" y="10" width="147" height="18" uuid="255ccf3f-ea80-4a5f-96a4-93901e4c3d7a"/>
 				<textElement>
 					<font size="14" isBold="false" isItalic="false" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Nombre del producto"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="243" y="10" width="135" height="20" uuid="6de1f698-3e7a-486d-9d5b-9afc50541398"/>
+				<reportElement x="439" y="10" width="79" height="20" uuid="6de1f698-3e7a-486d-9d5b-9afc50541398"/>
 				<textElement>
 					<font size="14" isUnderline="true" isStrikeThrough="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Cantidad Vendida"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Cantidad"]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="42" width="555" height="1" uuid="f41d3385-4b77-4ba0-8fac-05b0036bf4d2"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="52" splitType="Stretch">
+		<band height="70" splitType="Stretch">
 			<textField>
-				<reportElement x="29" y="19" width="147" height="20" uuid="d5a3e6a1-578c-4395-a394-6b71b6013a12"/>
+				<reportElement x="146" y="19" width="249" height="20" uuid="d5a3e6a1-578c-4395-a394-6b71b6013a12"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{NOMBRE_PRODUCTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="290" y="19" width="48" height="20" uuid="3e0d309f-1495-46d2-8be6-3c603b4b689b"/>
-				<textElement verticalAlignment="Top"/>
+				<reportElement x="458" y="19" width="48" height="20" uuid="3e0d309f-1495-46d2-8be6-3c603b4b689b"/>
+				<textElement verticalAlignment="Top">
+					<font size="11"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{CANTIDAD_AGRUPADA}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="22" y="0" width="73" height="52" uuid="77a2d715-e247-4692-b954-ce981d7ea1e1"/>
+				<imageExpression><![CDATA[$F{FOTO}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="62" width="555" height="1" uuid="c9ed45de-455c-4e2e-99ac-11626b5688c7"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>

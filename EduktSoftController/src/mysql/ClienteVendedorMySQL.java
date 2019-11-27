@@ -256,6 +256,8 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
                 vendedor.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
                 vendedor.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
                 vendedor.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                vendedor.setTelefono(rs.getString("TELEFONO_EMPLEADO"));
+                vendedor.setCorreo(rs.getString("CORREO_EMPLEADO"));
                 vendedor.setFoto(rs.getBytes("FOTO"));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -264,6 +266,8 @@ public class ClienteVendedorMySQL implements ClienteVendedorDAO{
                 vendedor.getArea().setId(rs.getInt("ID_AREA"));
                 //vendedor.getArea().setNombre(rs.getString("NOMBRE_AREA"));
                 vendedor.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                vendedor.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
+                vendedor.getUsuario().setContraseña(rs.getString("CONTRASEÑA"));
                 vendedor.setSueldo(rs.getFloat("SUELDO"));
                 java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
                 fechaAux = formatoFecha.format(fechaIngreso);
