@@ -660,6 +660,12 @@ public class Servicio {
             pedido.setFacturado(monto);
             pedido.setEstadoPedido(EstadoPedido.Aceptado);
             DBController.actualizarPedidoConFacturacion(pedido);
+            ArrayList<LineaPedido> lineasRechazadas = new ArrayList<LineaPedido>();
+            for (LineaPedido linea:pedido.getLineasPedido()){
+                if (linea.getEstadoLineaPedido() == EstadoLineaPedido.Rechazado)
+                    lineasRechazadas.add(linea);
+            }
+            this.actualizarLineasDePedido(lineasRechazadas, EstadoLineaPedido.Rechazado);
         }
         else{
             pedido.setFechaPago(today);
@@ -688,8 +694,12 @@ public class Servicio {
             if (dias <= datos.getPlazoDePago()){
                 
                if (cliente.getPuntaje() < 100){
-                   if (cliente.getPuntaje() +5 <= 100)
-                       cliente.setPuntaje(cliente.getPuntaje()+5);
+                   if (cliente.getPuntaje() +5 <= 100){
+                      cliente.setPuntaje(cliente.getPuntaje()+5);
+                      if (cliente.getPuntaje() > 70)
+                          pedido.setFacturado(pedido.getFacturado()*0.95f);
+                   }
+                       
                    else
                        cliente.setPuntaje(100);
                    DBController.actualizarCliente(cliente);
@@ -707,12 +717,7 @@ public class Servicio {
                 
             }
         }
-        ArrayList<LineaPedido> lineasRechazadas = new ArrayList<LineaPedido>();
-        for (LineaPedido linea:pedido.getLineasPedido()){
-            if (linea.getEstadoLineaPedido() == EstadoLineaPedido.Rechazado)
-                lineasRechazadas.add(linea);
-        }
-        this.actualizarLineasDePedido(lineasRechazadas, EstadoLineaPedido.Rechazado);
+        
         return DBController.actualizarPedido(pedido);     
     }
     
