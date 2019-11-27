@@ -15,97 +15,93 @@ DATE($P{FECHA_INI})<=FECHA_REGISTRO AND DATE($P{FECHA_FIN})>=FECHA_REGISTRO AND 
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="282" splitType="Stretch">
+		<band height="146" splitType="Stretch">
 			<textField>
-				<reportElement x="125" y="13" width="275" height="27" uuid="b6ae6228-caab-4175-b02d-b224da4805b8"/>
+				<reportElement x="149" y="12" width="275" height="27" uuid="b6ae6228-caab-4175-b02d-b224da4805b8"/>
 				<textElement>
-					<font size="13" isBold="false" isUnderline="true"/>
+					<font size="13"/>
 				</textElement>
 				<textFieldExpression><![CDATA["REPORTE DE INGRESOS MENSUALES"]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="110" width="555" height="1" uuid="6f81d2a8-0595-4fb0-a9e3-ca4fd3111ef2"/>
+				<reportElement x="0" y="51" width="555" height="1" uuid="6f81d2a8-0595-4fb0-a9e3-ca4fd3111ef2"/>
 			</line>
 			<textField>
-				<reportElement x="137" y="159" width="134" height="20" uuid="ecbb47f7-bb6d-4f5e-971f-df543ad814de"/>
+				<reportElement x="126" y="68" width="134" height="20" uuid="ecbb47f7-bb6d-4f5e-971f-df543ad814de"/>
 				<textElement>
-					<font size="11" isBold="true"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{FECHA_INI}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="389" y="159" width="154" height="20" uuid="b0288e26-d0bc-42d4-8d9c-d5c32c561a53"/>
+				<reportElement x="389" y="68" width="114" height="20" uuid="b0288e26-d0bc-42d4-8d9c-d5c32c561a53"/>
 				<textElement>
-					<font size="11" isBold="true"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="159" width="107" height="20" uuid="f7d4f5cc-6a4e-442c-9d6f-83fa15138a6d"/>
+				<reportElement x="19" y="68" width="107" height="20" uuid="f7d4f5cc-6a4e-442c-9d6f-83fa15138a6d"/>
 				<textElement>
-					<font size="11" isBold="true"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["FECHA INICIO: "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="299" y="159" width="90" height="20" uuid="250ca152-8ba1-4709-90e4-0087089bac06"/>
+				<reportElement x="299" y="68" width="90" height="20" uuid="250ca152-8ba1-4709-90e4-0087089bac06"/>
 				<textElement>
-					<font size="11" isBold="true"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["FECHA FIN: "]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="268" width="555" height="1" uuid="d4982976-65b7-4640-afd7-9f132def300f"/>
+				<reportElement x="0" y="139" width="555" height="1" uuid="d4982976-65b7-4640-afd7-9f132def300f"/>
 			</line>
 			<textField>
-				<reportElement x="30" y="122" width="148" height="22" uuid="fcfad064-cde1-49cd-9320-b591ed286ec6"/>
+				<reportElement x="19" y="117" width="241" height="22" uuid="fcfad064-cde1-49cd-9320-b591ed286ec6"/>
 				<textElement>
-					<font size="13" isUnderline="true"/>
+					<font size="13"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Rango de fechas:"]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="125" y="238" width="111" height="20" uuid="f4764032-c893-4331-9cec-a4445b1d93d5"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[FECHA(MM-YYYY):]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="354" y="238" width="78" height="20" uuid="52da0159-c44c-4c63-8777-f90e691f80d9"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[MONTO(S/.):]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="30" y="204" width="241" height="22" uuid="d577d8ee-0eb6-4cee-8685-ee386640586d"/>
-				<textElement>
-					<font size="13" isUnderline="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Ingresos según las fechas:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["INGRESOS SEGÚN LAS FECHAS:"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<detail>
-		<band height="56" splitType="Stretch">
+		<band height="107" splitType="Stretch">
 			<textField>
-				<reportElement x="330" y="13" width="154" height="20" uuid="3a9f051c-7a26-4f44-8057-25a97b0fb7ec"/>
+				<reportElement x="260" y="57" width="154" height="20" uuid="3a9f051c-7a26-4f44-8057-25a97b0fb7ec"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{INGRESO_MENSUAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="101" y="13" width="158" height="20" uuid="e8a85d99-88ae-40f2-a427-f85b643dbaf0"/>
+				<reportElement x="260" y="24" width="154" height="20" uuid="e8a85d99-88ae-40f2-a427-f85b643dbaf0"/>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{MES_AÑO}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="49" width="555" height="1" uuid="e6e35845-4a89-4eaf-baf3-53f10fede69e"/>
+				<reportElement x="0" y="95" width="555" height="1" uuid="e6e35845-4a89-4eaf-baf3-53f10fede69e"/>
 			</line>
+			<line>
+				<reportElement x="0" y="10" width="555" height="1" uuid="21b30af9-a03c-45a7-8ca8-4890d1ec7a7b"/>
+			</line>
+			<staticText>
+				<reportElement x="182" y="57" width="78" height="20" uuid="52da0159-c44c-4c63-8777-f90e691f80d9"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[MONTO(S/.):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="24" width="111" height="20" uuid="f4764032-c893-4331-9cec-a4445b1d93d5"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[FECHA(MM-YYYY):]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<pageFooter>

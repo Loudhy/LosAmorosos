@@ -494,6 +494,10 @@ public abstract class DBController {
     public static int eliminarLineasDePedido(ArrayList<LineaPedido> lineas){
         return daoFactory.getPedidoDAO().eliminarLineasPedido(lineas);
     }
+    
+    public static ArrayList<LineaPedido> listarTodasLasLineasDePedido(Pedido pedido){
+        return daoFactory.getPedidoDAO().listarTodasLineasPedido(pedido);
+    }
 }
 
 

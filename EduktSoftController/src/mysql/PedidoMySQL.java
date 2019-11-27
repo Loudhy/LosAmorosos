@@ -898,6 +898,43 @@ public class PedidoMySQL implements PedidoDAO{
         return resultado;
     }
 
+    @Override
+    public ArrayList<LineaPedido> listarTodasLineasPedido(Pedido pedido) {
+        ArrayList<LineaPedido> lineasPedido = new ArrayList<LineaPedido>();
+
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_TODAS_LINEAS_PEDIDO(?)}");
+            cs.setInt("_ID_PEDIDO", pedido.getId());
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                LineaPedido lineaPedido = new LineaPedido();
+                lineaPedido.setCantidad(rs.getInt("CANTIDAD"));
+                lineaPedido.setEstadoLineaPedido(EstadoLineaPedido.valueOf(rs.getString("ESTADO_LINEA_PEDIDO")));
+                lineaPedido.setCantidadPorAtender(rs.getInt("CANTIDAD_A_ATENDER"));
+                lineaPedido.setId(rs.getInt("ID_LINEA_PEDIDO"));
+                lineaPedido.setSubtotal(rs.getFloat("SUBTOTAL"));
+                lineaPedido.setActive(rs.getBoolean("ACTIVE"));
+                SimpleDateFormat formatoFecha = new SimpleDateFormat();
+                lineaPedido.getProducto().setId(rs.getInt("ID_PRODUCTO"));
+                lineaPedido.getProducto().setNombre(rs.getString("NOMBRE_PRODUCTO"));
+                lineaPedido.getProducto().setPrecioUnitario(rs.getFloat("PRECIO_UNITARIO"));
+                lineaPedido.getProducto().setDescripcion(rs.getString("DESCRIPCION"));
+                lineaPedido.getProducto().setStockEmpresa(rs.getInt("STOCK_EMPRESA"));
+                lineaPedido.getProducto().setStockVendedor(rs.getInt("STOCK_VENDEDOR"));
+                lineaPedido.getProducto().setActive(true);
+                lineasPedido.add(lineaPedido);
+            }
+
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return lineasPedido;
+    }
+
     
     
 }

@@ -51,10 +51,25 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
-        
-        Vendedor vendedor = DBController.encontrarVendedorPorClienteVendedor(1);
+//        Pedido pedido = DBController.buscarPedidoPorId(27);
+//        ArrayList<LineaPedido> lineasAEvaluar = DBController.listarTodasLasLineasDePedido(pedido);
+//        ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
+//        float monto = 0;
+//        for (LineaPedido linea:lineasAEvaluar){
+//            if(!linea.isActive()){
+//                Producto producto = DBController.buscarProductoPorId(linea.getProducto().getId());
+//                producto.setStockVendedor(linea.getProducto().getStockVendedor()+linea.getCantidad());
+//                DBController.actualizarProducto(producto);
+//                monto+=linea.getCantidad();
+//                lineas.add(linea);           
+//            }              
+//        }
+        Pedido pedido = DBController.buscarPedidoPorId(27);
+        float monto = 50.0f;
+        DBController.actualizarMontoPedido(pedido, pedido.getTotal()-monto);
+        //Vendedor vendedor = DBController.encontrarVendedorPorClienteVendedor(1);
         //int resultado = DBController.actualizarEmpleado(vendedor);
-        ArrayList<Pedido> pedidos = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Aceptado);
+        //ArrayList<Pedido> pedidos = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Aceptado);
 //Pedido pedido = DBController.buscarPedidoPorId(5);
         //int resultado = DBController.eliminarLineasDePedido(pedido.getLineasPedido());
     //DBController.eliminarClienteVendedorConClienteYVendedor(34, 1);

@@ -741,12 +741,13 @@ public class Servicio {
     public int eliminarLineasDePedido(@WebParam(name = "pedido") Pedido pedido){
         ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
         float monto = 0;
+
         for (LineaPedido linea:pedido.getLineasPedido()){
             if(!linea.isActive()){
                 Producto producto = DBController.buscarProductoPorId(linea.getProducto().getId());
                 producto.setStockVendedor(linea.getProducto().getStockVendedor()+linea.getCantidad());
                 DBController.actualizarProducto(producto);
-                monto+=linea.getCantidad();
+                monto+=linea.getSubtotal();
                 lineas.add(linea);           
             }              
         }

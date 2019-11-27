@@ -3,16 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/mysql/ProductoMySQL.java</file>
             <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/dao/PedidoDAO.java</file>
-            <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/dao/EmpleadoDAO.java</file>
-            <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/mysql/ClienteMySQL.java</file>
-            <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/mysql/ObjetivoVendedorMySQL.java</file>
             <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/config/DBController.java</file>
             <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/mysql/PedidoMySQL.java</file>
-            <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/mysql/PresentacionMySQL.java</file>
-            <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/mysql/EmpleadoMySQL.java</file>
-            <file>file:/C:/Users/UsuarioA/Documents/LosAmorosos/EduktSoftController/src/mysql/SolicitudMySQL.java</file>
         </group>
     </open-files>
 </project-private>
