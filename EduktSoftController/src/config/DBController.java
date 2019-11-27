@@ -487,7 +487,9 @@ public abstract class DBController {
         return daoFactory.getEmpleadoDAO().listarEmpleadosPorAreaPorDni(area, dni);
     }
     
-    
+    public static int actualizarMontoPedido(Pedido pedido, float monto){
+        return daoFactory.getPedidoDAO().actualizarMontoDePedido(pedido, monto);
+    }
     
     public static int eliminarLineasDePedido(ArrayList<LineaPedido> lineas){
         return daoFactory.getPedidoDAO().eliminarLineasPedido(lineas);

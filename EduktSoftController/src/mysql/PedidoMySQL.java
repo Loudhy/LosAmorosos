@@ -881,6 +881,23 @@ public class PedidoMySQL implements PedidoDAO{
         return resultado;
     }
 
-    
+    @Override
+    public int actualizarMontoDePedido(Pedido pedido,float monto) {
+        int resultado = 0;
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call ACTUALIZAR_MONTO_PEDIDO(?,?)}");
+            cs.setInt("_ID_PEDIDO", pedido.getId());
+            cs.setFloat("_MONTO", monto);
+            resultado = cs.executeUpdate();
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return resultado;
+    }
 
+    
+    
 }

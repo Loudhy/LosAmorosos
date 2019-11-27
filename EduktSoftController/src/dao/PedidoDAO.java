@@ -38,4 +38,5 @@ public interface PedidoDAO extends CrudDAO<Pedido> {
     int actualizarLineaPedidoAceptado(int id_linea);
     ArrayList<Pedido> listarPedidosPorVendedorPorClientePorEstadoDePedido(Vendedor vendedor, String filtro, EstadoPedido estado);
     ArrayList<Pedido> listarPedidosPorFiltroDeCliente(String filtro);
+    int actualizarMontoDePedido(Pedido pedido,float monto);
 }
