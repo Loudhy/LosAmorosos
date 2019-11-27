@@ -471,6 +471,10 @@ public abstract class DBController {
         return daoFactory.getEmpleadoDAO().listarEmpleadosPorNombre(nombre);
     }
     
+    public static ArrayList<Empleado> listarTodosEmpleadosPorDni(String dni){
+        return daoFactory.getEmpleadoDAO().listarEmpleadosPorDni(dni);
+    }
+    
     public static int actualizarPedidoConFacturacion(Pedido pedido){
         return daoFactory.getPedidoDAO().actualizarFechaFacturacion(pedido);
     }

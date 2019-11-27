@@ -35,8 +35,13 @@ public class aprobarSolicitudes {
         for (Solicitud solicitud:solicitudes){
             for (LineaSolicitud lineaSolicitud: solicitud.getLineasSolicitud()){
                 if (Objects.equals(lineaSolicitud.getLineaPedido().getProducto().getNombre(),nombreProducto)){
-                    if (producto == null)
+                    if (producto == null){
                         producto = lineaSolicitud.getLineaPedido().getProducto();
+                        Producto producto2 = DBController.buscarProductoPorId(producto.getId());
+                        if (producto.getFoto() == null)
+                            producto.setFoto(producto2.getFoto());
+                    }
+                        
                     numLineasCambiadas++;
                     lineaSolicitud.setEstadoSolicitud(EstadoLineaSolicitud.Aceptado);
                     Date today = Calendar.getInstance().getTime();

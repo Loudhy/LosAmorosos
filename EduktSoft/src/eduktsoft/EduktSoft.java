@@ -64,9 +64,10 @@ public class EduktSoft {
 //                lineas.add(linea);           
 //            }              
 //        }
-        Pedido pedido = DBController.buscarPedidoPorId(27);
-        float monto = 50.0f;
-        DBController.actualizarMontoPedido(pedido, pedido.getTotal()-monto);
+        ArrayList<Solicitud> solicitudes = DBController.listarSolicitudes();
+        //Pedido pedido = DBController.buscarPedidoPorId(27);
+        //float monto = 50.0f;
+        //DBController.actualizarMontoPedido(pedido, pedido.getTotal()-monto);
         //Vendedor vendedor = DBController.encontrarVendedorPorClienteVendedor(1);
         //int resultado = DBController.actualizarEmpleado(vendedor);
         //ArrayList<Pedido> pedidos = DBController.listarPedidosPorEstadoDePedido(EstadoPedido.Aceptado);

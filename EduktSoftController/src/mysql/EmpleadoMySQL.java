@@ -491,6 +491,50 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         
         return empleados;
     }
+    
+    @Override
+    public ArrayList<Empleado> listarEmpleadosPorDni(String dni) {
+        ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_TODOS_EMPLEADOS_POR_NOMBRE(?)}");
+            cs.setString("_DNI", dni);
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Empleado empleado = new Empleado(true);
+                empleado.setId(rs.getInt("ID_EMPLEADO"));
+                empleado.setDni(rs.getString("DNI_EMPLEADO"));
+                empleado.setNombre(rs.getString("NOMBRE_EMPLEADO"));
+                empleado.setApellidoPaterno(rs.getString("APELLIDO_PATERNO"));
+                empleado.setApellidoMaterno(rs.getString("APELLIDO_MATERNO"));
+                empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
+                java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaNacimiento);
+                empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.setFoto(rs.getBytes("FOTO"));
+                empleado.getUsuario().setId(empleado.getId());
+                empleado.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
+                empleado.getUsuario().setContraseña(rs.getString("CONTRASEÑA"));
+                empleado.getArea().setId(rs.getInt("ID_AREA"));
+                empleado.getArea().setNombre(rs.getString("NOMBRE_AREA"));
+                empleado.getArea().setCodigo(rs.getInt("CODIGO_AREA"));
+                empleado.setSueldo(rs.getFloat("SUELDO"));
+                java.util.Date fechaIngreso = new java.util.Date(rs.getDate("FECHA_INGRESO").getTime());
+                fechaAux = formatoFecha.format(fechaIngreso);
+                empleado.setFechaIngreso(formatoFecha.parse(fechaAux));
+                empleado.setActive(rs.getBoolean("ACTIVE"));
+                empleados.add(empleado);
+                
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        
+        return empleados;
+    }
 
     @Override
     public ArrayList<Empleado> listarEmpleadosPorAreaPorFiltro(Area area, String filtro) {

@@ -154,10 +154,7 @@ public class Servicio {
             else
                 aux.setEstadoLineaPedido(EstadoLineaPedido.Disponible);           
             
-            if((producto.getStockVendedor() - aux.getCantidad()) >= 0)
-                   producto.setStockVendedor((producto.getStockVendedor() - aux.getCantidad()));
-            else
-                producto.setStockVendedor(0);
+            producto.setStockVendedor((producto.getStockVendedor() - aux.getCantidad()));
             Producto producto2 = DBController.buscarProductoPorId(producto.getId());
             if (producto.getFoto() == null)
                 producto.setFoto(producto2.getFoto());
@@ -295,6 +292,11 @@ public class Servicio {
     public ArrayList<LineaSolicitud> listarLineasSolicitudesProducto(@WebParam(name = "nombreProducto") String nombreProducto){
         return DBController.listarLineasSolicitudesProducto(nombreProducto);
     }
+    
+    @WebMethod(operationName = "listarSolicitudes")
+    public ArrayList<Solicitud> listarSolicitudes(){
+        return DBController.listarSolicitudes();
+    }
 
     @WebMethod(operationName = "aprobarListasSolicitudConProducto")
     public int aprobarListasSolicitudConProducto(@WebParam(name = "solicitudes") ArrayList<Solicitud> solicitudes, String nombreProducto){
@@ -408,6 +410,14 @@ public class Servicio {
     @WebMethod(operationName = "listarEmpleados")
     public ArrayList<Empleado> listarEmpleados(@WebParam(name = "area") Area area){
         return DBController.listarEmpleadosPorArea(area);
+    }
+    
+    @WebMethod(operationName = "listarEmpleadosPorAreaPorFiltro")
+    public ArrayList<Empleado> listarEmpleadosPorAreaPorFiltro(@WebParam(name = "area") Area area, @WebParam(name = "filtro") String filtro, @WebParam(name = "opcion") int opcion){
+        if (opcion == 1)
+            return DBController.listarEmpleadosPorAreaPorDni(area, filtro);
+        else
+            return DBController.listarEmpleadosPorAreaPorFiltro(area, filtro);
     }
     
     @WebMethod(operationName = "listarVendedores")
@@ -559,8 +569,13 @@ public class Servicio {
     }
     
     @WebMethod(operationName = "listarTodosLosEmpleados")
-    public ArrayList<Empleado> listarTodosLosEmpleados(){
-        return DBController.listarTodosLosEmpleados();
+    public ArrayList<Empleado> listarTodosLosEmpleados(@WebParam(name = "filtro") String filtro, @WebParam(name = "opcion") int opcion){
+        if (opcion == 0)
+            return DBController.listarTodosEmpleadosPorDni(filtro);
+        else if (opcion == 1)
+            return DBController.listarTodosEmpleadosPorNombre(filtro);
+        else 
+            return DBController.listarTodosLosEmpleados();   
     }
     
     @WebMethod(operationName = "darDeAltaAEmpleado")

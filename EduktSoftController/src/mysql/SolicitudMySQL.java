@@ -148,6 +148,8 @@ public class SolicitudMySQL implements SolicitudDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaRegistro);
                 solicitud.setFechaRegistro(formatoFecha.parse(fechaAux));
+                solicitud.setDescripcion(rs.getString("DESCRIPCION"));
+                solicitud.getPedido().setId(rs.getInt("ID_PEDIDO"));
                 ArrayList<LineaSolicitud> lineas = listarLineasSolicitud(solicitud);
                 solicitud.setLineasSolicitud(lineas);
                 solicitudes.add(solicitud);
@@ -294,7 +296,7 @@ public class SolicitudMySQL implements SolicitudDAO{
                 System.out.println(aux.getEstadoSolicitud());
                 cs.setInt("_ID_LINEA_SOLICITUD",aux.getId());
                 cs.setInt("_ID_LINEA_PEDIDO",aux.getLineaPedido().getId());
-                cs.setInt("_CANTIDAD",aux.getLineaPedido().getCantidadPorAtender());
+                cs.setInt("_CANTIDAD",aux.getCantidad());
                 cs.setString("_ESTADO_SOLICITUD",aux.getEstadoSolicitud().toString());
                 resultado = cs.executeUpdate();
             }
