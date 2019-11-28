@@ -502,6 +502,12 @@ public abstract class DBController {
     public static ArrayList<LineaPedido> listarTodasLasLineasDePedido(Pedido pedido){
         return daoFactory.getPedidoDAO().listarTodasLineasPedido(pedido);
     }
+    
+    public static ArrayList<Solicitud> listarSolicitudesPorProd(int id){
+        return daoFactory.getSolicitudDAO().listarSolicitudesPorProd(id);
+    }
+    
 }
+
 
 

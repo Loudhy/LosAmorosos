@@ -306,6 +306,34 @@ public class SolicitudMySQL implements SolicitudDAO{
         return resultado;
     }
 
+    @Override
+    public ArrayList<Solicitud> listarSolicitudesPorProd(int idProducto) {
+        ArrayList<Solicitud> solicitud = new ArrayList<Solicitud>();
+        try{
+            con = DriverManager.getConnection(DBManager.url,DBManager.user,DBManager.password);
+            cs = con.prepareCall("{call LISTAR_SOLICITUDES_POR_PROD(?)}");
+            cs.setInt("_ID_PRODUCTO", idProducto);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()){
+                Solicitud soli = new Solicitud();
+                soli.setId(rs.getInt("ID_SOLICITUD"));
+                soli.setDescripcion(rs.getString("DESCRIPCION"));
+                java.util.Date fechaRegistro = new java.util.Date(rs.getDate("FECHA_REGISTRO").getTime());
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaAux = formatoFecha.format(fechaRegistro);
+                soli.setFechaRegistro(formatoFecha.parse(fechaAux));
+                ArrayList<LineaSolicitud> lineas = listarLineasSolicitud(soli);
+                soli.setLineasSolicitud(lineas);
+                solicitud.add(soli);
+            }
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();} catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return solicitud;
+    }
+
 
     
 }

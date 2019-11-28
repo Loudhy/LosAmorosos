@@ -21,4 +21,5 @@ public interface SolicitudDAO extends CrudDAO<Solicitud> {
     ArrayList<Solicitud> listarSolicitudesPorEstado(EstadoSolicitud estado);
     Solicitud buscarSolicitudPorPedido(Pedido pedido);
     ArrayList<LineaSolicitud> listarSolicitudesPorProducto(String nombreProd);
+    ArrayList<Solicitud> listarSolicitudesPorProd(int idProducto);
 }

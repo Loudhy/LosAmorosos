@@ -51,6 +51,9 @@ public class EduktSoft {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws ParseException {
+        PasswordService password = new PasswordService();
+        password.enviarCorreoDeBienvenida("steven.fernandez@pucp.edu.pe");
+//ArrayList<Solicitud> solicitudes = DBController.listarSolicitudesPorProd(2);
 //        Pedido pedido = DBController.buscarPedidoPorId(27);
 //        ArrayList<LineaPedido> lineasAEvaluar = DBController.listarTodasLasLineasDePedido(pedido);
 //        ArrayList<LineaPedido> lineas = new ArrayList<LineaPedido>();
@@ -64,7 +67,7 @@ public class EduktSoft {
 //                lineas.add(linea);           
 //            }              
 //        }
-        ArrayList<Solicitud> solicitudes = DBController.listarSolicitudes();
+        //ArrayList<Solicitud> solicitudes = DBController.listarSolicitudes();
         //Pedido pedido = DBController.buscarPedidoPorId(27);
         //float monto = 50.0f;
         //DBController.actualizarMontoPedido(pedido, pedido.getTotal()-monto);

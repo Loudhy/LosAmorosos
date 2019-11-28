@@ -34,7 +34,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         int resultado = 0;
         try{  
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
+            cs = con.prepareCall("{call INSERTAR_EMPLEADO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)} ");
             cs.setString("_DNI_EMPLEADO", empleado.getDni());
             cs.setString("_NOMBRE_EMPLEADO", empleado.getNombre());
             cs.setString("_APELLIDO_PATERNO", empleado.getApellidoPaterno());
@@ -163,6 +163,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 empleado.setFoto(rs.getBytes("FOTO"));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
+                empleado.setCorreo(rs.getString("CORREO_EMPLEADO"));
+                empleado.setTelefono(rs.getString("TELEFONO_EMPLEADO"));
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
@@ -287,6 +289,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 empleado.setEstadoCivil(EstadoCivil.valueOf(rs.getString("ESTADO_CIVIL")));
                 empleado.setDni(rs.getString("DNI_EMPLEADO"));
                 empleado.setFoto(rs.getBytes("FOTO"));
+                empleado.setTelefono(rs.getString("TELEFONO_EMPLEADO"));
+                empleado.setCorreo(rs.getString("CORREO_EMPLEADO"));
                 java.util.Date fechaNacimiento = new java.util.Date(rs.getDate("FECHA_NACIMIENTO").getTime());
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
@@ -409,6 +413,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
+                empleado.setCorreo(rs.getString("CORREO_EMPLEADO"));
+                empleado.setTelefono(rs.getString("TELEFONO_EMPLEADO"));
                 empleado.setFoto(rs.getBytes("FOTO"));
                 empleado.getUsuario().setId(empleado.getId());
                 empleado.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
@@ -469,6 +475,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
                 empleado.setFoto(rs.getBytes("FOTO"));
+                empleado.setCorreo(rs.getString("CORREO_EMPLEADO"));
+                empleado.setTelefono(rs.getString("TELEFONO_EMPLEADO"));
                 empleado.getUsuario().setId(empleado.getId());
                 empleado.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
                 empleado.getUsuario().setContraseña(rs.getString("CONTRASEÑA"));
@@ -497,7 +505,7 @@ public class EmpleadoMySQL implements EmpleadoDAO{
         ArrayList<Empleado> empleados = new ArrayList<Empleado>();
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_TODOS_EMPLEADOS_POR_NOMBRE(?)}");
+            cs = con.prepareCall("{call LISTAR_TODOS_EMPLEADOS_POR_DNI(?)}");
             cs.setString("_DNI", dni);
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
@@ -513,6 +521,8 @@ public class EmpleadoMySQL implements EmpleadoDAO{
                 String fechaAux = formatoFecha.format(fechaNacimiento);
                 empleado.setFechaNacimiento(formatoFecha.parse(fechaAux));
                 empleado.setFoto(rs.getBytes("FOTO"));
+                empleado.setCorreo(rs.getString("CORREO_EMPLEADO"));
+                empleado.setTelefono(rs.getString("TELEFONO_EMPLEADO"));
                 empleado.getUsuario().setId(empleado.getId());
                 empleado.getUsuario().setNombre(rs.getString("NOMBRE_USUARIO"));
                 empleado.getUsuario().setContraseña(rs.getString("CONTRASEÑA"));

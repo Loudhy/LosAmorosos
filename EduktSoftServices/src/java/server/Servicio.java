@@ -208,7 +208,7 @@ public class Servicio {
         return mejoresTres.listarTresMejoresProductosPorCliente(cliente);
     }
 
-    @WebMethod(operationName = "listarSolicitudes")
+    @WebMethod(operationName = "listarSolicitud")
     public Solicitud listarSolicitud(@WebParam(name = "id_solicitud") int id_solicitud){
         return DBController.buscarSolicitudPorId(id_solicitud);
     }
@@ -555,7 +555,9 @@ public class Servicio {
     
     @WebMethod(operationName = "insertarEmpleado")
     public int insertarEmpleado(@WebParam(name = "empleado") Empleado empleado){
-        return DBController.insertarEmpleado(empleado);
+        DBController.insertarEmpleado(empleado);
+        PasswordService password = new PasswordService();
+        return password.enviarCorreoDeBienvenida(empleado.getCorreo());
     }
     
     @WebMethod(operationName = "actualizarEmpleado")
@@ -773,6 +775,11 @@ public class Servicio {
         }
         DBController.actualizarMontoPedido(pedido, pedido.getTotal()-monto);
         return DBController.eliminarLineasDePedido(lineas);
+    }
+    
+    @WebMethod(operationName = "listarSolicitudesPorProd")
+    public ArrayList<Solicitud> listarSolicitudesPorProd(@WebParam(name = "id") int id){
+        return DBController.listarSolicitudesPorProd(id);
     }
     
 }

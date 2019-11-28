@@ -79,4 +79,46 @@ public class PasswordService {
         }
         return 1;
     }
+    
+    public int enviarCorreoDeBienvenida(String correoDestinatario){
+        Empleado empleado = new Empleado();
+        empleado = DBController.buscarEmpleadoPorCorreo(correoDestinatario);        
+        if (empleado.getNombre() == null)
+            return 0;
+        Properties propiedad = new Properties();
+        propiedad.setProperty("mail.smtp.host", "smtp.gmail.com");
+        propiedad.setProperty("mail.smtp.starttls.enable", "true");
+        propiedad.setProperty("mail.smtp.port", "587");
+        propiedad.setProperty("mail.smtp.auth", "true"); 
+        
+        Session sesion = Session.getDefaultInstance(propiedad);
+        String correoEmpresa = "edukt.empresarial@gmail.com";
+        String contrasena = "tupiaboys1234";
+        String asunto = "CORREO DE BIENVENIDA";
+       
+        String password = "";
+        password = randomAlphaNumeric(6);
+        String mensaje = "Bienvenido "+ empleado.getNombre()+" a la empresa Juegos Edukt!" + "\n"+
+                "Su nombre de usuario es: "+ empleado.getUsuario().getNombre() + " y su contraseña: " +empleado.getUsuario().getContraseña();
+        MimeMessage mail = new MimeMessage(sesion);
+        
+        try { 
+            mail.setFrom(new InternetAddress(correoEmpresa));
+            mail.addRecipient(Message.RecipientType.TO, new InternetAddress(correoDestinatario));
+            mail.setSubject(asunto);
+            mail.setText(mensaje);
+            
+            Transport transportar = sesion.getTransport("smtp");
+            transportar.connect(correoEmpresa,contrasena);
+            transportar.sendMessage(mail, mail.getRecipients(Message.RecipientType.TO));          
+            transportar.close();
+            
+            //JOptionPane.showMessageDialog(null, "Listo, correo enviado");
+        } catch (AddressException ex) {
+            System.out.println(ex.getMessage());
+        } catch (MessagingException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return 1;
+    }
 }
